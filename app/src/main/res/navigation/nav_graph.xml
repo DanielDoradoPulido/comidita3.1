@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentHome">
+
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="com.example.comidita3.UI.fragmentHome"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/fragmentFavoritos"
+        android:name="com.example.comidita3.UI.FragmentFavoritos"
+        android:label="fragment_favoritos"
+        tools:layout="@layout/fragment_favoritos" />
+    <fragment
+        android:id="@+id/fragmentSubidas"
+        android:name="com.example.comidita3.UI.FragmentSubidas"
+        android:label="fragment_subidas"
+        tools:layout="@layout/fragment_subidas" />
+    <fragment
+        android:id="@+id/fragmentCuenta"
+        android:name="com.example.comidita3.UI.FragmentAjustes"
+        android:label="fragment_cuenta"
+        tools:layout="@layout/fragment_ajustes" />
+</navigation>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">comidita3</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preferencias_PMDM_correo_file" >PreferenciasPMDMCorreo</string>
+    <string name="preferencias_email" >email</string>
+    <string name="preferencias_password" >password</string>
+    <string name="preferencias_islogin" >islogin</string>
+</resources>

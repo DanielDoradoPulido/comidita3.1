@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "730737235373",
+    "project_id": "comiditadef",
+    "storage_bucket": "comiditadef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730737235373:android:be42556890b5ba6db33d24",
+        "android_client_info": {
+          "package_name": "com.example.comidita3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730737235373-ujnap299kg5o4k11r75b145cp82sb26p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3v_gX0Ka62I5RT3b2ytmMgYYHsMoGvxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730737235373-ujnap299kg5o4k11r75b145cp82sb26p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
