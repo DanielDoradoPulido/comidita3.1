@@ -1,18 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.FragmentSubidas"
-    android:screenOrientation="portrait">
+    android:background="#202732"
+    android:screenOrientation="portrait"
+    tools:context=".UI.FragmentSubidas">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#4CAF50"
-        android:text="@string/hello_blank_fragment"
-        android:textColor="#FFFFFF"
-        />
 
-</FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonAñadirSubidas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="540dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreSubidas"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewNombreSubidas"
+        android:layout_width="238dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="32dp"
+        android:text="Daniel Dorado Pulido"
+        android:transitionName="userNombreTransition"
+        android:textAlignment="textStart"
+        android:textColor="#F8F5F5"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/circleImageViewPerfilAjustes"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.103" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewPerfilSubidas"
+        android:layout_width="105dp"
+        android:layout_height="89dp"
+        android:src="@drawable/verde"
+        android:transitionName="perfilTransitionSubidas"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.068"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <ListView
+        android:id="@+id/listViewSubidas"
+        android:layout_width="match_parent"
+        android:layout_height="554dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewPerfilSubidas"
+        app:layout_constraintVertical_bias="1.0">
+
+    </ListView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

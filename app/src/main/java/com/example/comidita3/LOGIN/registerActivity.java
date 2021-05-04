@@ -15,18 +15,26 @@ import android.widget.Toast;
 
 import com.example.comidita3.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class registerActivity extends AppCompatActivity {
 
     TextView volver;
-    EditText correo,contraseña,confirmacion;
-    String email,password,confir;
+    EditText usuario,correo,contraseña,confirmacion;
+    String user,email,password,confir,UID;
     Button registrarse;
     private FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,8 @@ public class registerActivity extends AppCompatActivity {
             }
         });
 
-        correo = findViewById(R.id.editTextCorreoRecuperar);
+        usuario = findViewById(R.id.editTextNombreUsuarioRegister);
+        correo = findViewById(R.id.editTextCorreoRegistrar);
         contraseña = findViewById(R.id.editTextContraseñaRegistrarse);
         confirmacion = findViewById(R.id.editTextContraseñaRegistrarse2);
 
@@ -73,11 +82,12 @@ public class registerActivity extends AppCompatActivity {
 
     public void register(){
 
+        user = usuario.getText().toString();
         email = correo.getText().toString();
         password = contraseña.getText().toString();
         confir = confirmacion.getText().toString();
 
-        if(!email.isEmpty() && !password.isEmpty() && !confir.isEmpty()){
+        if(!email.isEmpty() && !password.isEmpty() && !confir.isEmpty() && !user.isEmpty()){
 
             if(!(password.length()<6) && !(confir.length()<6)){
                 if(password.contentEquals(confir)){
@@ -87,9 +97,42 @@ public class registerActivity extends AppCompatActivity {
 
                             if(task.isSuccessful()) {
 
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                user.sendEmailVerification();
-                                showAlert("¡Enhorabuena!","registro satisfactorio,verifique su cuenta");
+                                //authentication
+                                FirebaseUser user2 = mAuth.getCurrentUser();
+                                user2.sendEmailVerification();
+
+                                //firestore
+
+                                UID = mAuth.getCurrentUser().getUid();
+
+
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                Map<String,Object> userReg = new HashMap<>();
+                                userReg.put("UID",UID);
+                                userReg.put("nombre",user);
+                                userReg.put("correo",email);
+                                userReg.put("perfilPath","");
+
+                                Map<String,Object> favReg = new HashMap<>();
+                                userReg.put("UID",UID);
+
+
+                                db.collection("usuarios").document(UID).set(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        showAlert("¡Enhorabuena!","registro satisfactorio,verifique su cuenta " + UID);
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        showAlert("Error","algo salio mal con el registro en la bbdd de " + UID);
+                                    }
+                                });
+
+
 
                             }
 
@@ -102,6 +145,8 @@ public class registerActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(this,"las contraseñas no coinciden",Toast.LENGTH_SHORT).show();
                 }
+
+
             }
 
             else
@@ -148,7 +193,7 @@ public class registerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
 
         Intent intent = new Intent(getApplicationContext(),loginActivity.class);
         startActivity(intent);

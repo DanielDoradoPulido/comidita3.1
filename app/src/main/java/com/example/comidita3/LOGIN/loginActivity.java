@@ -4,15 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,14 +32,16 @@ import com.google.firebase.auth.FirebaseUser;
 public class loginActivity extends AppCompatActivity {
 
     Button login;
-    TextView recuContra,register;
+    TextView recuContra,register,title,subtitle;
     CheckBox recordar;
     EditText correo,contraseña;
     String email,password,correoElec,contra;
+    Boolean salir;
+    ImageView logo;
 
 
 
-    public static final String enviar = "com.example.myfirstApp.MESSAGE";
+
 
     private FirebaseAuth mAuth;
 
@@ -46,6 +51,11 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //shared animations
+        logo = findViewById(R.id.imageView2);
+        title = findViewById(R.id.textViewTitleLoginAcivity);
+        subtitle = findViewById(R.id.textViewSubtitleLoginActivity);
+
         //pares clave-valor
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
         correoElec = sharedPref.getString(getString(R.string.preferencias_email),"nofunciono");
@@ -53,7 +63,9 @@ public class loginActivity extends AppCompatActivity {
 
         recordar = findViewById(R.id.checkBox);
 
+        salir = false;
 
+        mAuth = FirebaseAuth.getInstance();
 
         boolean isLogin = sharedPref.getBoolean(getString(R.string.preferencias_islogin),false);
         if (isLogin) {
@@ -87,7 +99,7 @@ public class loginActivity extends AppCompatActivity {
         }
 
 
-        mAuth = FirebaseAuth.getInstance();
+
 
 
 
@@ -210,20 +222,33 @@ public class loginActivity extends AppCompatActivity {
     public void showMain(String s){
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra(enviar,s);
+        intent.putExtra("enviar",s);
         startActivity(intent);
+
+        //Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
+
 
         correo.setText("");
         contraseña.setText("");
 
+        finish();
 
     }
 
     public void recuperarContraseña(){
 
-        Intent intent = new Intent(getApplicationContext(), recuperarContrasena.class);
-        startActivity(intent);
+        Intent sharedIntent = new Intent(loginActivity.this, recuperarContrasena.class);
 
+        Pair[] pairs = new Pair[4];
+
+        pairs[0] = new Pair<View,String>(logo,"imageTransition");
+        pairs[1] = new Pair<View,String>(title,"titleText");
+        pairs[2] = new Pair<View,String>(subtitle,"subtitleText");
+        pairs[3] = new Pair<View,String>(register,"botonTransition");
+
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(loginActivity.this,pairs);
+
+        startActivity(sharedIntent,options.toBundle());
     }
 
     @Override
@@ -231,6 +256,17 @@ public class loginActivity extends AppCompatActivity {
         super.onStart();
 
 
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(salir){
+            super.onBackPressed();
+        }
+        else
+            ;
 
 
     }

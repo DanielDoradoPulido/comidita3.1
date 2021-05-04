@@ -25,4 +25,9 @@
         android:name="com.example.comidita3.UI.FragmentAjustes"
         android:label="fragment_cuenta"
         tools:layout="@layout/fragment_ajustes" />
+    <fragment
+        android:id="@+id/fragmentRellenarReceta"
+        android:name="com.example.comidita3.UI.rellenarReceta"
+        android:label="fragment_rellenar_receta"
+        tools:layout="@layout/fragment_rellenar_receta" />
 </navigation>

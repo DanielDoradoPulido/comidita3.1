@@ -9,11 +9,172 @@
     android:screenOrientation="portrait"
     tools:context=".UI.FragmentAjustes">
 
-    <ListView
-        android:id="@+id/listViewAjustes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="372dp" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewPerfilAjustes"
+        android:layout_width="167dp"
+        android:layout_height="147dp"
+        android:src="@drawable/verde"
+        android:transitionName="botonTransition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.135"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/textViewNombreAjustes"
+        android:layout_width="283dp"
+        android:layout_height="42dp"
+        android:textAlignment="center"
+        android:textColor="#FDFDFD"
+        android:textSize="18sp"
+        android:transitionName="userNombreTransition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewPerfilAjustes"
+        app:layout_constraintVertical_bias="0.048" />
+
+    <TextView
+        android:id="@+id/textViewCorreoAjustes"
+        android:layout_width="332dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="4dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#515151"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreAjustes"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutCambiarContraseña"
+        android:layout_width="190dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="56dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCorreoAjustes"
+        app:layout_constraintVertical_bias="0.019">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_https_24" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="184dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="   Cambiar contraseña"
+            android:textAlignment="textStart"
+            android:textColor="#FBFAFA"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:id="@+id/linearLayoutSubidas"
+        android:layout_width="203dp"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCambiarContraseña"
+        app:layout_constraintVertical_bias="0.127">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_cloud_upload_24" />
+
+        <TextView
+
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="      Recetas Subidas"
+            android:textAlignment="textStart"
+            android:textColor="#FBFAFA"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:id="@+id/linearLayoutCambiarFoto"
+        android:layout_width="195dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="28dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSubidas"
+        app:layout_constraintVertical_bias="0.053">
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_person_pin_24" />
+
+        <TextView
+
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="   Cambiar foto de perfil"
+            android:textAlignment="textStart"
+            android:textColor="#FBFAFA"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:id="@+id/linearLayoutCerrarSesion"
+        android:layout_width="142dp"
+        android:layout_height="28dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCambiarFoto"
+        app:layout_constraintVertical_bias="0.788">
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_exit_to_app_24" />
+
+        <TextView
+
+            android:layout_width="255dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="   Cerrar Sesión"
+            android:textAlignment="textStart"
+            android:textColor="#FBFAFA"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

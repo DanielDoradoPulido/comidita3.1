@@ -9,20 +9,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Comidita3">
-        <activity android:name=".LOGIN.registerActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".LOGIN.recuperarContrasena"
-            android:screenOrientation="portrait"/>/>
-        <activity android:name=".LOGIN.loginActivity"
+
+        <activity android:name=".IntroductoryActivity"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".LOGIN.registerActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".LOGIN.recuperarContrasena"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".LOGIN.loginActivity"
+            android:screenOrientation="portrait">
+
+
+
+
+        </activity>
+
+
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"

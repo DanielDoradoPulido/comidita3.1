@@ -8,22 +8,6 @@
     tools:context=".LOGIN.registerActivity">
 
     <EditText
-        android:id="@+id/editTextContraseñaRegistrarse2"
-        android:layout_width="303dp"
-        android:layout_height="53dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="Confirme la contraseña"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.564"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextContraseñaRegistrarse"
-        app:layout_constraintVertical_bias="0.087"
-        app:passwordToggleEnabled="true" />
-
-    <EditText
         android:id="@+id/editTextContraseñaRegistrarse"
         android:layout_width="303dp"
         android:layout_height="53dp"
@@ -33,20 +17,52 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.564"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCorreoRecuperar"
-        app:layout_constraintVertical_bias="0.071"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCorreoRegistrar"
+        app:layout_constraintVertical_bias="0.087"
         app:passwordToggleEnabled="true" />
 
     <EditText
-        android:id="@+id/editTextCorreoRecuperar"
+        android:id="@+id/editTextContraseñaRegistrarse2"
         android:layout_width="303dp"
         android:layout_height="53dp"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="Correo Electrónico"
-        android:inputType="textEmailAddress"
+        android:hint="Confirme la contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.565"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextContraseñaRegistrarse"
+        app:layout_constraintVertical_bias="0.105"
+        app:passwordToggleEnabled="true" />
+
+    <EditText
+        android:id="@+id/editTextCorreoRegistrar"
+        android:layout_width="303dp"
+        android:layout_height="53dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="Correo Electronico"
+        android:inputType="textPassword|textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.564"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNombreUsuarioRegister"
+        app:layout_constraintVertical_bias="0.071"
+        app:passwordToggleEnabled="false" />
+
+    <EditText
+        android:id="@+id/editTextNombreUsuarioRegister"
+        android:layout_width="303dp"
+        android:layout_height="53dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="Nombre Usuario"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.564"
@@ -61,21 +77,10 @@
         android:text="Registarse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.559"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextContraseñaRegistrarse2"
-        app:layout_constraintVertical_bias="0.331" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/verde"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextContraseñaRegistrarse"
+        app:layout_constraintVertical_bias="0.565" />
 
     <TextView
         android:id="@+id/textViewVolverLoginDesdeRegistro"
@@ -87,9 +92,10 @@
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonRegistrarse"
-        app:layout_constraintVertical_bias="0.323" />
+        app:layout_constraintVertical_bias="0.682" />
 
     <TextView
         android:id="@+id/textView5"
@@ -105,8 +111,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.069" />
 
     <TextView
         android:id="@+id/textView6"
@@ -123,5 +129,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.056" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.088"
+        app:srcCompat="@drawable/icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

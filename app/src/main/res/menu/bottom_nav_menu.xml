@@ -12,11 +12,6 @@
         android:title="Favoritas" />
 
     <item
-        android:id="@+id/fragmentSubidas"
-        android:icon="@drawable/ic_cloud"
-        android:title="Subidas" />
-
-    <item
         android:id="@+id/fragmentCuenta"
         android:icon="@drawable/ic_person"
         android:title="Cuenta" />

@@ -4,13 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,17 +24,23 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class recuperarContrasena extends AppCompatActivity {
 
-    TextView volver;
+    ImageView logo;
+    TextView volver,title,subtitle;
     Button recuperar;
     EditText correo;
     String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recuperar_contrasena);
 
+        //shared animations
+        logo = findViewById(R.id.imageViewLogoContraseñaActivity);
         volver = findViewById(R.id.textViewVolverLoginDesdeRecuperarContraseña);
+        title = findViewById(R.id.textViewTitleContraseñaActivity);
+        subtitle = findViewById(R.id.textViewSubtitleContraseñaActivity);
 
         volver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +51,7 @@ public class recuperarContrasena extends AppCompatActivity {
             }
         });
 
-        correo  = findViewById(R.id.editTextCorreoRecuperar);
+        correo  = findViewById(R.id.editTextNombreUsuarioRegister);
 
         recuperar = findViewById(R.id.buttonRegistrarse);
 
@@ -77,7 +86,7 @@ public class recuperarContrasena extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
 
         Intent intent = new Intent(getApplicationContext(), loginActivity.class);
         startActivity(intent);
@@ -104,9 +113,19 @@ public class recuperarContrasena extends AppCompatActivity {
 
     public void showLogin(){
 
-        Intent intent = new Intent(getApplicationContext(),loginActivity.class);
+        Intent sharedIntent = new Intent(recuperarContrasena.this, loginActivity.class);
 
-        startActivity(intent);
+        Pair[] pairs = new Pair[4];
+
+        pairs[0] = new Pair<View,String>(logo,"imageTransition");
+        pairs[1] = new Pair<View,String>(title,"titleText");
+        pairs[2] = new Pair<View,String>(subtitle,"subtitleText");
+        pairs[3] = new Pair<View,String>(recuperar,"botonTransition");
+
+
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(recuperarContrasena.this,pairs);
+
+        startActivity(sharedIntent,options.toBundle());
 
 
 

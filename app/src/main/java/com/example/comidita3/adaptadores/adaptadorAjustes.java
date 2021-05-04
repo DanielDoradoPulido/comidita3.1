@@ -1,4 +1,4 @@
-package com.example.comidita3;
+package com.example.comidita3.adaptadores;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.comidita3.R;
 
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class adaptadorAjustes extends ArrayAdapter<String> {
         this.lista = objects;
 
     }
+
+
 
     @NonNull
     @Override
@@ -51,6 +55,8 @@ public class adaptadorAjustes extends ArrayAdapter<String> {
 
 
     }
+
+
 
 
 }
