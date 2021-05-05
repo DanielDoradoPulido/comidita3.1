@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements Interfaz {
+public class MainActivity extends AppCompatActivity implements Interfaz{
 
     BottomNavigationView bottomNavigationView;
     NavHostFragment navHostFragment;
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
 
         return direccion;
     }
+
 
 
 }

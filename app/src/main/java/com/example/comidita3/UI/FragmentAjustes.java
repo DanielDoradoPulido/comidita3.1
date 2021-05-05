@@ -169,15 +169,6 @@ public class FragmentAjustes extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        perfil = v.findViewById(R.id.circleImageViewPerfilAjustes);
-
-        perfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "me tocaste", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
 
 
@@ -430,7 +421,7 @@ public class FragmentAjustes extends Fragment {
                                        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                            @Override
                                            public void onSuccess(Void aVoid) {
-                                               correo.setText("borrado");
+                                               //correo.setText("borrado");
                                            }
                                        }).addOnFailureListener(new OnFailureListener() {
                                            @Override

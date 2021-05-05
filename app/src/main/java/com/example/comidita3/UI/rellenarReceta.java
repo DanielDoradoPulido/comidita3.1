@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +26,12 @@ import android.widget.Toast;
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
+import com.example.comidita3.clasesPOJO.Receta;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -36,11 +41,6 @@ import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link rellenarReceta#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class rellenarReceta extends Fragment {
 
     Interfaz contexto;
@@ -49,9 +49,11 @@ public class rellenarReceta extends Fragment {
     ImageView imagen,back;
     Button guardar;
     public Uri imageUri;
+    private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    String imagePath;
+    String imagePath,userPath,name,ingredients,description,link;
+    boolean fotoSubida = false;
 
 
 
@@ -89,9 +91,12 @@ public class rellenarReceta extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
         //storage
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
     }
 
@@ -100,7 +105,56 @@ public class rellenarReceta extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_rellenar_receta, container, false);
 
+        //edit text
+        nombre = v.findViewById(R.id.editTextNombreRecetaRellenar);
         ingredientes = v.findViewById(R.id.editTextIngredientesRecetaRellenar);
+        descripcion = v.findViewById(R.id.editTextPasosRecetaRellenar);
+        URL = v.findViewById(R.id.editTextURLRecetaRellenar);
+
+        imagePath ="";
+
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+        v.setOnKeyListener(new View.OnKeyListener() {
+
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+
+                    comprobarSalida();
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //instancia firebase user
+        mAuth = FirebaseAuth.getInstance();
+
+        //boton back
+        back = v.findViewById(R.id.imageViewSalirRecetaRellenar);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comprobarSalida();
+
+            }
+        });
+
+        //boton subir
+        guardar = v.findViewById(R.id.buttonRecetaRellenarGuardar);
+        guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userPath = mAuth.getCurrentUser().getUid();
+                guardar(userPath);
+            }
+        });
+
 
 
         imagen = v.findViewById(R.id.imageViewReceta);
@@ -130,11 +184,34 @@ public class rellenarReceta extends Fragment {
         if(requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null){
             imageUri = data.getData();
             imagen.setImageURI(imageUri);
+            fotoSubida  = true;
             uploadPicture();
+
         }
     }
 
     public  void uploadPicture(){
+
+        if(!imagePath.equals("")){
+
+            StorageReference storageRef = storage.getReference();
+
+            StorageReference desertRef = storageRef.child(imagePath);
+
+            // Delete the file
+            desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    //correo.setText("borrado");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                }
+            });
+
+        }
 
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setTitle("Subiendo imagen...");
@@ -148,7 +225,10 @@ public class rellenarReceta extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
                 imagePath = riversRef.getPath();
-                Toast.makeText(getContext(),riversRef.getPath(),Toast.LENGTH_SHORT).show();
+                //subimos a la nube la imagen
+
+
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -168,4 +248,87 @@ public class rellenarReceta extends Fragment {
 
 
     }
+
+    public void guardar(String UID){
+
+        //obtenemos los parametros
+        name = nombre.getText().toString();
+        ingredients = ingredientes.getText().toString();
+        description = descripcion.getText().toString();
+        if(URL.getText().toString().isEmpty())
+            link = "";
+        else
+            link = URL.getText().toString();
+
+        //comprobamos que no estan vacios
+
+        if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty()){
+
+            if(fotoSubida){
+
+
+
+                //generamos un id random
+                String rId = UUID.randomUUID().toString();
+
+                //construimos el objeto de tipo Receta
+                Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
+
+                //llamamos a la bbdd
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("recetas").document(receta.getId()).set(receta);
+
+
+            }
+            else{
+                Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();
+            }
+
+
+
+        }
+        else
+            Toast.makeText(getContext(),"Rellena todos los campos",Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+    }
+
+    public void comprobarSalida(){
+
+        if(fotoSubida){
+
+            StorageReference storageRef = storage.getReference();
+
+            StorageReference desertRef = storageRef.child(imagePath);
+
+            // Delete the file
+            desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    //correo.setText("borrado");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred!
+                }
+            });
+
+            navController.navigate(R.id.fragmentSubidas);
+
+        }
+        else{
+            navController.navigate(R.id.fragmentSubidas);
+        }
+
+
+
+    }
+
+
 }
