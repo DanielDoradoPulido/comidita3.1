@@ -20,10 +20,10 @@
         android:src="@android:drawable/ic_menu_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNombreSubidas"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/textViewNombreSubidas"
@@ -59,17 +59,13 @@
     <ListView
         android:id="@+id/listViewSubidas"
         android:layout_width="match_parent"
-        android:layout_height="554dp"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_height="508dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageViewPerfilSubidas"
-        app:layout_constraintVertical_bias="1.0">
-
-    </ListView>
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,8 @@ public class Receta {
     private String urlYoutube;
     private String imagePath;
     private String userPath;
-    private int visitas;
-    private int valoracion;
+    private String visitas;
+    private String valoracion;
 
     public Receta(String id, String nombre, String ingredientes, String descripcion, String urlYoutube, String imagePath, String userPath) {
         this.id = id;
@@ -20,9 +20,22 @@ public class Receta {
         this.urlYoutube = urlYoutube;
         this.imagePath = imagePath;
         this.userPath = userPath;
-        this.visitas = 0;
-        this.valoracion = 0;
+        this.visitas = "0";
+        this.valoracion = "0";
     }
+
+    public Receta(String id, String nombre, String ingredientes, String descripcion, String urlYoutube, String imagePath, String userPath, String visitas, String valoracion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.ingredientes = ingredientes;
+        this.descripcion = descripcion;
+        this.urlYoutube = urlYoutube;
+        this.imagePath = imagePath;
+        this.userPath = userPath;
+        this.visitas = visitas;
+        this.valoracion = valoracion;
+    }
+
     public Receta(){
 
     }
@@ -83,19 +96,19 @@ public class Receta {
         this.userPath = userPath;
     }
 
-    public int getVisitas() {
+    public String getVisitas() {
         return visitas;
     }
 
-    public void setVisitas(int visitas) {
+    public void setVisitas(String visitas) {
         this.visitas = visitas;
     }
 
-    public int getValoracion() {
+    public String getValoracion() {
         return valoracion;
     }
 
-    public void setValoracion(int valoracion) {
+    public void setValoracion(String valoracion) {
         this.valoracion = valoracion;
     }
 }

@@ -280,6 +280,8 @@ public class rellenarReceta extends Fragment {
                 db.collection("recetas").document(receta.getId()).set(receta);
 
 
+
+
             }
             else{
                 Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();

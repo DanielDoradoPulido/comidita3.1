@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -101,7 +102,7 @@ public class FragmentAjustes extends Fragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-
+        contexto.loadData();
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
@@ -113,7 +114,7 @@ public class FragmentAjustes extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            for (DocumentSnapshot document : task.getResult()) {
 
                                 if(document.getId().equals(mAuth.getUid())) {
 
@@ -140,8 +141,8 @@ public class FragmentAjustes extends Fragment {
 
                                     }
                                 }
-                                else
-                                    Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+                                else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
 
                             }
                         } else {
@@ -407,7 +408,7 @@ public class FragmentAjustes extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            for (DocumentSnapshot document : task.getResult()) {
 
                                 if(document.getId().equals(mAuth.getUid())) {
 
@@ -440,8 +441,8 @@ public class FragmentAjustes extends Fragment {
 
 
                                 }
-                                else
-                                    Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+                                else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
 
                             }
                         } else {

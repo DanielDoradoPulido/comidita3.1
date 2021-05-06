@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
+import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -64,6 +65,7 @@ public class FragmentSubidas extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
     }
 
     @Override
@@ -90,13 +92,14 @@ public class FragmentSubidas extends Fragment {
         });
 
         listViewItems = (ListView) v.findViewById(R.id.listViewSubidas);
-        adaptadorAjustes ad = contexto.getAdaptadorAjustes();
+        adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidas();
+
         listViewItems.setAdapter(ad);
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getContext(),ad.getItem(position),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),ad.getItem(position).getNombre(),Toast.LENGTH_SHORT).show();
 
             }
         });
