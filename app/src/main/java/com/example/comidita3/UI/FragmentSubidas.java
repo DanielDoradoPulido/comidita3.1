@@ -2,6 +2,7 @@ package com.example.comidita3.UI;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,14 +14,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +54,12 @@ public class FragmentSubidas extends Fragment {
     Interfaz contexto;
     FloatingActionButton fab;
     NavController navController;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private FirebaseAuth mAuth;
+    TextView nombre;
+    ImageView perfil;
+    String pathInicio;
 
 
     public FragmentSubidas() {
@@ -66,6 +86,11 @@ public class FragmentSubidas extends Fragment {
         }
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        loadPerfilImage();
+
     }
 
     @Override
@@ -80,6 +105,11 @@ public class FragmentSubidas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_subidas, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        perfil = v.findViewById(R.id.circleImageViewPerfilSubidas);
+        nombre = v.findViewById(R.id.textViewNombreSubidas);
 
         fab = v.findViewById(R.id.floatingActionButtonAñadirSubidas);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +137,54 @@ public class FragmentSubidas extends Fragment {
 
         return v;
 
+    }
+
+    public void loadPerfilImage(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(mAuth.getUid())) {
+
+                                    nombre.setText(document.getString("nombre"));
+
+
+                                    if(!(pathInicio = document.getString("perfilPath")).equals("")){
+
+                                        storageReference.child(pathInicio).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+
+                                                Glide.with(getContext()).load(uri).into(perfil);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                // Handle any errors
+                                            }
+                                        });
+
+
+
+
+                                    }
+                                }
+                                else;
+                                //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 

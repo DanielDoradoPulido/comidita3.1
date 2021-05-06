@@ -2,12 +2,14 @@ package com.example.comidita3.UI;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,8 +29,10 @@ import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.clasesPOJO.Receta;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -251,47 +255,97 @@ public class rellenarReceta extends Fragment {
 
     public void guardar(String UID){
 
-        //obtenemos los parametros
-        name = nombre.getText().toString();
-        ingredients = ingredientes.getText().toString();
-        description = descripcion.getText().toString();
-        if(URL.getText().toString().isEmpty())
-            link = "";
-        else
-            link = URL.getText().toString();
+        AlertDialog.Builder builder  = new AlertDialog.Builder(getContext());
+        builder.setTitle("Subir receta")
+                .setMessage("¿Está seguro de que quiere subir la receta?")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-        //comprobamos que no estan vacios
+                        //obtenemos los parametros
+                        name = nombre.getText().toString();
+                        ingredients = ingredientes.getText().toString();
+                        description = descripcion.getText().toString();
+                        if(URL.getText().toString().isEmpty())
+                            link = "";
+                        else
+                            link = URL.getText().toString();
 
-        if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty()){
+                        //comprobamos que no estan vacios
 
-            if(fotoSubida){
+                        if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty()){
 
-
-
-                //generamos un id random
-                String rId = UUID.randomUUID().toString();
-
-                //construimos el objeto de tipo Receta
-                Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
-
-                //llamamos a la bbdd
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("recetas").document(receta.getId()).set(receta);
+                            if(fotoSubida){
 
 
 
+                                //generamos un id random
+                                String rId = UUID.randomUUID().toString();
 
+                                //construimos el objeto de tipo Receta
+                                Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
+
+                                //llamamos a la bbdd
+
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("recetas").document(receta.getId()).set(receta);
+                                Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
+
+
+
+
+                            }
+                            else{
+                                Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();
+                            }
+
+
+
+                        }
+                        else
+                            Toast.makeText(getContext(),"Rellena todos los campos",Toast.LENGTH_SHORT).show();
+
+
+
+                        dialog.dismiss();
+                        navController.navigate(R.id.fragmentHome);
+
+                    }
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
             }
-            else{
-                Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();
-            }
+        });
 
 
 
-        }
-        else
-            Toast.makeText(getContext(),"Rellena todos los campos",Toast.LENGTH_SHORT).show();
+        AlertDialog alerta = builder.create();
+        alerta.show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
