@@ -30,4 +30,9 @@
         android:name="com.example.comidita3.UI.rellenarReceta"
         android:label="fragment_rellenar_receta"
         tools:layout="@layout/fragment_rellenar_receta" />
+    <fragment
+        android:id="@+id/fragment_recetaDetalle"
+        android:name="com.example.comidita3.UI.fragment_recetaDetalle"
+        android:label="fragment_receta_detalle"
+        tools:layout="@layout/fragment_receta_detalle" />
 </navigation>

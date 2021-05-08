@@ -73,6 +73,8 @@ public class FragmentFavoritos extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        contexto.loadDataSubidas();
     }
 
     @Override
@@ -87,7 +89,7 @@ public class FragmentFavoritos extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getContext(),ad.getItem(position),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(),ad.getItem(position),Toast.LENGTH_SHORT).show();
 
             }
         });

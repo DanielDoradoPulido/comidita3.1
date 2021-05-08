@@ -102,7 +102,7 @@ public class FragmentAjustes extends Fragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        contexto.loadData();
+        contexto.loadDataSubidas();
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 

@@ -9,11 +9,13 @@ public interface Interfaz {
 
     public adaptadorFavoritos getAdaptadorFavoritos();
     public adaptadorRecetasSubidas getAdaptadorRecetasSubidas();
-    public void loadData();
+    public void loadDataSubidas();
 
     public void irLogin();
 
     public String email();
+
+    public void abrirURL(String url);
 
 
 }

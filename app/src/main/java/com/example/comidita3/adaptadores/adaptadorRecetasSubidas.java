@@ -28,13 +28,15 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class adaptadorRecetasSubidas extends ArrayAdapter<Receta> {
 
     Context context;
     int direccionLayout;
     List<Receta> lista;
     TextView nombre,facilidad;
-    ImageView foto;
+    CircleImageView foto;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -65,7 +67,7 @@ public class adaptadorRecetasSubidas extends ArrayAdapter<Receta> {
         facilidad = (TextView) v.findViewById(R.id.textViewFacilidadAdaptadorSubidas);
         facilidad.setText(r.getId());
 
-        foto = (ImageView)v.findViewById(R.id.imageViewFotoAdaptadorSubidas);
+        foto = v.findViewById(R.id.imageViewFotoAdaptadorSubidas);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();

@@ -6,6 +6,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,7 +28,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements Interfaz{
 
@@ -93,12 +97,12 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
     @Override
     public adaptadorFavoritos getAdaptadorFavoritos() {
-        arrayAdapterFavoritos = new adaptadorFavoritos(this, R.layout.adaptador_layout,favoritos);
+
 
         return arrayAdapterFavoritos;
     }
 
-    public void loadData(){
+    public void loadDataSubidas(){
 
         subidas = new ArrayList<>();
 
@@ -166,6 +170,44 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         String direccion = email;
 
         return direccion;
+    }
+
+    @Override
+    public void abrirURL(String url) {
+
+        String aux = "";
+
+        for (int i = 0 ; i < 4 ; i++){
+
+            char c = url.charAt(i);
+
+            aux = aux + c;
+
+
+        }
+
+        if(aux.equals("www.")){
+
+            Uri uri = Uri.parse("https://" + url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+
+        }
+        else if(aux.equals("http")){
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+
+
+        else{
+            Uri uri = Uri.parse("https://www." + url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+
+
+
     }
 
     public void mensaje(String x ){

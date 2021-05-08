@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -52,7 +53,7 @@ public class FragmentSubidas extends Fragment {
     private String mParam2;
     ListView listViewItems;
     Interfaz contexto;
-    FloatingActionButton fab;
+    FloatingActionButton subir;
     NavController navController;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -111,8 +112,8 @@ public class FragmentSubidas extends Fragment {
         perfil = v.findViewById(R.id.circleImageViewPerfilSubidas);
         nombre = v.findViewById(R.id.textViewNombreSubidas);
 
-        fab = v.findViewById(R.id.floatingActionButtonAñadirSubidas);
-        fab.setOnClickListener(new View.OnClickListener() {
+        subir = v.findViewById(R.id.floatingActionButtonAñadirSubidas);
+        subir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -129,7 +130,19 @@ public class FragmentSubidas extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getContext(),ad.getItem(position).getNombre(),Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+
+                bundle.putString("id",ad.getItem(position).getId());
+                bundle.putString("nombre", ad.getItem(position).getNombre());
+                bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
+                bundle.putString("descripcion", ad.getItem(position).getDescripcion());
+                bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
+                bundle.putString("userPath", ad.getItem(position).getUserPath());
+                bundle.putString("imagePath", ad.getItem(position).getImagePath());
+                bundle.putString("valoracion", ad.getItem(position).getValoracion());
+                bundle.putString("visitas", ad.getItem(position).getVisitas());
+
+                navController.navigate(R.id.fragment_recetaDetalle,bundle);
 
             }
         });

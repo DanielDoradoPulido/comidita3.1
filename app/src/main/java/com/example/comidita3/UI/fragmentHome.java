@@ -1,13 +1,16 @@
 package com.example.comidita3.UI;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
 
 /**
@@ -22,12 +25,22 @@ public class fragmentHome extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    Interfaz contexto;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public fragmentHome() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        contexto = (Interfaz)context;
+
     }
 
     /**
@@ -55,6 +68,9 @@ public class fragmentHome extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
     }
 
     @Override
