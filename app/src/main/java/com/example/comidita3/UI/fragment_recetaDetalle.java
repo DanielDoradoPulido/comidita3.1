@@ -10,7 +10,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +56,12 @@ public class fragment_recetaDetalle extends Fragment {
     //Objetos clase
     TextView name,descript,ingredients,facilities;
     ImageView imagen;
-    Button salir;
+
     RatingBar ratingBar;
     ImageButton fav;
-    View urlY;
+    View urlY,perfilUser;
     Interfaz contexto;
+    NavController navController;
 
     //firestorage
     private FirebaseStorage storage;
@@ -100,6 +104,11 @@ public class fragment_recetaDetalle extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
+
+
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -117,18 +126,9 @@ public class fragment_recetaDetalle extends Fragment {
 
         }
 
-        storageReference.child(imagepath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
+        contexto.loadDataSubidasOther(userpath);
 
-                Glide.with(getContext()).load(uri).into(imagen);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+
     }
 
     @Override
@@ -177,11 +177,18 @@ public class fragment_recetaDetalle extends Fragment {
             }
         });
 
-        salir = view.findViewById(R.id.buttonSalirDetalleReceta);
-        salir.setOnClickListener(new View.OnClickListener() {
+        perfilUser = view.findViewById(R.id.viewUser);
+        perfilUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Has pulsado el boton salir",Toast.LENGTH_SHORT).show();
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("userPath", userpath);
+
+
+                navController.navigate(R.id.fragment_perfilUser,bundle);
+
             }
         });
 
@@ -191,6 +198,18 @@ public class fragment_recetaDetalle extends Fragment {
         imagen = view.findViewById(R.id.imageViewDetalleReceta);
 
 
+        storageReference.child(imagepath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Glide.with(getContext()).load(uri).into(imagen);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
 
     }

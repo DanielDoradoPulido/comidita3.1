@@ -10,12 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,51 +26,55 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentSubidas#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FragmentSubidas extends Fragment {
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class perfilUserFragment extends Fragment {
+
+
+
+    private static final String ARG_USERPATH = "userPath";
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    ListView listViewItems;
-    Interfaz contexto;
-    FloatingActionButton subir;
+    private String userPath;
+
+
+
+
+    //elementos del layout
+
+    CircleImageView perfil;
+    TextView name;
+    ListView listView;
     NavController navController;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    private FirebaseAuth mAuth;
-    TextView nombre;
-    ImageView perfil;
     String pathInicio;
+    Interfaz contexto;
 
 
-    public FragmentSubidas() {
+
+
+    public perfilUserFragment() {
         // Required empty public constructor
     }
 
 
+    // TODO: Rename and change types and number of parameters
+    public static perfilUserFragment newInstance(String param1) {
 
-    public static FragmentSubidas newInstance(String param1, String param2) {
-        FragmentSubidas fragment = new FragmentSubidas();
+        perfilUserFragment fragment = new perfilUserFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_USERPATH, param1);
+
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,77 +82,39 @@ public class FragmentSubidas extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+            userPath = getArguments().getString(ARG_USERPATH);
+
+
         }
+
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
 
-
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        contexto = (Interfaz)context;
-
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        loadPerfilImage();
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    // Toast.makeText(getContext(),"hey",Toast.LENGTH_SHORT).show();
-                    navController.navigate(R.id.fragmentCuenta);
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_subidas, container, false);
-
-        mAuth = FirebaseAuth.getInstance();
+        View v = inflater.inflate(R.layout.fragment_perfil_user, container, false);
 
         perfil = v.findViewById(R.id.circleImageViewPerfilUser);
-        nombre = v.findViewById(R.id.textViewNombrePerfilUser);
 
-        subir = v.findViewById(R.id.floatingActionButtonAñadirSubidas);
-        subir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                navController.navigate(R.id.fragmentRellenarReceta);
+        name = v.findViewById(R.id.textViewNombrePerfilUser);
 
-            }
-        });
 
-        listViewItems = (ListView) v.findViewById(R.id.listViewPerfilUser);
-        adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidas();
-
-        listViewItems.setAdapter(ad);
-        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView = v.findViewById(R.id.listViewPerfilUser);
+        adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidasOther();
+        listView.setAdapter(ad);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Bundle bundle = new Bundle();
 
                 bundle.putString("id",ad.getItem(position).getId());
@@ -164,15 +128,31 @@ public class FragmentSubidas extends Fragment {
                 bundle.putString("visitas", ad.getItem(position).getVisitas());
 
                 navController.navigate(R.id.fragment_recetaDetalle,bundle);
-
             }
         });
 
-
-
-
         return v;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        loadPerfilImage();
+
+
+
+
+
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        contexto = (Interfaz)context;
     }
 
     public void loadPerfilImage(){
@@ -186,12 +166,13 @@ public class FragmentSubidas extends Fragment {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
 
-                                if(document.getId().equals(mAuth.getUid())) {
+                                if(document.getId().equals(userPath)) {
 
-                                    nombre.setText(document.getString("nombre"));
 
 
                                     if(!(pathInicio = document.getString("perfilPath")).equals("")){
+
+                                        name.setText(document.getString("nombre"));
 
                                         storageReference.child(pathInicio).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
@@ -222,6 +203,4 @@ public class FragmentSubidas extends Fragment {
                     }
                 });
     }
-
-
 }

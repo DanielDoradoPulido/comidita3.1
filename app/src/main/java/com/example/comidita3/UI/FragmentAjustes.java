@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,12 +84,16 @@ public class FragmentAjustes extends Fragment {
 
 
     public static FragmentAjustes newInstance(String param1, String param2) {
+
         FragmentAjustes fragment = new FragmentAjustes();
+
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
+
     }
 
     @Override
@@ -107,6 +112,8 @@ public class FragmentAjustes extends Fragment {
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        //cargar imagen de perfil
 
         db.collection("usuarios")
                 .get()
@@ -161,6 +168,25 @@ public class FragmentAjustes extends Fragment {
         super.onAttach(context);
         contexto = (Interfaz)context;
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    // Toast.makeText(getContext(),"hey",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

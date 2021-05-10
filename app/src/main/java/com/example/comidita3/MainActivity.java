@@ -42,12 +42,13 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
     //listAdaptadores
     ArrayList<Receta> subidas;
+    ArrayList<Receta> subidasOtherUser;
 
 
     //cargar ajustes
     adaptadorAjustes arrayAdapterAjustes;
     adaptadorFavoritos arrayAdapterFavoritos;
-    adaptadorRecetasSubidas arrayAdapterSubidas;
+    adaptadorRecetasSubidas arrayAdapterSubidas,arrayAdapterSubidasOther;
     public FirebaseFirestore db;
 
     //authentication
@@ -145,6 +146,45 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
     }
 
+
+
+    @Override
+    public void loadDataSubidasOther(String s) {
+        subidasOtherUser = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .whereEqualTo("userPath", s)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //creamos un objeto Receta
+                                String id = document.getString("id").toString();
+                                String nombre = document.getString("nombre").toString();
+                                String ingredientes = document.getString("ingredientes").toString();
+                                String descripcion = document.getString("descripcion").toString();
+                                String imagePath = document.getString("imagePath").toString();
+                                String urlYoutube = document.getString("urlYoutube").toString();
+                                String valoracion = document.getString("valoracion").toString();
+                                String visitas = document.getString("visitas").toString();
+                                String userpath = document.getString("userPath").toString();
+
+                                Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
+
+                                //lo añadimos a lista de subidas
+                                subidasOtherUser.add(r);
+                            }
+                        } else {
+
+                        }
+                    }
+                });
+    }
+
     @Override
     public adaptadorRecetasSubidas getAdaptadorRecetasSubidas() {
 
@@ -156,6 +196,14 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         return arrayAdapterSubidas;
 
 
+    }
+
+    @Override
+    public adaptadorRecetasSubidas getAdaptadorRecetasSubidasOther() {
+
+        arrayAdapterSubidasOther = new adaptadorRecetasSubidas( this,R.layout.adaptador_recetas_subidas_layout,subidasOtherUser);
+
+        return arrayAdapterSubidasOther;
     }
 
     @Override

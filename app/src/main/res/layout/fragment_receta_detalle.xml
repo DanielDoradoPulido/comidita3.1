@@ -37,20 +37,20 @@
 
     <RatingBar
         android:id="@+id/ratingBarDetalleReceta"
-        android:layout_width="244dp"
-        android:layout_height="48dp"
+        android:layout_width="143dp"
+        android:layout_height="42dp"
         android:background="#202732"
         android:max="5"
-        android:numStars="5"
+        android:numStars="3"
         android:progressBackgroundTint="#515050"
         android:progressTint="#FFEB3B"
-        android:rating="3.5"
+        android:rating="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.239"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.203" />
+        app:layout_constraintVertical_bias="0.201" />
 
     <TextView
         android:id="@+id/textViewFacilidadDetalleReceta"
@@ -64,10 +64,10 @@
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/ratingBarDetalleReceta"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.028"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewDetalleReceta"
         app:layout_constraintTop_toBottomOf="@+id/textViewNombreDetalleReceta"
-        app:layout_constraintVertical_bias="0.103" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewPasosDetalleReceta"
@@ -101,27 +101,14 @@
         android:id="@+id/imageButtonFavoritosDetalleReceta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
         android:background="#202732"
         android:src="@drawable/ic_baseline_favorite_border_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toEndOf="@+id/ratingBarDetalleReceta"
+        app:layout_constraintHorizontal_bias="0.832"
+        app:layout_constraintStart_toEndOf="@+id/imageViewDetalleReceta"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.197" />
-
-    <Button
-        android:id="@+id/buttonSalirDetalleReceta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="atras"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98" />
+        app:layout_constraintVertical_bias="0.217" />
 
     <TextView
         android:id="@+id/textView13"
@@ -192,4 +179,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.98" />
+
+    <View
+        android:id="@+id/viewUser"
+        android:layout_width="108dp"
+        android:layout_height="51dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.191"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.985" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_person_pin_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.252"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.947" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="129dp"
+        android:layout_height="19dp"
+        android:text="Perfil del creador"
+        android:textColor="#F3EFEF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.204"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.985" />
 </androidx.constraintlayout.widget.ConstraintLayout>

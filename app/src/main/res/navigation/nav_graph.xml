@@ -35,4 +35,9 @@
         android:name="com.example.comidita3.UI.fragment_recetaDetalle"
         android:label="fragment_receta_detalle"
         tools:layout="@layout/fragment_receta_detalle" />
+    <fragment
+        android:id="@+id/fragment_perfilUser"
+        android:name="com.example.comidita3.UI.perfilUserFragment"
+        android:label="fragment_perfil_user"
+        tools:layout="@layout/fragment_perfil_user" />
 </navigation>
