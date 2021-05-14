@@ -7,8 +7,6 @@ import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
 public interface Interfaz {
 
 
-    public adaptadorFavoritos getAdaptadorFavoritos();
-
     //fragment de subidas
     public adaptadorRecetasSubidas getAdaptadorRecetasSubidas();
     public void loadDataSubidas();
@@ -16,6 +14,10 @@ public interface Interfaz {
     //fragment de subidas por otro user
     public adaptadorRecetasSubidas getAdaptadorRecetasSubidasOther();
     public void loadDataSubidasOther(String s);
+
+    //fragment favorites
+    public adaptadorFavoritos getAdaptadorFavoritos();
+    public void loadDataFavoritos();
 
     public void irLogin();
 

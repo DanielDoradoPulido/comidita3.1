@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ public class FragmentFavoritos extends Fragment {
     ListView listViewItems;
     Interfaz contexto;
     adaptadorFavoritos adaptadorFavoritos;
+    NavController navController;
 
     public FragmentFavoritos() {
         // Required empty public constructor
@@ -76,7 +79,9 @@ public class FragmentFavoritos extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        contexto.loadDataSubidas();
+        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
+
     }
 
     @Override
@@ -110,7 +115,21 @@ public class FragmentFavoritos extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-               // Toast.makeText(getContext(),ad.getItem(position),Toast.LENGTH_SHORT).show();
+               //Toast.makeText(getContext(),ad.getItem(position).getNombre(),Toast.LENGTH_SHORT).show();
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("id",ad.getItem(position).getId());
+                bundle.putString("nombre", ad.getItem(position).getNombre());
+                bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
+                bundle.putString("descripcion", ad.getItem(position).getDescripcion());
+                bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
+                bundle.putString("userPath", ad.getItem(position).getUserPath());
+                bundle.putString("imagePath", ad.getItem(position).getImagePath());
+                bundle.putString("valoracion", ad.getItem(position).getValoracion());
+                bundle.putString("visitas", ad.getItem(position).getVisitas());
+
+                navController.navigate(R.id.fragment_recetaDetalle,bundle);
 
             }
         });

@@ -2,8 +2,6 @@ package com.example.comidita3.UI;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,11 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -38,17 +34,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_recetaDetalle#newInstance} factory method to
+ * Use the {@link fragment_receta_detalle_sinPerfil#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_recetaDetalle extends Fragment {
-
+public class fragment_receta_detalle_sinPerfil extends Fragment {
 
     private static final String ARG_ID = "id";
     private static final String ARG_NOMBRE = "nombre";
@@ -84,7 +77,7 @@ public class fragment_recetaDetalle extends Fragment {
 
 
 
-    public fragment_recetaDetalle() {
+    public fragment_receta_detalle_sinPerfil() {
         // Required empty public constructor
     }
 
@@ -152,7 +145,7 @@ public class fragment_recetaDetalle extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_receta_detalle, container, false);
+        return inflater.inflate(R.layout.fragment_receta_detalle_sin_perfil, container, false);
     }
 
     @Override
@@ -199,20 +192,7 @@ public class fragment_recetaDetalle extends Fragment {
             }
         });
 
-        perfilUser = view.findViewById(R.id.viewUser);
-        perfilUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Bundle bundle = new Bundle();
-
-                bundle.putString("userPath", userpath);
-
-
-                navController.navigate(R.id.fragment_perfilUser,bundle);
-
-            }
-        });
 
 
         ratingBar = view.findViewById(R.id.ratingBarDetalleReceta);
@@ -253,7 +233,7 @@ public class fragment_recetaDetalle extends Fragment {
 
                                 if(document.getId().equals(mAuth.getUid())) {
 
-                                    ArrayList<String>  favs = (ArrayList)document.get("favoritas");
+                                    ArrayList<String> favs = (ArrayList)document.get("favoritas");
 
                                     if(favs.contains(id)){
                                         //Toast.makeText(getContext(),"Lo contiene",Toast.LENGTH_SHORT).show();

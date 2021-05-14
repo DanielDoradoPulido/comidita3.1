@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,28 +108,27 @@ public class registerActivity extends AppCompatActivity {
 
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                ArrayList<String> favs = new ArrayList<>();
 
                                 Map<String,Object> userReg = new HashMap<>();
                                 userReg.put("UID",UID);
                                 userReg.put("nombre",user);
                                 userReg.put("correo",email);
                                 userReg.put("perfilPath","");
-
-                                Map<String,Object> favReg = new HashMap<>();
-                                userReg.put("UID",UID);
+                                userReg.put("favoritas",favs);
 
 
                                 db.collection("usuarios").document(UID).set(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
-                                        showAlert("¡Enhorabuena!","registro satisfactorio,verifique su cuenta " + UID);
+                                        showAlert("¡Enhorabuena!","¡Se ha registrado correctamente, confirme su correo y disfrute! ");
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        showAlert("Error","algo salio mal con el registro en la bbdd de " + UID);
+                                        showAlert("Error","algo salio mal...pruebe otra vez");
                                     }
                                 });
 

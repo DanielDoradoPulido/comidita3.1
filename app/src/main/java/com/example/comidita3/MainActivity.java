@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     //listAdaptadores
     ArrayList<Receta> subidas;
     ArrayList<Receta> subidasOtherUser;
+    ArrayList<Receta> favoritos;
 
 
     //cargar ajustes
@@ -54,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     //authentication
     private FirebaseAuth mAuth;
 
-
-    public static ArrayList<String> favoritos = new ArrayList<>();
 
 
 
@@ -96,12 +96,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     }
 
 
-    @Override
-    public adaptadorFavoritos getAdaptadorFavoritos() {
 
-
-        return arrayAdapterFavoritos;
-    }
 
     public void loadDataSubidas(){
 
@@ -204,6 +199,98 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         arrayAdapterSubidasOther = new adaptadorRecetasSubidas( this,R.layout.adaptador_recetas_subidas_layout,subidasOtherUser);
 
         return arrayAdapterSubidasOther;
+    }
+
+    @Override
+    public adaptadorFavoritos getAdaptadorFavoritos() {
+
+        arrayAdapterFavoritos = new adaptadorFavoritos( this,R.layout.adaptador_recetas_subidas_layout,favoritos);
+
+        return arrayAdapterFavoritos;
+    }
+
+    @Override
+    public void loadDataFavoritos() {
+
+        favoritos = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(mAuth.getUid())) {
+
+                                    ArrayList<String>  favs = (ArrayList)document.get("favoritas");
+
+
+
+                                    for(int i = 0;i < favs.size();i++){
+
+
+                                        int finalI = i;
+
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (DocumentSnapshot document : task.getResult()) {
+
+                                                                if(document.getId().equals(favs.get(finalI))) {
+
+                                                                    //creamos un objeto Receta
+                                                                    String id = document.getString("id").toString();
+                                                                    String nombre = document.getString("nombre").toString();
+                                                                    String ingredientes = document.getString("ingredientes").toString();
+                                                                    String descripcion = document.getString("descripcion").toString();
+                                                                    String imagePath = document.getString("imagePath").toString();
+                                                                    String urlYoutube = document.getString("urlYoutube").toString();
+                                                                    String valoracion = document.getString("valoracion").toString();
+                                                                    String visitas = document.getString("visitas").toString();
+                                                                    String userpath = document.getString("userPath").toString();
+
+                                                                    Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
+
+                                                                    //lo añadimos a lista de subidas
+                                                                    favoritos.add(r);
+
+
+
+                                                                }
+
+
+                                                            }
+                                                        } else {
+
+                                                           // Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+
+
+                                    }
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            //Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
     }
 
     @Override

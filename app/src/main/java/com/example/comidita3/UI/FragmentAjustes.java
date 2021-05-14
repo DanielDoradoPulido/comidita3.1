@@ -111,53 +111,11 @@ public class FragmentAjustes extends Fragment {
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
         //cargar imagen de perfil
 
-        db.collection("usuarios")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
 
-                                if(document.getId().equals(mAuth.getUid())) {
-
-                                    nombre.setText(document.getString("nombre"));
-                                    correo.setText(document.getString("correo"));
-
-                                    if(!(pathInicio = document.getString("perfilPath")).equals("")){
-
-                                        storageReference.child(pathInicio).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-
-                                                Glide.with(getContext()).load(uri).into(perfil);
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception exception) {
-                                                // Handle any errors
-                                            }
-                                        });
-
-
-
-
-                                    }
-                                }
-                                else;
-                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
-
-                            }
-                        } else {
-
-                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
 
 
@@ -173,6 +131,18 @@ public class FragmentAjustes extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //---------------------------------------------------------------------------
+
+        //problema GRAVE
+        try {
+            loadPerfil();
+        }
+        catch(NullPointerException e){
+            Toast.makeText(getContext(),"Recogida",Toast.LENGTH_SHORT).show();
+        }
+
+        //--------------------------------------------------------------------------
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
@@ -408,7 +378,7 @@ public class FragmentAjustes extends Fragment {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progressPercent = (100 * snapshot.getBytesTransferred());
-                pd.setMessage("Progress: " +(int)progressPercent+ "%");
+                pd.setMessage("Subiendo foto, espere un momento...");
 
             }
         });
@@ -482,6 +452,56 @@ public class FragmentAjustes extends Fragment {
 
 
 
+    }
+
+
+    public void loadPerfil(){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(mAuth.getUid())) {
+
+                                    nombre.setText(document.getString("nombre"));
+                                    correo.setText(document.getString("correo"));
+
+                                    if(!(pathInicio = document.getString("perfilPath")).equals("")){
+
+                                        storageReference.child(pathInicio).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+
+                                                Glide.with(getContext()).load(uri).into(perfil);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                // Handle any errors
+                                            }
+                                        });
+
+
+
+
+                                    }
+                                }
+                                else;
+                                //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 
