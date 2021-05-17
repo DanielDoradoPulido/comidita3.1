@@ -5,6 +5,7 @@ public class Receta {
     private String id;
     private String nombre;
     private String ingredientes;
+    private String dificultad;
     private String descripcion;
     private String urlYoutube;
     private String imagePath;
@@ -24,6 +25,19 @@ public class Receta {
         this.valoracion = "0";
     }
 
+    public Receta(String id, String nombre, String ingredientes, String dificultad, String descripcion, String urlYoutube, String imagePath, String userPath, String visitas, String valoracion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.ingredientes = ingredientes;
+        this.dificultad = dificultad;
+        this.descripcion = descripcion;
+        this.urlYoutube = urlYoutube;
+        this.imagePath = imagePath;
+        this.userPath = userPath;
+        this.visitas = "0";
+        this.valoracion = "0";
+    }
+
     public Receta(String id, String nombre, String ingredientes, String descripcion, String urlYoutube, String imagePath, String userPath, String visitas, String valoracion) {
         this.id = id;
         this.nombre = nombre;
@@ -34,6 +48,14 @@ public class Receta {
         this.userPath = userPath;
         this.visitas = visitas;
         this.valoracion = valoracion;
+    }
+
+    public String getDificultad() {
+        return dificultad;
+    }
+
+    public void setDificultad(String dificultad) {
+        this.dificultad = dificultad;
     }
 
     public Receta(){

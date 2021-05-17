@@ -156,6 +156,7 @@ public class FragmentSubidas extends Fragment {
                 bundle.putString("id",ad.getItem(position).getId());
                 bundle.putString("nombre", ad.getItem(position).getNombre());
                 bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
+                bundle.putString("dificultad", ad.getItem(position).getDificultad());
                 bundle.putString("descripcion", ad.getItem(position).getDescripcion());
                 bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
                 bundle.putString("userPath", ad.getItem(position).getUserPath());

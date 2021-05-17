@@ -58,7 +58,7 @@ public class adaptadorFavoritos extends ArrayAdapter<Receta> {
         nombre.setText(r.getNombre());
 
         facilidad = (TextView) v.findViewById(R.id.textViewFacilidadAdaptadorSubidas);
-        facilidad.setText(r.getId());
+        facilidad.setText(r.getDificultad());
 
         foto = (ImageView)v.findViewById(R.id.imageViewFotoAdaptadorSubidas);
 

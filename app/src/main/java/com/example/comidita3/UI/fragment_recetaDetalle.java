@@ -53,6 +53,7 @@ public class fragment_recetaDetalle extends Fragment {
     private static final String ARG_ID = "id";
     private static final String ARG_NOMBRE = "nombre";
     private static final String ARG_INGREDIENTES = "ingredientes";
+    private static final String ARG_DIFICULTAD = "dificultad";
     private static final String ARG_DESCRIPCION = "descripcion";
     private static final String ARG_URLYOUTUBE = "urlYoutube";
     private static final String ARG_USERPATH = "userPath";
@@ -61,7 +62,7 @@ public class fragment_recetaDetalle extends Fragment {
     private static final String ARG_VISITAS = "visitas";
 
     // TODO: Rename and change types of parameters
-    private String id,nombre,ingredientes,descripcion,urlYoutube,userpath,imagepath,valoracion,visitas;
+    private String id,nombre,ingredientes,descripcion,urlYoutube,userpath,imagepath,valoracion,visitas,dificultad;
 
     //Objetos clase
     TextView name,descript,ingredients,facilities;
@@ -94,7 +95,7 @@ public class fragment_recetaDetalle extends Fragment {
         contexto = (Interfaz)context;
     }
 
-    public static fragment_recetaDetalle newInstance(String param1, String param2, String param3, String param4, String param5, String param6, String param7, String param8, String param9) {
+    public static fragment_recetaDetalle newInstance(String param1, String param2, String param3, String param4, String param5, String param6, String param7, String param8, String param9,String param10) {
 
         fragment_recetaDetalle fragment = new fragment_recetaDetalle();
 
@@ -103,12 +104,13 @@ public class fragment_recetaDetalle extends Fragment {
         args.putString(ARG_ID, param1);
         args.putString(ARG_NOMBRE, param2);
         args.putString(ARG_INGREDIENTES, param3);
-        args.putString(ARG_DESCRIPCION, param4);
-        args.putString(ARG_URLYOUTUBE, param5);
-        args.putString(ARG_USERPATH, param6);
-        args.putString(ARG_IMAGEPATH, param7);
-        args.putString(ARG_VALORACION, param8);
-        args.putString(ARG_VISITAS, param9);
+        args.putString(ARG_DIFICULTAD,param4);
+        args.putString(ARG_DESCRIPCION, param5);
+        args.putString(ARG_URLYOUTUBE, param6);
+        args.putString(ARG_USERPATH, param7);
+        args.putString(ARG_IMAGEPATH, param8);
+        args.putString(ARG_VALORACION, param9);
+        args.putString(ARG_VISITAS, param10);
 
         fragment.setArguments(args);
 
@@ -131,6 +133,7 @@ public class fragment_recetaDetalle extends Fragment {
             id = getArguments().getString(ARG_ID);
             nombre = getArguments().getString(ARG_NOMBRE);
             ingredientes = getArguments().getString(ARG_INGREDIENTES);
+            dificultad = getArguments().getString(ARG_DIFICULTAD);
             descripcion = getArguments().getString(ARG_DESCRIPCION);
             urlYoutube = getArguments().getString(ARG_URLYOUTUBE);
             userpath = getArguments().getString(ARG_USERPATH);
@@ -188,7 +191,7 @@ public class fragment_recetaDetalle extends Fragment {
         });
 
         facilities = view.findViewById(R.id.textViewFacilidadDetalleReceta);
-        facilities.setText("Rapido de hacer");
+        facilities.setText(dificultad);
 
         fav = view.findViewById(R.id.imageButtonFavoritosDetalleReceta);
         fav.setOnClickListener(new View.OnClickListener() {

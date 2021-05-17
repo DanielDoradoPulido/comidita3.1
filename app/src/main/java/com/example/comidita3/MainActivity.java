@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                 String id = document.getString("id").toString();
                                 String nombre = document.getString("nombre").toString();
                                 String ingredientes = document.getString("ingredientes").toString();
+                                String dificultad = document.getString("dificultad").toString();
                                 String descripcion = document.getString("descripcion").toString();
                                 String imagePath = document.getString("imagePath").toString();
                                 String urlYoutube = document.getString("urlYoutube").toString();
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                 String userpath = document.getString("userPath").toString();
 
                                 Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
-
+                                r.setDificultad(dificultad);
                                 //lo añadimos a lista de subidas
                                 subidas.add(r);
                             }
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                 String id = document.getString("id").toString();
                                 String nombre = document.getString("nombre").toString();
                                 String ingredientes = document.getString("ingredientes").toString();
+                                String dificultad = document.getString("dificultad").toString();
                                 String descripcion = document.getString("descripcion").toString();
                                 String imagePath = document.getString("imagePath").toString();
                                 String urlYoutube = document.getString("urlYoutube").toString();
@@ -169,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                 String userpath = document.getString("userPath").toString();
 
                                 Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
+                                r.setDificultad(dificultad);
 
                                 //lo añadimos a lista de subidas
                                 subidasOtherUser.add(r);
@@ -249,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                                                     String id = document.getString("id").toString();
                                                                     String nombre = document.getString("nombre").toString();
                                                                     String ingredientes = document.getString("ingredientes").toString();
+                                                                    String dificultad = document.getString("dificultad").toString();
                                                                     String descripcion = document.getString("descripcion").toString();
                                                                     String imagePath = document.getString("imagePath").toString();
                                                                     String urlYoutube = document.getString("urlYoutube").toString();
@@ -257,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                                                     String userpath = document.getString("userPath").toString();
 
                                                                     Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
+                                                                    r.setDificultad(dificultad);
 
                                                                     //lo añadimos a lista de subidas
                                                                     favoritos.add(r);

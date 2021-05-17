@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.comidita3.Interfaz;
@@ -50,6 +51,7 @@ public class rellenarReceta extends Fragment {
     Interfaz contexto;
     NavController navController;
     EditText nombre,ingredientes,descripcion,URL;
+    RadioButton rapida,intermedia,lenta;
     ImageView imagen,back;
     Button guardar;
     public Uri imageUri;
@@ -58,6 +60,7 @@ public class rellenarReceta extends Fragment {
     private StorageReference storageReference;
     String imagePath,userPath,name,ingredients,description,link;
     boolean fotoSubida = false;
+    String dificultad;
 
 
 
@@ -115,6 +118,10 @@ public class rellenarReceta extends Fragment {
         descripcion = v.findViewById(R.id.editTextPasosRecetaRellenar);
         URL = v.findViewById(R.id.editTextURLRecetaRellenar);
 
+        rapida = v.findViewById(R.id.radioButton6);
+        intermedia = v.findViewById(R.id.radioButton7);
+        lenta = v.findViewById(R.id.radioButton8);
+
         imagePath ="";
 
         v.setFocusableInTouchMode(true);
@@ -155,7 +162,26 @@ public class rellenarReceta extends Fragment {
             public void onClick(View v) {
 
                 userPath = mAuth.getCurrentUser().getUid();
-                guardar(userPath);
+
+                if(rapida.isChecked()){
+
+                    dificultad = "Rápida de hacer";
+                    guardar(userPath);
+
+                }
+                else if(intermedia.isChecked()) {
+                    dificultad = "Tiempo intermedio";
+                    guardar(userPath);
+                }
+                else if(lenta.isChecked()){
+                    dificultad = "Larga de hacer";
+                    guardar(userPath);
+                }
+                else{
+                    Toast.makeText(getContext(),"debes marcar arriba la estimación de su preparación...",Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
@@ -244,7 +270,7 @@ public class rellenarReceta extends Fragment {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progressPercent = (100 * snapshot.getBytesTransferred());
-                pd.setMessage("Progress: " +(int)progressPercent+ "%");
+                pd.setMessage("Subiendo...");
 
             }
         });
@@ -284,12 +310,14 @@ public class rellenarReceta extends Fragment {
 
                                 //construimos el objeto de tipo Receta
                                 Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
+                                receta.setDificultad(dificultad);
 
                                 //llamamos a la bbdd
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 db.collection("recetas").document(receta.getId()).set(receta);
                                 Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
+                                navController.navigate(R.id.fragmentHome);
 
 
 
@@ -308,7 +336,7 @@ public class rellenarReceta extends Fragment {
 
 
                         dialog.dismiss();
-                        navController.navigate(R.id.fragmentHome);
+
 
                     }
                 }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

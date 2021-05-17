@@ -17,36 +17,47 @@
         app:layout_constraintHorizontal_bias="0.122"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"></de.hdodenhof.circleimageview.CircleImageView>
+        app:layout_constraintVertical_bias="0.129"></de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
         android:id="@+id/textViewNombreAdaptadorSubidas"
-        android:layout_width="167dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="48dp"
+        android:layout_width="223dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="40dp"
         android:text="nombre"
         android:textColor="#FFFFFF"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewFotoAdaptadorSubidas"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewFacilidadAdaptadorSubidas"
+        app:layout_constraintVertical_bias="0.022" />
 
     <TextView
         android:id="@+id/textViewFacilidadAdaptadorSubidas"
-        android:layout_width="172dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="175dp"
+        android:layout_height="22dp"
         android:layout_marginEnd="48dp"
         android:text="facilidad"
-        android:textColor="#FBFBFB"
+        android:textColor="#838080"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.716"
+        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toEndOf="@+id/imageViewFotoAdaptadorSubidas"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNombreAdaptadorSubidas"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.118" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="429dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.265" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
