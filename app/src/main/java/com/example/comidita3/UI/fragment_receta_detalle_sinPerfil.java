@@ -35,6 +35,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -158,7 +160,22 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
         name = view.findViewById(R.id.textViewNombreDetalleReceta);
         name.setText(nombre);
 
+        comprobarVotado();
 
+        ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                //llamamos al metodo operarVotado el numero de la votacion
+                operarVotado(rating);
+
+
+
+                //Toast.makeText(getContext(),String.valueOf(rating),Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -198,7 +215,7 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
 
 
 
-        ratingBar = view.findViewById(R.id.ratingBarDetalleReceta);
+        ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
 
         imagen = view.findViewById(R.id.imageViewDetalleReceta);
 
@@ -370,6 +387,105 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
 
         //metodo load
 
+
+
+
+    }
+
+    public void comprobarVotado(){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    Map<String,String> users = (HashMap)document.get("votaciones");
+
+                                    if(users.containsKey(mAuth.getUid())){
+
+                                        Float votado = Float.parseFloat(users.get(mAuth.getUid()));
+
+                                        ratingBar.setRating(votado);
+
+                                    }
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+    public void operarVotado(float rating){
+
+        //tranformamos el float a String para añadirlo
+
+        String value = String.valueOf(rating);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    //Toast.makeText(getContext(),"entro",Toast.LENGTH_SHORT).show();
+
+                                    Map<String,String>  users = (HashMap)document.get("votaciones");
+
+                                    if(users.isEmpty() ){
+
+
+                                        users.put(mAuth.getUid(),value);
+
+                                    }
+                                    else{
+
+                                        if(users.containsKey(mAuth.getUid())){
+                                            users.remove(mAuth.getUid());
+                                            users.put(mAuth.getUid(),value);
+                                        }
+                                        else
+                                            users.put(mAuth.getUid(),value);
+
+                                    }
+
+                                    db.collection("valoraciones").document(document.getId()).update("votaciones",users);
+
+                                    //Toast.makeText(getContext(),"votaste",Toast.LENGTH_SHORT).show();
+
+                                    //accion de refrescar puntuacion media
+
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
 
 

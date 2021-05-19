@@ -6,58 +6,48 @@
     android:layout_height="match_parent"
     android:background="#202732">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewFotoAdaptadorSubidas"
-        android:layout_width="105dp"
-        android:layout_height="89dp"
-        android:src="@drawable/verde"
-        android:transitionName="perfilTransitionSubidas"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationSplashScreen"
+        android:layout_width="133dp"
+        android:layout_height="135dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.129"></de.hdodenhof.circleimageview.CircleImageView>
+        app:layout_constraintVertical_bias="0.083"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+
+        app:lottie_rawRes="@raw/cooking" />
 
     <TextView
         android:id="@+id/textViewNombreAdaptadorSubidas"
         android:layout_width="223dp"
         android:layout_height="39dp"
-        android:layout_marginStart="40dp"
         android:text="nombre"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewFotoAdaptadorSubidas"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toEndOf="@+id/animationSplashScreen"
         app:layout_constraintTop_toBottomOf="@+id/textViewFacilidadAdaptadorSubidas"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <TextView
         android:id="@+id/textViewFacilidadAdaptadorSubidas"
         android:layout_width="175dp"
         android:layout_height="22dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="72dp"
         android:text="facilidad"
         android:textColor="#838080"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.625"
-        app:layout_constraintStart_toEndOf="@+id/imageViewFotoAdaptadorSubidas"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/animationSplashScreen"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="429dp"
-        android:layout_height="63dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.265" />
+        app:layout_constraintVertical_bias="0.26" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

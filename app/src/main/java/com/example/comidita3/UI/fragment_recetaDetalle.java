@@ -2,8 +2,6 @@ package com.example.comidita3.UI;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,11 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -38,9 +34,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +63,7 @@ public class fragment_recetaDetalle extends Fragment {
     //Objetos clase
     TextView name,descript,ingredients,facilities;
     ImageView imagen;
+    Boolean votado;
 
     RatingBar ratingBar;
     ImageButton fav;
@@ -165,6 +162,23 @@ public class fragment_recetaDetalle extends Fragment {
         name = view.findViewById(R.id.textViewNombreDetalleReceta);
         name.setText(nombre);
 
+        comprobarVotado();
+
+        ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                //llamamos al metodo operarVotado el numero de la votacion
+                operarVotado(rating);
+
+
+
+              //Toast.makeText(getContext(),String.valueOf(rating),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -218,7 +232,7 @@ public class fragment_recetaDetalle extends Fragment {
         });
 
 
-        ratingBar = view.findViewById(R.id.ratingBarDetalleReceta);
+        ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
 
         imagen = view.findViewById(R.id.imageViewDetalleReceta);
 
@@ -284,6 +298,105 @@ public class fragment_recetaDetalle extends Fragment {
                     }
                 });
 
+
+
+
+    }
+
+    public void comprobarVotado(){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    Map<String,String> users = (HashMap)document.get("votaciones");
+
+                                    if(users.containsKey(mAuth.getUid())){
+
+                                        Float votado = Float.parseFloat(users.get(mAuth.getUid()));
+
+                                        ratingBar.setRating(votado);
+
+                                    }
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+    public void operarVotado(float rating){
+
+        //tranformamos el float a String para añadirlo
+
+        String value = String.valueOf(rating);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    //Toast.makeText(getContext(),"entro",Toast.LENGTH_SHORT).show();
+
+                                    Map<String,String>  users = (HashMap)document.get("votaciones");
+
+                                    if(users.isEmpty() ){
+
+
+                                        users.put(mAuth.getUid(),value);
+
+                                    }
+                                    else{
+
+                                        if(users.containsKey(mAuth.getUid())){
+                                            users.remove(mAuth.getUid());
+                                            users.put(mAuth.getUid(),value);
+                                        }
+                                        else
+                                            users.put(mAuth.getUid(),value);
+
+                                    }
+
+                                    db.collection("valoraciones").document(document.getId()).update("votaciones",users);
+
+                                    //Toast.makeText(getContext(),"votaste",Toast.LENGTH_SHORT).show();
+
+                                    //accion de refrescar puntuacion media
+
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
 
 

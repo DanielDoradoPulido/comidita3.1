@@ -42,6 +42,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
@@ -270,7 +273,7 @@ public class rellenarReceta extends Fragment {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progressPercent = (100 * snapshot.getBytesTransferred());
-                pd.setMessage("Subiendo...");
+                pd.setMessage("Espere un momento por favor...");
 
             }
         });
@@ -314,8 +317,19 @@ public class rellenarReceta extends Fragment {
 
                                 //llamamos a la bbdd
 
+                                //añadimos a la coleccion de recetas la receta
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 db.collection("recetas").document(receta.getId()).set(receta);
+
+
+                                //añadimos a la coleccion de valoraciones un documento que corresponda al documento de la receta
+                                Map<String,Integer> valoraciones = new HashMap<>();
+
+                                Map<String,Object> valoracionReg = new HashMap<>();
+                                valoracionReg.put("votaciones",valoraciones);
+
+                                db.collection("valoraciones").document(receta.getId()).set(valoracionReg);
+
                                 Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
                                 navController.navigate(R.id.fragmentHome);
 

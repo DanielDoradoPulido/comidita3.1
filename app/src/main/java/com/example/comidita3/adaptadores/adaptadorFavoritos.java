@@ -60,25 +60,12 @@ public class adaptadorFavoritos extends ArrayAdapter<Receta> {
         facilidad = (TextView) v.findViewById(R.id.textViewFacilidadAdaptadorSubidas);
         facilidad.setText(r.getDificultad());
 
-        foto = (ImageView)v.findViewById(R.id.imageViewFotoAdaptadorSubidas);
 
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+
+
 
         String ruta = r.getImagePath();
 
-        storageReference.child(ruta).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-
-                Glide.with(getContext()).load(uri).into(foto);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getContext(),"error al cargar image",Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
         return v;
