@@ -60,7 +60,7 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
     private String id,nombre,ingredientes,descripcion,urlYoutube,userpath,imagepath,valoracion,visitas,dificultad;
 
     //Objetos clase
-    TextView name,descript,ingredients,facilities;
+    TextView name,descript,ingredients,facilities,valoracionTotal;
     ImageView imagen;
 
     RatingBar ratingBar;
@@ -162,6 +162,8 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
 
         comprobarVotado();
 
+
+
         ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -176,6 +178,9 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
 
             }
         });
+
+        valoracionTotal = view.findViewById(R.id.textViewValoracionGlobalSinPerfil);
+        calculoValor();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -486,6 +491,68 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
                         }
                     }
                 });
+
+
+
+    }
+
+    public void calculoValor(){
+
+        String valor = "0";
+
+        //buscamos su map de valoraciones
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    //Guardamos el valor de su map
+
+                                    Map<String,String>  users = (HashMap)document.get("votaciones");
+
+                                    //iteramos el map para ir sumando sus puntos
+
+                                    float puntos  = 0;
+
+                                    for (String value : users.values()) {
+                                        //System.out.println("Value = " + value);
+
+                                        Float valorPos = Float.parseFloat(value);
+                                        puntos = puntos + valorPos;
+                                    }
+
+                                    float division = puntos / users.size();
+
+                                    String finali = String.valueOf(division);
+
+                                    valoracionTotal.setText(finali);
+
+
+                                  // Toast.makeText(getContext(),"Puntos: " + puntos +" numero " + users.size() +" puntuacion " + finali,Toast.LENGTH_SHORT).show();
+
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
 
 
 
