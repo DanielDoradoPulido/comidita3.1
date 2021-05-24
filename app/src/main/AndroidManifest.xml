@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.comidita3">
 
     <application
@@ -9,39 +10,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Comidita3">
-
-        <activity android:name=".IntroductoryActivity"
-            android:screenOrientation="portrait">
-
-
-
-
-
-        </activity>
-
+        <activity android:name=".abrirNotificaciones"></activity>
+        <activity
+            android:name=".IntroductoryActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".LOGIN.registerActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".LOGIN.recuperarContrasena"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".LOGIN.loginActivity"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
-
-
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
@@ -49,6 +36,20 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> <!-- USADO PARA CAMBIAR EL ICONO DE LA NOTIFICACION PUSH. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/icon" /> <!-- CAMBIAR COLOR DE LA NOTIFICACION PUSH. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/verdeLogo" />
     </application>
 
 </manifest>

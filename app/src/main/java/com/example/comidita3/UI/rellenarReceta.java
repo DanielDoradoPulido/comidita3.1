@@ -330,6 +330,20 @@ public class rellenarReceta extends Fragment {
 
                                 db.collection("valoraciones").document(receta.getId()).set(valoracionReg);
 
+                                //enviar notificacion a suscriptores
+                                if(dificultad.equals("Rápida de hacer")){
+
+                                    contexto.enviarNotificacion("RECETAS_RAPIDAS",rId);
+
+                                }
+                                else if(dificultad.equals("Tiempo intermedio")){
+
+                                }
+                                else if(dificultad.equals("Larga de hacer")){
+
+                                }
+
+
                                 Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
                                 navController.navigate(R.id.fragmentHome);
 

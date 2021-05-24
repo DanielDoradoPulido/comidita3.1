@@ -11,7 +11,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -45,6 +47,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -57,12 +60,13 @@ public class FragmentAjustes extends Fragment {
    ListView listView;
    ArrayAdapter adaptador;
    Interfaz contexto;
-   LinearLayout lSubidas,lContra,lFoto,lCerrarsesion;
+   LinearLayout lSubidas,lContra,lNotificaciones,lCerrarsesion;
    String correoElec;
    NavController navController;
    ImageView perfil;
     TextView nombre,correo;
     private FirebaseAuth mAuth;
+    Boolean suscrito = false;
 
     //storage
     public Uri imageUri;
@@ -111,9 +115,6 @@ public class FragmentAjustes extends Fragment {
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
-
-
-        //cargar imagen de perfil
 
 
 
@@ -192,6 +193,7 @@ public class FragmentAjustes extends Fragment {
         lCerrarsesion = v.findViewById(R.id.linearLayoutCerrarSesion);
         lContra = v.findViewById(R.id.linearLayoutCambiarContraseña);
         lSubidas = v.findViewById(R.id.linearLayoutSubidas);
+        lNotificaciones = v.findViewById(R.id.linearLayoutNotificaciones);
 
         lCerrarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,6 +311,22 @@ public class FragmentAjustes extends Fragment {
             }
         });
 
+        lNotificaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                FragmentManager manager = ((AppCompatActivity) contexto).getSupportFragmentManager();
+
+
+                fragmentDialogSubscripcion fragmentDialogSubscripcion = new fragmentDialogSubscripcion();
+
+
+                fragmentDialogSubscripcion.show(manager, "fragmentDialogSubscripcion");
+
+
+            }
+        });
 
 
 
@@ -503,6 +521,8 @@ public class FragmentAjustes extends Fragment {
                     }
                 });
     }
+
+
 
 
 

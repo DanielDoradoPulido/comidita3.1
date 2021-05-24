@@ -27,6 +27,8 @@ public class IntroductoryActivity extends AppCompatActivity {
     String correoElec,contra;
     public static final String enviar = "com.example.myfirstApp.MESSAGE";
 
+    String imagePath;
+
 
 
 
@@ -35,6 +37,8 @@ public class IntroductoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introductory);
+
+
 
         //login
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);

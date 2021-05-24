@@ -6,4 +6,6 @@
     <string name="preferencias_email">email</string>
     <string name="preferencias_password">password</string>
     <string name="preferencias_islogin">islogin</string>
+    <string name="msg_subscribed" />
+    <string name="msg_subscribe_failed" />
 </resources>

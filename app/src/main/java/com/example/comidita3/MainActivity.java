@@ -12,6 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.comidita3.LOGIN.loginActivity;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
@@ -28,10 +34,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements Interfaz{
@@ -40,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     NavHostFragment navHostFragment;
     NavController navController;
     String email;
+    String imagePath;
 
     //listAdaptadores
     ArrayList<Receta> subidas;
@@ -69,11 +83,11 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
 
         Intent intent = getIntent();
-
-
-
-
         email = intent.getStringExtra("enviar");
+
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -297,6 +311,524 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
 
     }
+
+    @Override
+    public void subscribir(int opcion) {
+        //RECETAS RAPIDAS
+        if(opcion==0){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_RAPIDAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre recetas de rápida preparación";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+
+                                        suscripcion.add("RECETAS_RAPIDAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+        }
+
+        //RECETAS MEDIAS
+        else if(opcion==1){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_MEDIAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre recetas de preparación media";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+
+                                        suscripcion.add("RECETAS_MEDIAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+        }
+
+        //RECETAS LARGAS
+        else if(opcion==2){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_LENTAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre recetas de larga preparación";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+                                        suscripcion.add("RECETAS_LENTAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+        }
+
+        //RECETAS RAPIDAS Y MEDIAS
+        else if(opcion==3){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_RAPIDAS_MEDIAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre recetas de rápida y media preparación";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+                                        suscripcion.add("RECETAS_RAPIDAS_MEDIAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+
+        }
+
+        //RECETAS RAPIDAS Y LARGAS
+        else if(opcion==4){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_RAPIDAS_LARGAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre recetas de rápida y larga preparación";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+                                        suscripcion.add("RECETAS_RAPIDAS_LARGAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+        }
+
+        //RECETAS MEDIAS Y LARGAS
+        else if(opcion==5){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_LARGAS_MEDIAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre recetas de larga y media preparación";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+                                        suscripcion.add("RECETAS_LARGAS_MEDIAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+        }
+
+        //TODAS LAS RECETAS
+        else if(opcion==6){
+
+            desubscripcion();
+
+            FirebaseMessaging.getInstance().subscribeToTopic("TODAS")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "¡Genial! Le enviaremos notificaciones sobre todo tipo de recetas";
+                            if (!task.isSuccessful()) {
+                                msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                            }
+
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //buscamos el usuario
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("usuarios")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+
+                                    if(document.getId().equals(mAuth.getUid())) {
+
+                                        ArrayList<String> suscripcion = new ArrayList<>();
+
+                                        suscripcion.add("TODAS");
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcion);
+
+
+
+
+                                    }
+                                    else;
+                                    //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                                }
+                            } else {
+
+                                //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+        else{
+
+        }
+
+    }
+
+    @Override
+    public void desubscripcion() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(mAuth.getUid())) {
+
+                                    ArrayList<String> suscripcionLista = (ArrayList<String>) document.get("suscripciones");
+                                    ArrayList<String> suscripcionVacia = new ArrayList<>();
+
+                                    if(!suscripcionLista.isEmpty()){
+
+                                        String suscripcion = suscripcionLista.get(0);
+
+                                        FirebaseMessaging.getInstance().unsubscribeFromTopic(suscripcion)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        String msg = "Se ha desuscrito de " + suscripcion;
+                                                        if (!task.isSuccessful()) {
+                                                            msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
+                                                        }
+
+                                                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+
+
+                                                Toast.makeText(MainActivity.this, "fallo", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+
+
+
+
+
+
+                                        //una vez localizado actualizamos el campo que necesitamos
+                                        db.collection("usuarios").document(document.getId()).update("suscripciones",suscripcionVacia);
+
+                                    }
+
+
+
+
+
+                                }
+                                else;
+                                //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+
+                            //Toast.makeText(,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void enviarNotificacion(String tipo,String url) {
+
+        RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
+        JSONObject json = new JSONObject();
+
+        try{
+
+            json.put("to","/topics/" + tipo);
+            JSONObject notification = new JSONObject();
+            notification.put("titulo","Echale un vistazo a esta Receta!!");
+            notification.put("detalle","Creemos que esta receta podría interesarte :)");
+            notification.put("recipePath",url);
+
+            json.put("data",notification);
+
+            String URL ="https://fcm.googleapis.com/fcm/send";
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,URL,json,null,null){
+
+                @Override
+                public Map<String, String> getHeaders()  {
+
+                    Map<String,String> header = new HashMap<>();
+
+                    header.put("content-type","application/json");
+                    header.put("authorization","key=AAAAqiNVVa0:APA91bEsTjpvEet4d8XzGWeVR_IzETDSX5HNozxWIWlmauawRNKupcmr1VEp4M4vO1MNeU8Nc6wbzbpo_xva195X8AJBcZsME0wK2JP33ZfjMu3k1woKe77ZKzm_BVP-yNJX9iM4gSlo");
+
+                    return  header;
+
+                }
+            };
+
+            myrequest.add(request);
+
+
+        }catch (JSONException e1){
+            e1.printStackTrace();
+        }
+
+
+    }
+
 
     @Override
     public void irLogin() {
