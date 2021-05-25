@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -47,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 versionMayor(title,body,recipePath);
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            else
                 versionMenor(title,body,recipePath);
 
         }
@@ -67,7 +68,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageSent(s);
     }
 
+
+
     public void versionMayor(String titulo,String detalle,String recipePath){
+
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.rutaReceta), recipePath);
+        editor.commit();
 
         String id = "mensaje";
 
@@ -102,6 +110,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public void versionMenor(String titulo,String detalle,String recipePath){
+
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.rutaReceta), recipePath);
+        editor.commit();
 
         String id = "mensaje";
 

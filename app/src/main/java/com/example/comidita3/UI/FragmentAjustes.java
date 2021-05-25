@@ -133,9 +133,7 @@ public class FragmentAjustes extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //---------------------------------------------------------------------------
 
-        //problema GRAVE
         try {
             loadPerfil();
         }
@@ -143,7 +141,7 @@ public class FragmentAjustes extends Fragment {
             Toast.makeText(getContext(),"Recogida",Toast.LENGTH_SHORT).show();
         }
 
-        //--------------------------------------------------------------------------
+
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();

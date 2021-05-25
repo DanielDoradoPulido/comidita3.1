@@ -8,4 +8,7 @@
     <string name="preferencias_islogin">islogin</string>
     <string name="msg_subscribed" />
     <string name="msg_subscribe_failed" />
+    <string name="preferencias_Recetas">PreferenciasRecetas</string>
+    <string name="rutaReceta">ruta</string>
+
 </resources>

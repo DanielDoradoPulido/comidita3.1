@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     //authentication
     private FirebaseAuth mAuth;
 
+    //notificacion push
+    String recipePath="Vacio";
+    boolean notificacion = false;
+
 
 
 
@@ -83,19 +87,17 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
 
         Intent intent = getIntent();
-        email = intent.getStringExtra("enviar");
+        notificacion = intent.getBooleanExtra("inicia",false);
 
 
+        if(notificacion){
 
+            recipePath = intent.getStringExtra("notif");
+            cargarNotificacion(recipePath);
 
+        }
 
         mAuth = FirebaseAuth.getInstance();
-
-
-
-
-
-
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -830,6 +832,8 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     }
 
 
+
+
     @Override
     public void irLogin() {
         Intent intent = new Intent(getApplicationContext(), loginActivity.class);
@@ -839,9 +843,36 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     @Override
     public String email() {
 
-        String direccion = email;
 
-        return direccion;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(mAuth.getUid())) {
+
+
+                                    email = document.getString("correo");
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            //Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        return email;
     }
 
     @Override
@@ -884,6 +915,69 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
     public void mensaje(String x ){
         Toast.makeText(this,x,Toast.LENGTH_SHORT).show();
+    }
+
+    public void cargarNotificacion(String ruta){
+
+        //hacemos la query en la coleccion recetas
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(ruta)) {
+
+                                    //creamos un objeto Receta
+                                    String id = document.getString("id").toString();
+                                    String nombre = document.getString("nombre").toString();
+                                    String ingredientes = document.getString("ingredientes").toString();
+                                    String dificultad = document.getString("dificultad").toString();
+                                    String descripcion = document.getString("descripcion").toString();
+                                    String imagePath = document.getString("imagePath").toString();
+                                    String urlYoutube = document.getString("urlYoutube").toString();
+                                    String valoracion = document.getString("valoracion").toString();
+                                    String visitas = document.getString("visitas").toString();
+                                    String userpath = document.getString("userPath").toString();
+
+                                    Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
+                                    r.setDificultad(dificultad);
+
+                                    Bundle bundle = new Bundle();
+
+                                    bundle.putString("id",r.getId());
+                                    bundle.putString("nombre", r.getNombre());
+                                    bundle.putString("ingredientes", r.getIngredientes());
+                                    bundle.putString("dificultad",r.getDificultad());
+                                    bundle.putString("descripcion", r.getDescripcion());
+                                    bundle.putString("urlYoutube", r.getUrlYoutube());
+                                    bundle.putString("userPath", r.getUserPath());
+                                    bundle.putString("imagePath", r.getImagePath());
+                                    bundle.putString("valoracion",r.getValoracion());
+                                    bundle.putString("visitas", r.getVisitas());
+
+                                    navController.navigate(R.id.fragment_recetaDetalle,bundle);
+                                }
+                                else;
+                                //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+
+                            //Toast.makeText(this,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+
+
     }
 
 

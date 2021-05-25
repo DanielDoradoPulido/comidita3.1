@@ -81,7 +81,7 @@ public class loginActivity extends AppCompatActivity {
 
                         if(user.isEmailVerified()) {
 
-                            showMain(correoElec);
+                            showMain();
 
                         }
 
@@ -162,10 +162,10 @@ public class loginActivity extends AppCompatActivity {
                                 editor.putBoolean(getString(R.string.preferencias_islogin), true);
                                 editor.commit();
 
-                                showMain(email);
+                                showMain();
                             }
                             else{
-                                showMain(email);
+                                showMain();
                             }
 
                         }
@@ -219,10 +219,9 @@ public class loginActivity extends AppCompatActivity {
 
     }
 
-    public void showMain(String s){
+    public void showMain(){
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("enviar",s);
         startActivity(intent);
 
         //Toast.makeText(this,s,Toast.LENGTH_SHORT).show();

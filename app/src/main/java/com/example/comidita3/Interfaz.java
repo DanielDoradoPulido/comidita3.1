@@ -20,9 +20,11 @@ public interface Interfaz {
     public void loadDataFavoritos();
 
     //notificaciones push
+
     public void subscribir(int opcion);
     public void desubscripcion();
     public void enviarNotificacion(String tipo,String url);
+
 
     public void irLogin();
 
