@@ -6,6 +6,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -82,20 +83,19 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //extraer info login
-
-
+        //extraer info para carga notificaciones
 
         Intent intent = getIntent();
-        notificacion = intent.getBooleanExtra("inicia",false);
 
-
-        if(notificacion){
-
+        if(intent !=null){
             recipePath = intent.getStringExtra("notif");
-            cargarNotificacion(recipePath);
+            notificacion = intent.getBooleanExtra("abrir",false);
 
+            if(notificacion)
+                cargarNotificacion(recipePath);
         }
+
+
 
         mAuth = FirebaseAuth.getInstance();
 

@@ -42,21 +42,27 @@ public class abrirNotificaciones extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abrir_notificaciones);
 
+        Intent intent = getIntent();
+
+        if(intent!=null){
+
+                text = findViewById(R.id.textViewNotificacion);
+
+            //obtenemos la info de la notificacion
+
+            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
+            ruta = sharedPref.getString(getString(R.string.rutaReceta),"nofunciono");
+            text.setText(ruta);
+
+            Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+            intent2.putExtra("notif",ruta);
+            intent2.putExtra("abrir",true);
+            startActivity(intent2);
+            finish();
+
+        }
 
 
-
-        text = findViewById(R.id.textViewNotificacion);
-
-        //obtenemos la info de la notificacion
-
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
-        ruta = sharedPref.getString(getString(R.string.rutaReceta),"nofunciono");
-        text.setText(ruta);
-
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("notif",ruta);
-        intent.putExtra("inicia",true);
-        startActivity(intent);
 
 
 
