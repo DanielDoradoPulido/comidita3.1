@@ -46,7 +46,11 @@ public class abrirNotificaciones extends AppCompatActivity {
 
         if(intent!=null){
 
-                text = findViewById(R.id.textViewNotificacion);
+
+
+
+
+            text = findViewById(R.id.textViewNotificacion);
 
             //obtenemos la info de la notificacion
 

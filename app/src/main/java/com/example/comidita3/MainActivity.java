@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity implements Interfaz{
+public class MainActivity extends AppCompatActivity implements Interfaz {
 
     BottomNavigationView bottomNavigationView;
     NavHostFragment navHostFragment;
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //RECETAS RAPIDAS
         if(opcion==0){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_RAPIDAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //RECETAS MEDIAS
         else if(opcion==1){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_MEDIAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //RECETAS LARGAS
         else if(opcion==2){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_LENTAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -491,7 +491,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //RECETAS RAPIDAS Y MEDIAS
         else if(opcion==3){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_RAPIDAS_MEDIAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -550,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //RECETAS RAPIDAS Y LARGAS
         else if(opcion==4){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_RAPIDAS_LARGAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -606,7 +606,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //RECETAS MEDIAS Y LARGAS
         else if(opcion==5){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("RECETAS_LARGAS_MEDIAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -662,7 +662,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
         //TODAS LAS RECETAS
         else if(opcion==6){
 
-            desubscripcion();
+
 
             FirebaseMessaging.getInstance().subscribeToTopic("TODAS")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -713,6 +713,9 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                         }
                     });
         }
+        else if(opcion==7){
+
+        }
         else{
 
         }
@@ -720,7 +723,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
     }
 
     @Override
-    public void desubscripcion() {
+    public void desubscripcion(int posicion) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("usuarios")
@@ -735,6 +738,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
                                     ArrayList<String> suscripcionLista = (ArrayList<String>) document.get("suscripciones");
                                     ArrayList<String> suscripcionVacia = new ArrayList<>();
+                                    suscripcionVacia.add("NINGUNA");
 
                                     if(!suscripcionLista.isEmpty()){
 
@@ -749,7 +753,8 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                                                             msg = "Ha habido un error con la suscripcion.intentelo de nuevo...";
                                                         }
 
-                                                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                                        subscribir(posicion);
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
                                             @Override
@@ -786,6 +791,8 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
                         }
                     }
                 });
+
+
     }
 
     @Override
@@ -798,9 +805,10 @@ public class MainActivity extends AppCompatActivity implements Interfaz{
 
             json.put("to","/topics/" + tipo);
             JSONObject notification = new JSONObject();
-            notification.put("titulo","Echale un vistazo a esta Receta!!");
-            notification.put("detalle","Creemos que esta receta podría interesarte :)");
+            notification.put("titulo","¡Hey Reciper! \uD83D\uDE0A");
+            notification.put("detalle","Creemos que esta receta podría interesarte \uD83C\uDF74");
             notification.put("recipePath",url);
+            notification.put("userID",mAuth.getUid());
 
             json.put("data",notification);
 

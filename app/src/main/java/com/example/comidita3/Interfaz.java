@@ -22,7 +22,7 @@ public interface Interfaz {
     //notificaciones push
 
     public void subscribir(int opcion);
-    public void desubscripcion();
+    public void desubscripcion(int posicion);
     public void enviarNotificacion(String tipo,String url);
 
 

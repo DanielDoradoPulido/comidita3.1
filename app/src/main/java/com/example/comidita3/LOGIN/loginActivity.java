@@ -38,7 +38,7 @@ public class loginActivity extends AppCompatActivity {
     String email,password,correoElec,contra;
     Boolean salir;
     ImageView logo;
-
+    Boolean fromNotification = false;
 
 
 
@@ -50,6 +50,53 @@ public class loginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        Intent intent = getIntent();
+
+        if(intent!=null){
+
+            fromNotification = intent.getBooleanExtra("notificacion",false);
+
+            if(fromNotification){
+
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
+                correoElec = sharedPref.getString(getString(R.string.preferencias_email),"nofunciono");
+                contra = sharedPref.getString(getString(R.string.preferencias_password),"nofunciono");
+                boolean isLogin = sharedPref.getBoolean(getString(R.string.preferencias_islogin),false);
+
+                if(isLogin){
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(correoElec,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if(task.isSuccessful()){
+                                FirebaseUser user = mAuth.getCurrentUser();
+
+                                if(user.isEmailVerified()) {
+
+                                    showMain();
+
+                                }
+
+                            }
+
+
+
+
+
+                        }
+                    });
+                }
+
+
+
+
+            }
+
+
+        }
+
 
         //shared animations
         logo = findViewById(R.id.imageView2);
@@ -152,14 +199,19 @@ public class loginActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         FirebaseUser user = mAuth.getCurrentUser();
 
+
+
                         if(user.isEmailVerified()) {
 
                             if(recordar.isChecked()){
+
+
                                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putString(getString(R.string.preferencias_email), email);
                                 editor.putString(getString(R.string.preferencias_password), password);
                                 editor.putBoolean(getString(R.string.preferencias_islogin), true);
+
                                 editor.commit();
 
                                 showMain();

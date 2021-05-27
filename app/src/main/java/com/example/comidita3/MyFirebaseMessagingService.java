@@ -20,13 +20,17 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.comidita3.LOGIN.loginActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService  {
 
+    private FirebaseAuth mAuth;
+    String title;
+    String body;
 
 
 
@@ -42,9 +46,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
 
-            String title = remoteMessage.getData().get("titulo");
-            String body = remoteMessage.getData().get("detalle");
+            title = remoteMessage.getData().get("titulo");
+            body = remoteMessage.getData().get("detalle");
             String recipePath =remoteMessage.getData().get("recipePath");
+            String userUID = remoteMessage.getData().get("userID");
+
+
+
+            comprobarUsuario(userUID);
 
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -148,5 +157,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+    public void comprobarUsuario(String UID){
+
+        mAuth = FirebaseAuth.getInstance();
+
+
+        if(mAuth!= null & mAuth.getUid().equals(UID)){
+
+            title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+            body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+
+        }
+
+    }
 
 }

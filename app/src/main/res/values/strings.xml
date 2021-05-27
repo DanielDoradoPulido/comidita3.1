@@ -2,12 +2,20 @@
     <string name="app_name">Fast Recipe</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //preferencias login
     <string name="preferencias_PMDM_correo_file">PreferenciasPMDMCorreo</string>
     <string name="preferencias_email">email</string>
     <string name="preferencias_password">password</string>
     <string name="preferencias_islogin">islogin</string>
+    <string name="preferencias_UID">UID</string>
+
+
+
     <string name="msg_subscribed" />
     <string name="msg_subscribe_failed" />
+
+    //preferencias notificacion
     <string name="preferencias_Recetas">PreferenciasRecetas</string>
     <string name="rutaReceta">ruta</string>
 
