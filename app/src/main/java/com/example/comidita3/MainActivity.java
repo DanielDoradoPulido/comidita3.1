@@ -2,14 +2,20 @@ package com.example.comidita3;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -46,6 +52,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements Interfaz {
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
     //notificacion push
     String recipePath="Vacio";
     boolean notificacion = false;
+    boolean creador = false;
 
 
 
@@ -90,9 +98,11 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
         if(intent !=null){
             recipePath = intent.getStringExtra("notif");
             notificacion = intent.getBooleanExtra("abrir",false);
+           // creador = intent.getBooleanExtra("creador",false);
 
             if(notificacion)
                 cargarNotificacion(recipePath);
+
         }
 
 
@@ -832,6 +842,8 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
             myrequest.add(request);
 
 
+
+
         }catch (JSONException e1){
             e1.printStackTrace();
         }
@@ -839,7 +851,82 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
 
     }
 
+    @Override
+    public void versionMayor(String title, String detail, String recipePath) {
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.rutaReceta), recipePath);
+        editor.putBoolean(getString(R.string.recetaCreador),true);
+        editor.commit();
 
+        String id = "mensaje";
+
+        NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel nc = new NotificationChannel(id,"nuevo",NotificationManager.IMPORTANCE_HIGH);
+            nc.setShowBadge(true);
+            assert nm != null;
+            nm.createNotificationChannel(nc);
+        }
+
+        builder.setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle(title)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentText(detail)
+                .setContentIntent(clickNoti(recipePath))
+                .setContentInfo("nuevo");
+
+        Random random = new Random();
+        int idNotify = random.nextInt(8000);
+
+        assert nm !=null;
+        nm.notify(idNotify,builder.build());
+    }
+
+    @Override
+    public void versionMenor(String title, String detail, String recipePath) {
+
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.rutaReceta), recipePath);
+        editor.putBoolean(getString(R.string.recetaCreador),true);
+        editor.commit();
+
+        String id = "mensaje";
+
+        NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id);
+
+        builder.setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle(title)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentText(detail)
+                .setContentIntent(clickNoti(recipePath))
+                .setContentInfo("nuevo");
+
+        Random random = new Random();
+        int idNotify = random.nextInt(8000);
+
+        assert nm !=null;
+        nm.notify(idNotify,builder.build());
+
+    }
+
+    @Override
+    public PendingIntent clickNoti(String recipePath) {
+
+        Intent nf = new Intent(getApplicationContext(), abrirNotificaciones.class);
+        nf.putExtra("url",recipePath);
+
+
+        nf.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return PendingIntent.getActivity(this,0,nf,0);
+
+    }
 
 
     @Override
@@ -970,6 +1057,69 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
                                     bundle.putString("visitas", r.getVisitas());
 
                                     navController.navigate(R.id.fragment_recetaDetalle,bundle);
+                                }
+                                else;
+                                //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+
+                            //Toast.makeText(this,"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+
+
+    }
+
+    public void cargarNotificacionCreador(String ruta){
+
+        //hacemos la query en la coleccion recetas
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(ruta)) {
+
+                                    //creamos un objeto Receta
+                                    String id = document.getString("id").toString();
+                                    String nombre = document.getString("nombre").toString();
+                                    String ingredientes = document.getString("ingredientes").toString();
+                                    String dificultad = document.getString("dificultad").toString();
+                                    String descripcion = document.getString("descripcion").toString();
+                                    String imagePath = document.getString("imagePath").toString();
+                                    String urlYoutube = document.getString("urlYoutube").toString();
+                                    String valoracion = document.getString("valoracion").toString();
+                                    String visitas = document.getString("visitas").toString();
+                                    String userpath = document.getString("userPath").toString();
+
+                                    Receta r = new Receta(id,nombre,ingredientes,descripcion,urlYoutube,imagePath,userpath,visitas,valoracion);
+                                    r.setDificultad(dificultad);
+
+                                    Bundle bundle = new Bundle();
+
+                                    bundle.putString("id",r.getId());
+                                    bundle.putString("nombre", r.getNombre());
+                                    bundle.putString("ingredientes", r.getIngredientes());
+                                    bundle.putString("dificultad",r.getDificultad());
+                                    bundle.putString("descripcion", r.getDescripcion());
+                                    bundle.putString("urlYoutube", r.getUrlYoutube());
+                                    bundle.putString("userPath", r.getUserPath());
+                                    bundle.putString("imagePath", r.getImagePath());
+                                    bundle.putString("valoracion",r.getValoracion());
+                                    bundle.putString("visitas", r.getVisitas());
+
+                                    navController.navigate(R.id.fragment_receta_detalle_sinPerfil,bundle);
                                 }
                                 else;
                                 //Toast.makeText(getContext(),"no encontrado",Toast.LENGTH_SHORT).show();

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -334,12 +335,56 @@ public class rellenarReceta extends Fragment {
                                 if(dificultad.equals("Rápida de hacer")){
 
                                     contexto.enviarNotificacion("RECETAS_RAPIDAS",rId);
+                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
+                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
+                                    contexto.enviarNotificacion("TODAS",rId);
+
+                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
+
+                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                        contexto.versionMayor(title,body,rId);
+                                    else
+                                        contexto.versionMenor(title,body,rId);
 
                                 }
                                 else if(dificultad.equals("Tiempo intermedio")){
+                                    contexto.enviarNotificacion("RECETAS_MEDIAS",rId);
+                                    contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
+                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
+                                    contexto.enviarNotificacion("TODAS",rId);
+
+                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
+
+                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                        contexto.versionMayor(title,body,rId);
+                                    else
+                                        contexto.versionMenor(title,body,rId);
+
+
 
                                 }
                                 else if(dificultad.equals("Larga de hacer")){
+                                    contexto.enviarNotificacion("RECETAS_LENTAS",rId);
+                                    contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
+                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
+                                    contexto.enviarNotificacion("TODAS",rId);
+
+                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
+
+                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                        contexto.versionMayor(title,body,rId);
+                                    else
+                                        contexto.versionMenor(title,body,rId);
+
 
                                 }
 

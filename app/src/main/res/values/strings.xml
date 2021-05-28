@@ -18,5 +18,6 @@
     //preferencias notificacion
     <string name="preferencias_Recetas">PreferenciasRecetas</string>
     <string name="rutaReceta">ruta</string>
+    <string name="recetaCreador">isCreador</string>
 
 </resources>

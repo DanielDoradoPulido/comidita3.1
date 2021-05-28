@@ -1,5 +1,7 @@
 package com.example.comidita3;
 
+import android.app.PendingIntent;
+
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.adaptadores.adaptadorFavoritos;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
@@ -24,6 +26,9 @@ public interface Interfaz {
     public void subscribir(int opcion);
     public void desubscripcion(int posicion);
     public void enviarNotificacion(String tipo,String url);
+    public void versionMayor(String title,String detail,String recipePath);
+    public void versionMenor(String title,String detail,String recipePath);
+    public PendingIntent clickNoti(String recipePath);
 
 
     public void irLogin();

@@ -109,7 +109,7 @@ public class fragmentDialogSubscripcion extends DialogFragment {
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(),"La subscripcion ha sido cancelada", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"La subscripcion ha sido cancelada", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

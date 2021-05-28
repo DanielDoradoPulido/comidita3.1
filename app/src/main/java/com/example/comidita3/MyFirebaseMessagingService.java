@@ -31,6 +31,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService  {
     private FirebaseAuth mAuth;
     String title;
     String body;
+    String recipePath;
+    String userUID;
+    boolean flag = false;
+
 
 
 
@@ -46,20 +50,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService  {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
 
+            flag = false;
+
             title = remoteMessage.getData().get("titulo");
             body = remoteMessage.getData().get("detalle");
-            String recipePath =remoteMessage.getData().get("recipePath");
-            String userUID = remoteMessage.getData().get("userID");
-
-
+            recipePath =remoteMessage.getData().get("recipePath");
+            userUID = remoteMessage.getData().get("userID");
 
             comprobarUsuario(userUID);
 
+            if(!flag){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    versionMayor(title,body,recipePath);
+                else
+                    versionMenor(title,body,recipePath);
+            }
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                versionMayor(title,body,recipePath);
-            else
-                versionMenor(title,body,recipePath);
 
         }
 
@@ -164,12 +170,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService  {
 
         if(mAuth!= null & mAuth.getUid().equals(UID)){
 
+            flag = true;
+
             title = "¡Se ha subido tu receta! \uD83D\uDE0E";
             body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
 
 
         }
 
+
+
+
+
     }
+
+
 
 }
