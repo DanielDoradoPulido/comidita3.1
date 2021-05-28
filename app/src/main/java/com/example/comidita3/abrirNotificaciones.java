@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.comidita3.LOGIN.loginActivity;
 import com.example.comidita3.clasesPOJO.Receta;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,6 +37,8 @@ public class abrirNotificaciones extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     NavHostFragment navHostFragment;
     NavController navController;
+    String correoElec,contra;
+    boolean prelogueado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,25 +47,40 @@ public class abrirNotificaciones extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        prelogueado = false;
+
         if(intent!=null){
 
+            prelogueado = intent.getBooleanExtra("log",false);
+
+            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
+            correoElec = sharedPref.getString(getString(R.string.preferencias_email),"nofunciono");
+            contra = sharedPref.getString(getString(R.string.preferencias_password),"nofunciono");
+            boolean isLogin = sharedPref.getBoolean(getString(R.string.preferencias_islogin),false);
+
+            if(isLogin) {
+
+                mostrarNoti();
 
 
 
 
-            text = findViewById(R.id.textViewNotificacion);
+            }
 
-            //obtenemos la info de la notificacion
+            else if(!isLogin && !prelogueado){
 
-            SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
-            ruta = sharedPref.getString(getString(R.string.rutaReceta),"nofunciono");
-            text.setText(ruta);
+                mostrarNoti();
 
-            Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-            intent2.putExtra("notif",ruta);
-            intent2.putExtra("abrir",true);
-            startActivity(intent2);
-            finish();
+            }
+            else{
+
+                Intent intent2 = new Intent(getApplicationContext(), loginActivity.class);
+                intent2.putExtra("notif", true);
+                startActivity(intent2);
+                finish();
+
+
+            }
 
         }
 
@@ -76,6 +94,24 @@ public class abrirNotificaciones extends AppCompatActivity {
         //Toast.makeText(this,x,Toast.LENGTH_SHORT).show();
 
 
+
+    }
+
+    public void mostrarNoti(){
+
+        text = findViewById(R.id.textViewNotificacion);
+
+        //obtenemos la info de la notificacion
+
+        SharedPreferences sharedPref2 = getSharedPreferences(getString(R.string.preferencias_Recetas), Context.MODE_PRIVATE);
+        ruta = sharedPref2.getString(getString(R.string.rutaReceta), "nofunciono");
+        text.setText(ruta);
+
+        Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+        intent2.putExtra("notif", ruta);
+        intent2.putExtra("abrir", true);
+        startActivity(intent2);
+        finish();
 
     }
 }

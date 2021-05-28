@@ -23,6 +23,7 @@ import com.example.comidita3.LOGIN.recuperarContrasena;
 import com.example.comidita3.LOGIN.registerActivity;
 import com.example.comidita3.MainActivity;
 import com.example.comidita3.R;
+import com.example.comidita3.abrirNotificaciones;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -56,43 +57,9 @@ public class loginActivity extends AppCompatActivity {
 
         if(intent!=null){
 
-            fromNotification = intent.getBooleanExtra("notificacion",false);
-
-            if(fromNotification){
-
-                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
-                correoElec = sharedPref.getString(getString(R.string.preferencias_email),"nofunciono");
-                contra = sharedPref.getString(getString(R.string.preferencias_password),"nofunciono");
-                boolean isLogin = sharedPref.getBoolean(getString(R.string.preferencias_islogin),false);
-
-                if(isLogin){
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(correoElec,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if(task.isSuccessful()){
-                                FirebaseUser user = mAuth.getCurrentUser();
-
-                                if(user.isEmailVerified()) {
-
-                                    showMain();
-
-                                }
-
-                            }
+            fromNotification = intent.getBooleanExtra("notif",false);
 
 
-
-
-
-                        }
-                    });
-                }
-
-
-
-
-            }
 
 
         }
@@ -205,7 +172,6 @@ public class loginActivity extends AppCompatActivity {
 
                             if(recordar.isChecked()){
 
-
                                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putString(getString(R.string.preferencias_email), email);
@@ -214,10 +180,28 @@ public class loginActivity extends AppCompatActivity {
 
                                 editor.commit();
 
-                                showMain();
+
+                                if(!fromNotification){
+
+                                    showMain();
+
+                                }
+                                else{
+                                    showNotificacion();
+                                }
+
                             }
                             else{
-                                showMain();
+
+                                if(!fromNotification)
+                                    showMain();
+                                else{
+
+                                    showNotificacion();
+
+                                }
+
+
                             }
 
                         }
@@ -319,6 +303,15 @@ public class loginActivity extends AppCompatActivity {
         else
             ;
 
+
+    }
+
+    public void showNotificacion(){
+
+        Intent intent = new Intent(getApplicationContext(), abrirNotificaciones.class);
+        intent.putExtra("log", true);
+        startActivity(intent);
+        finish();
 
     }
 }
