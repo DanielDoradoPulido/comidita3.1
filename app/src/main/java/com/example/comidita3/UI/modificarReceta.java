@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
 import com.example.comidita3.clasesPOJO.Receta;
@@ -43,7 +44,12 @@ import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
-public class rellenarReceta extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link modificarReceta#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class modificarReceta extends Fragment {
 
     Interfaz contexto;
     NavController navController;
@@ -56,19 +62,29 @@ public class rellenarReceta extends Fragment {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     String imagePath,userPath,name,ingredients,description,link;
-    boolean fotoSubida = false;
+    boolean fotoSubida = false,hecho =false;
     String dificultad;
 
+    private static final String ARG_ID = "id";
+    private static final String ARG_NOMBRE = "nombre";
+    private static final String ARG_INGREDIENTES = "ingredientes";
+    private static final String ARG_DIFICULTAD = "dificultad";
+    private static final String ARG_DESCRIPCION = "descripcion";
+    private static final String ARG_URLYOUTUBE = "urlYoutube";
+    private static final String ARG_USERPATH = "userPath";
+    private static final String ARG_IMAGEPATH = "imagePath";
+    private static final String ARG_VALORACION = "valoracion";
+    private static final String ARG_VISITAS = "visitas";
 
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public rellenarReceta() {
+    private String idReceta,nombreReceta,ingredientesReceta,dificultadReceta,descripcionReceta,urlYoutubeReceta,userpathReceta,imagepathReceta,valoracionReceta,visitasReceta;
+
+    public modificarReceta() {
         // Required empty public constructor
     }
 
@@ -78,12 +94,25 @@ public class rellenarReceta extends Fragment {
         contexto = (Interfaz)context;
     }
 
-    public static rellenarReceta newInstance(String param1, String param2) {
-        rellenarReceta fragment = new rellenarReceta();
+    public static fragment_recetaDetalle newInstance(String param1, String param2, String param3, String param4, String param5, String param6, String param7, String param8, String param9,String param10) {
+
+        fragment_recetaDetalle fragment = new fragment_recetaDetalle();
+
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
+        args.putString(ARG_ID, param1);
+        args.putString(ARG_NOMBRE, param2);
+        args.putString(ARG_INGREDIENTES, param3);
+        args.putString(ARG_DIFICULTAD,param4);
+        args.putString(ARG_DESCRIPCION, param5);
+        args.putString(ARG_URLYOUTUBE, param6);
+        args.putString(ARG_USERPATH, param7);
+        args.putString(ARG_IMAGEPATH, param8);
+        args.putString(ARG_VALORACION, param9);
+        args.putString(ARG_VISITAS, param10);
+
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -91,8 +120,16 @@ public class rellenarReceta extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            idReceta = getArguments().getString(ARG_ID);
+            nombreReceta = getArguments().getString(ARG_NOMBRE);
+            ingredientesReceta = getArguments().getString(ARG_INGREDIENTES);
+            dificultadReceta = getArguments().getString(ARG_DIFICULTAD);
+            descripcionReceta = getArguments().getString(ARG_DESCRIPCION);
+            urlYoutubeReceta = getArguments().getString(ARG_URLYOUTUBE);
+            userpathReceta = getArguments().getString(ARG_USERPATH);
+            imagepathReceta= getArguments().getString(ARG_IMAGEPATH);
+            valoracionReceta = getArguments().getString(ARG_VALORACION);
+            visitasReceta = getArguments().getString(ARG_VISITAS);
         }
 
 
@@ -107,17 +144,57 @@ public class rellenarReceta extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_rellenar_receta, container, false);
+        View v = inflater.inflate(R.layout.fragment_modificar_receta, container, false);
 
         //edit text
-        nombre = v.findViewById(R.id.editTextNombreRecetaRellenar);
-        ingredientes = v.findViewById(R.id.editTextIngredientesRecetaRellenar);
-        descripcion = v.findViewById(R.id.editTextPasosRecetaRellenar);
-        URL = v.findViewById(R.id.editTextURLRecetaRellenar);
+        nombre = v.findViewById(R.id.editTextNombreRecetaModificar);
+        nombre.setText(nombreReceta);
 
-        rapida = v.findViewById(R.id.radioButton6);
-        intermedia = v.findViewById(R.id.radioButton7);
-        lenta = v.findViewById(R.id.radioButton8);
+        ingredientes = v.findViewById(R.id.editTextIngredientesRecetaModificar);
+        ingredientes.setText(ingredientesReceta);
+
+        descripcion = v.findViewById(R.id.editTextPasosRecetaModificar);
+        descripcion.setText(descripcionReceta);
+
+        URL = v.findViewById(R.id.editTextURLRecetaModificar);
+        URL.setText(urlYoutubeReceta);
+
+        rapida = v.findViewById(R.id.radioButtonRapidoModificar);
+        intermedia = v.findViewById(R.id.radioButtonButtonIntermedioModificar);
+        lenta = v.findViewById(R.id.radioButtonLargoModificar);
+
+        Toast.makeText(getContext(),dificultadReceta,Toast.LENGTH_SHORT).show();
+
+        if(dificultadReceta.equals("Rápida de hacer"))
+            rapida.setChecked(true);
+        else  if(dificultadReceta.equals("Tiempo intermedio"))
+            intermedia.setChecked(true);
+        else if(dificultadReceta.equals("Larga de hacer"))
+            lenta.setChecked(true);
+        else{
+
+        }
+
+        imagen = v.findViewById(R.id.imageViewRecetaModificar);
+        imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePicture();
+            }
+        });
+
+        storageReference.child(imagepathReceta).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Glide.with(getContext()).load(uri).into(imagen);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
         imagePath ="";
 
@@ -143,7 +220,7 @@ public class rellenarReceta extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         //boton back
-        back = v.findViewById(R.id.imageViewSalirRecetaRellenar);
+        back = v.findViewById(R.id.imageViewSalirRecetaModificar);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +230,7 @@ public class rellenarReceta extends Fragment {
         });
 
         //boton subir
-        guardar = v.findViewById(R.id.buttonRecetaRellenarGuardar);
+        guardar = v.findViewById(R.id.buttonRecetaModificarGuardar);
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,13 +261,7 @@ public class rellenarReceta extends Fragment {
 
 
 
-        imagen = v.findViewById(R.id.imageViewRecetaRellenar);
-        imagen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosePicture();
-            }
-        });
+
 
 
         return v;
@@ -222,7 +293,6 @@ public class rellenarReceta extends Fragment {
         if(!imagePath.equals("")){
 
             StorageReference storageRef = storage.getReference();
-
             StorageReference desertRef = storageRef.child(imagePath);
 
             // Delete the file
@@ -279,8 +349,8 @@ public class rellenarReceta extends Fragment {
     public void guardar(String UID){
 
         AlertDialog.Builder builder  = new AlertDialog.Builder(getContext());
-        builder.setTitle("Subir receta")
-                .setMessage("¿Está seguro de que quiere subir la receta?")
+        builder.setTitle("Modificar receta")
+                .setMessage("¿Está seguro de que quieres actualizar la receta?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -298,100 +368,58 @@ public class rellenarReceta extends Fragment {
 
                         if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty()){
 
-                            if(fotoSubida){
-
-
-
-                                //generamos un id random
-                                String rId = UUID.randomUUID().toString();
-
                                 //construimos el objeto de tipo Receta
-                                Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
+                                Receta receta = new Receta(idReceta,name,ingredients,description,link,imagePath,UID);
                                 receta.setDificultad(dificultad);
 
+
+                                //comprobamos que ha subido una nueva imagen
+
+                                if(imagePath.equals(""))
+                                    imagePath = imagepathReceta;
+
+                                //si la ha subido borramos la vieja
+
+                                if(fotoSubida){
+
+                                    //buscamos la imagen vieja
+                                    StorageReference storageRef = storage.getReference();
+
+                                    // Create a reference to the file to delete
+                                    StorageReference desertRef = storageRef.child(imagepathReceta);
+
+                                    // Delete the file
+                                    desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            hecho = true;
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            hecho = false;
+                                        }
+                                    });
+
+                                    if(hecho)
+                                        Toast.makeText(getContext(),"hecho",Toast.LENGTH_SHORT).show();
+
+                                }
+
+
                                 //llamamos a la bbdd
-
-                                //añadimos a la coleccion de recetas la receta
+                                //actualizamos a la coleccion de recetas la receta
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("recetas").document(receta.getId()).set(receta);
 
+                                db.collection("recetas").document(receta.getId()).update("nombre",name);
+                                db.collection("recetas").document(receta.getId()).update("ingredientes",ingredients);
+                                db.collection("recetas").document(receta.getId()).update("descripcion",description);
+                                db.collection("recetas").document(receta.getId()).update("urlYoutube",link);
+                                db.collection("recetas").document(receta.getId()).update("imagePath",imagePath);
+                                db.collection("recetas").document(receta.getId()).update("dificultad",dificultad);
 
-                                //añadimos a la coleccion de valoraciones un documento que corresponda al documento de la receta
-                                Map<String,Integer> valoraciones = new HashMap<>();
-
-                                Map<String,Object> valoracionReg = new HashMap<>();
-                                valoracionReg.put("votaciones",valoraciones);
-
-                                db.collection("valoraciones").document(receta.getId()).set(valoracionReg);
-
-                                //enviar notificacion a suscriptores
-                                if(dificultad.equals("Rápida de hacer")){
-
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
-                                    contexto.enviarNotificacion("TODAS",rId);
-
-                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
-
-                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
-                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
-
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                        contexto.versionMayor(title,body,rId);
-                                    else
-                                        contexto.versionMenor(title,body,rId);
-
-                                }
-                                else if(dificultad.equals("Tiempo intermedio")){
-                                    contexto.enviarNotificacion("RECETAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("TODAS",rId);
-
-                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
-
-                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
-                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
-
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                        contexto.versionMayor(title,body,rId);
-                                    else
-                                        contexto.versionMenor(title,body,rId);
-
-
-
-                                }
-                                else if(dificultad.equals("Larga de hacer")){
-                                    contexto.enviarNotificacion("RECETAS_LENTAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
-                                    contexto.enviarNotificacion("TODAS",rId);
-
-                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
-
-                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
-                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
-
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                        contexto.versionMayor(title,body,rId);
-                                    else
-                                        contexto.versionMenor(title,body,rId);
-
-
-                                }
-
-
-                                Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Receta actualizada con éxito. ¡Gracias!",Toast.LENGTH_SHORT).show();
                                 navController.navigate(R.id.fragmentHome);
-
-
-
-
-                            }
-                            else{
-                                Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();
-                            }
 
 
 
@@ -479,6 +507,4 @@ public class rellenarReceta extends Fragment {
 
 
     }
-
-
 }

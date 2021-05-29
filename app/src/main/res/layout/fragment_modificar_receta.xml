@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout5"
+    android:id="@+id/frameLayout9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#202732"
-    tools:context=".UI.rellenarReceta" >
+    tools:context=".UI.modificarReceta">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -26,7 +26,7 @@
             android:textColorHint="#FFFFFF">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextNombreRecetaRellenar"
+                android:id="@+id/editTextNombreRecetaModificar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/abel"
@@ -43,7 +43,7 @@
             android:textColorHint="#FFFFFF">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextIngredientesRecetaRellenar"
+                android:id="@+id/editTextIngredientesRecetaModificar"
                 android:layout_width="match_parent"
                 android:layout_height="153dp"
                 android:fontFamily="@font/abel"
@@ -62,7 +62,7 @@
             android:textColorHint="#FFFFFF">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPasosRecetaRellenar"
+                android:id="@+id/editTextPasosRecetaModificar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/abel"
@@ -80,7 +80,7 @@
             android:textColorHint="#FFFFFF">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextURLRecetaRellenar"
+                android:id="@+id/editTextURLRecetaModificar"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:fontFamily="@font/abel"
@@ -94,7 +94,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonRecetaRellenarGuardar"
+        android:id="@+id/buttonRecetaModificarGuardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
@@ -106,20 +106,20 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/imageViewSalirRecetaRellenar"
+        android:id="@+id/imageViewSalirRecetaModificar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:src="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewRecetaRellenar"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewRecetaModificar"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.052" />
 
     <ImageView
-        android:id="@+id/imageViewRecetaRellenar"
+        android:id="@+id/imageViewRecetaModificar"
         android:layout_width="126dp"
         android:layout_height="110dp"
         android:src="@drawable/verde"
@@ -131,8 +131,8 @@
         app:layout_constraintVertical_bias="0.021" />
 
     <RadioGroup
-        android:layout_width="206dp"
-        android:layout_height="84dp"
+        android:layout_width="207dp"
+        android:layout_height="77dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
@@ -141,25 +141,56 @@
         app:layout_constraintVertical_bias="0.031">
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/radioButtonRapidoModificar"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:text="Rápida elaboración"
             android:textColor="#FFFFFF" />
 
         <RadioButton
-            android:id="@+id/radioButton7"
+            android:id="@+id/radioButtonButtonIntermedioModificar"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:text="Elaboración intermedia"
             android:textColor="#FDFCFC" />
 
         <RadioButton
-            android:id="@+id/radioButton8"
+            android:id="@+id/radioButtonLargoModificar"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:text="Larga elaboración"
             android:textColor="#FBFBFB" />
     </RadioGroup>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

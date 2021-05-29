@@ -42,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONException;
@@ -83,6 +84,14 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
     boolean notificacion = false;
     boolean creador = false;
 
+    //borrar
+    Boolean x = false,y=false,z=false;
+    public Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    String pathRecetaBorrada;
+    Boolean hecho = false;
+
 
 
 
@@ -104,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
                 cargarNotificacion(recipePath);
 
         }
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
 
 
@@ -213,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
     public adaptadorRecetasSubidas getAdaptadorRecetasSubidas() {
 
         //obtenemos todos los objetos y los guardamos en una list de objetos de tipo Receta
-
 
         arrayAdapterSubidas = new adaptadorRecetasSubidas( this,R.layout.adaptador_recetas_subidas_layout,subidas);
 
@@ -928,7 +939,6 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
 
     }
 
-
     @Override
     public void irLogin() {
         Intent intent = new Intent(getApplicationContext(), loginActivity.class);
@@ -1132,6 +1142,137 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
                     }
                 });
 
+
+
+
+
+    }
+
+    public void borrarReceta(String id){
+
+        
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                x = true;
+            }
+        });
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                y = true;
+            }
+        });
+
+        favoritos = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("usuarios")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                    ArrayList<String>  favs = (ArrayList)document.get("favoritas");
+                                    if(favs.contains(id)){
+                                        favs.remove(id);
+                                        db.collection("usuarios").document(document.getId()).update("favoritas",favs);
+
+                                    }
+
+
+
+
+
+                            }
+                        } else {
+
+                            //Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                z = true;
+            }
+        });
+
+
+
+
+
+
+        if (x && y && z){
+            Toast.makeText(this,"Se ha borrado satisfactoriamente la receta",Toast.LENGTH_SHORT).show();
+
+
+            navController.navigate(R.id.fragmentHome);
+        }
+        else if(!x){
+            Toast.makeText(this,"Error en x",Toast.LENGTH_SHORT).show();
+
+
+            navController.navigate(R.id.fragmentHome);
+        }
+        else if(!y){
+            Toast.makeText(this,"Error en y",Toast.LENGTH_SHORT).show();
+
+
+            navController.navigate(R.id.fragmentHome);
+        }
+        else if(!z){
+            Toast.makeText(this,"Error en z",Toast.LENGTH_SHORT).show();
+
+
+            navController.navigate(R.id.fragmentHome);
+        }
+        else{
+
+
+            navController.navigate(R.id.fragmentHome);
+        }
+
+
+    }
+
+    @Override
+    public void modificarReceta(String recipePath) {
+
+    }
+
+    @Override
+    public void borrarFotoRecetaBorrada(String imagePath){
+
+        //buscamos la receta
+        StorageReference storageRef = storage.getReference();
+
+        // Create a reference to the file to delete
+        StorageReference desertRef = storageRef.child(imagePath);
+
+        // Delete the file
+        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                hecho = true;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+               hecho = false;
+            }
+        });
+
+        if(hecho)
+            Toast.makeText(this,"hecho",Toast.LENGTH_SHORT).show();
 
 
 

@@ -37,5 +37,10 @@ public interface Interfaz {
 
     public void abrirURL(String url);
 
+    public void borrarReceta(String recipePath);
+    public void borrarFotoRecetaBorrada(String imagePath);
+
+    public void modificarReceta(String recipePath);
+
 
 }

@@ -45,4 +45,14 @@
         android:name="com.example.comidita3.UI.fragment_receta_detalle_sinPerfil"
         android:label="fragment_receta_detalle_sin_perfil"
         tools:layout="@layout/fragment_receta_detalle_sin_perfil" />
+    <fragment
+        android:id="@+id/fragment_recetaDetalleCreador"
+        android:name="com.example.comidita3.UI.fragment_recetaDetalleCreador"
+        android:label="fragment_receta_detalle_creador"
+        tools:layout="@layout/fragment_receta_detalle_creador" />
+    <fragment
+        android:id="@+id/modificarReceta"
+        android:name="com.example.comidita3.UI.modificarReceta"
+        android:label="fragment_modificar_receta"
+        tools:layout="@layout/fragment_modificar_receta" />
 </navigation>

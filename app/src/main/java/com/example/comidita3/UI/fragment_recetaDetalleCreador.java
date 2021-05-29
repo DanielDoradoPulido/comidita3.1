@@ -2,11 +2,13 @@ package com.example.comidita3.UI;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -40,11 +42,10 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_recetaDetalle#newInstance} factory method to
+ * Use the {@link fragment_receta_detalle_sinPerfil#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_recetaDetalle extends Fragment {
-
+public class fragment_recetaDetalleCreador extends Fragment {
 
     private static final String ARG_ID = "id";
     private static final String ARG_NOMBRE = "nombre";
@@ -63,11 +64,10 @@ public class fragment_recetaDetalle extends Fragment {
     //Objetos clase
     TextView name,descript,ingredients,facilities,valoracionTotal;
     ImageView imagen;
-    Boolean votado;
 
     RatingBar ratingBar;
     ImageButton fav;
-    View urlY,perfilUser;
+    View urlY,eliminar,modificar;
     Interfaz contexto;
     NavController navController;
     Boolean enFav = false;
@@ -82,7 +82,7 @@ public class fragment_recetaDetalle extends Fragment {
 
 
 
-    public fragment_recetaDetalle() {
+    public fragment_recetaDetalleCreador() {
         // Required empty public constructor
     }
 
@@ -120,6 +120,9 @@ public class fragment_recetaDetalle extends Fragment {
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
+
+
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -149,7 +152,7 @@ public class fragment_recetaDetalle extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_receta_detalle, container, false);
+        return inflater.inflate(R.layout.fragment_receta_detalle_creador, container, false);
     }
 
     @Override
@@ -161,6 +164,10 @@ public class fragment_recetaDetalle extends Fragment {
 
         comprobarVotado();
 
+
+
+
+
         ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -171,15 +178,13 @@ public class fragment_recetaDetalle extends Fragment {
 
 
 
-              //Toast.makeText(getContext(),String.valueOf(rating),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),String.valueOf(rating),Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        valoracionTotal = view.findViewById(R.id.textViewValoracionGlobal);
+        valoracionTotal = view.findViewById(R.id.textViewValoracionGlobalSinPerfil);
         calculoValor();
-
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -198,11 +203,76 @@ public class fragment_recetaDetalle extends Fragment {
 
                     //Toast.makeText(getContext(),urlYoutube,Toast.LENGTH_SHORT).show();
                     contexto.abrirURL(urlYoutube);
+
                 }catch (ActivityNotFoundException e){
                     Toast.makeText(getContext(),"Lo siento la url está corrupta...",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        modificar = view.findViewById(R.id.viewRecetaCreadorModificar);
+        modificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("id",id);
+                bundle.putString("nombre", nombre);
+                bundle.putString("ingredientes", ingredientes);
+                bundle.putString("dificultad", dificultad);
+                bundle.putString("descripcion", descripcion);
+                bundle.putString("urlYoutube", urlYoutube);
+                bundle.putString("userPath", userpath);
+                bundle.putString("imagePath", imagepath);
+                bundle.putString("valoracion", valoracion);
+                bundle.putString("visitas", visitas);
+
+                navController.navigate(R.id.modificarReceta,bundle);
+
+            }
+        });
+
+        eliminar = view.findViewById(R.id.viewRecetaCreadorEliminar);
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Toast.makeText(getContext(),"has pulsado eliminar",Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder  = new AlertDialog.Builder(getContext());
+                builder.setTitle("Borrar Receta")
+                        .setMessage("¿Estás seguro de que quieres borrar la receta? Dejará de existir en la app")
+                        .setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                contexto.borrarFotoRecetaBorrada(imagepath);
+                                contexto.borrarReceta(id);
+                                dialog.dismiss();
+
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                AlertDialog alerta = builder.create();
+                alerta.show();
+
+
+
+
+
+            }
+        });
+
+
 
         facilities = view.findViewById(R.id.textViewFacilidadDetalleReceta);
         facilities.setText(dificultad);
@@ -216,20 +286,7 @@ public class fragment_recetaDetalle extends Fragment {
             }
         });
 
-        perfilUser = view.findViewById(R.id.viewUser);
-        perfilUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Bundle bundle = new Bundle();
-
-                bundle.putString("userPath", userpath);
-
-
-                navController.navigate(R.id.fragment_perfilUser,bundle);
-
-            }
-        });
 
 
         ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
@@ -270,7 +327,7 @@ public class fragment_recetaDetalle extends Fragment {
 
                                 if(document.getId().equals(mAuth.getUid())) {
 
-                                    ArrayList<String>  favs = (ArrayList)document.get("favoritas");
+                                    ArrayList<String> favs = (ArrayList)document.get("favoritas");
 
                                     if(favs.contains(id)){
                                         //Toast.makeText(getContext(),"Lo contiene",Toast.LENGTH_SHORT).show();
@@ -298,105 +355,6 @@ public class fragment_recetaDetalle extends Fragment {
                     }
                 });
 
-
-
-
-    }
-
-    public void comprobarVotado(){
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("valoraciones")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-
-                                if(document.getId().equals(id)) {
-
-                                    Map<String,String> users = (HashMap)document.get("votaciones");
-
-                                    if(users.containsKey(mAuth.getUid())){
-
-                                        Float votado = Float.parseFloat(users.get(mAuth.getUid()));
-
-                                        ratingBar.setRating(votado);
-
-                                    }
-
-                                }
-
-
-                            }
-                        } else {
-
-                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
-
-    public void operarVotado(float rating){
-
-        //tranformamos el float a String para añadirlo
-
-        String value = String.valueOf(rating);
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("valoraciones")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-
-                                if(document.getId().equals(id)) {
-
-                                    //Toast.makeText(getContext(),"entro",Toast.LENGTH_SHORT).show();
-
-                                    Map<String,String>  users = (HashMap)document.get("votaciones");
-
-                                    if(users.isEmpty() ){
-
-
-                                        users.put(mAuth.getUid(),value);
-
-                                    }
-                                    else{
-
-                                        if(users.containsKey(mAuth.getUid())){
-                                            users.remove(mAuth.getUid());
-                                            users.put(mAuth.getUid(),value);
-                                        }
-                                        else
-                                            users.put(mAuth.getUid(),value);
-
-                                    }
-
-                                    db.collection("valoraciones").document(document.getId()).update("votaciones",users);
-
-                                    //Toast.makeText(getContext(),"votaste",Toast.LENGTH_SHORT).show();
-
-                                    //accion de refrescar puntuacion media
-
-
-
-                                }
-
-
-                            }
-                        } else {
-
-                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
 
 
@@ -507,6 +465,106 @@ public class fragment_recetaDetalle extends Fragment {
 
 
     }
+
+    public void comprobarVotado(){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    Map<String,String> users = (HashMap)document.get("votaciones");
+
+                                    if(users.containsKey(mAuth.getUid())){
+
+                                        Float votado = Float.parseFloat(users.get(mAuth.getUid()));
+
+                                        ratingBar.setRating(votado);
+
+                                    }
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
+    public void operarVotado(float rating){
+
+        //tranformamos el float a String para añadirlo
+
+        String value = String.valueOf(rating);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    //Toast.makeText(getContext(),"entro",Toast.LENGTH_SHORT).show();
+
+                                    Map<String,String>  users = (HashMap)document.get("votaciones");
+
+                                    if(users.isEmpty() ){
+
+
+                                        users.put(mAuth.getUid(),value);
+
+                                    }
+                                    else{
+
+                                        if(users.containsKey(mAuth.getUid())){
+                                            users.remove(mAuth.getUid());
+                                            users.put(mAuth.getUid(),value);
+                                        }
+                                        else
+                                            users.put(mAuth.getUid(),value);
+
+                                    }
+
+                                    db.collection("valoraciones").document(document.getId()).update("votaciones",users);
+
+                                    //Toast.makeText(getContext(),"votaste",Toast.LENGTH_SHORT).show();
+
+                                    //accion de refrescar puntuacion media
+
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+    }
+
     public void calculoValor(){
 
         String valor = "0";

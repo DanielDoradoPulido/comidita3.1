@@ -164,7 +164,7 @@ public class FragmentSubidas extends Fragment {
                 bundle.putString("valoracion", ad.getItem(position).getValoracion());
                 bundle.putString("visitas", ad.getItem(position).getVisitas());
 
-                navController.navigate(R.id.fragment_receta_detalle_sinPerfil,bundle);
+                navController.navigate(R.id.fragment_recetaDetalleCreador,bundle);
 
             }
         });
