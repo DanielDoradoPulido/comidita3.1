@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.comidita3.LOGIN.loginActivity;
@@ -56,7 +55,7 @@ public class IntroductoryActivity extends AppCompatActivity {
 
         letras = findViewById(R.id.imageViewSplashLetras);
 
-        lottieAnimationView = findViewById(R.id.animationSplashScreen);
+        lottieAnimationView = findViewById(R.id.animationPopulares);
 
 
 

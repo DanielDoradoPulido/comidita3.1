@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.comidita3.LOGIN.loginActivity;
+import com.example.comidita3.adaptadores.PopularAdapters;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.adaptadores.adaptadorFavoritos;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
@@ -937,6 +938,11 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
         nf.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return PendingIntent.getActivity(this,0,nf,0);
 
+    }
+
+    @Override
+    public PopularAdapters getPopulares() {
+        return null;
     }
 
     @Override

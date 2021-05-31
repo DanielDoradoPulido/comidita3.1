@@ -2,6 +2,7 @@ package com.example.comidita3;
 
 import android.app.PendingIntent;
 
+import com.example.comidita3.adaptadores.PopularAdapters;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.adaptadores.adaptadorFavoritos;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
@@ -29,6 +30,9 @@ public interface Interfaz {
     public void versionMayor(String title,String detail,String recipePath);
     public void versionMenor(String title,String detail,String recipePath);
     public PendingIntent clickNoti(String recipePath);
+
+    //fragment Home
+    public PopularAdapters getPopulares();
 
 
     public void irLogin();

@@ -547,6 +547,7 @@ public class fragment_recetaDetalle extends Fragment {
                                     valoracionTotal.setText(finali);
 
 
+
                                     // Toast.makeText(getContext(),"Puntos: " + puntos +" numero " + users.size() +" puntuacion " + finali,Toast.LENGTH_SHORT).show();
 
 

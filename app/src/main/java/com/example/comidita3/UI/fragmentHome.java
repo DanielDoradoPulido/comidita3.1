@@ -6,14 +6,30 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
+import com.example.comidita3.adaptadores.PopularAdapters;
+import com.example.comidita3.clasesPOJO.Receta;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,12 +38,22 @@ import com.example.comidita3.R;
  */
 public class fragmentHome extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     Interfaz contexto;
+
+    //Lista recetas populares
+
+    List<Receta> listRecetasPopulares;
+    RecyclerView recetasPopulares;
+    RecyclerView recetasRecomendadas;
+    PopularAdapters adaptadoPopulares;
+
+    //firebase
+
+    FirebaseFirestore db;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -91,6 +117,72 @@ public class fragmentHome extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         contexto.loadDataFavoritos();
+
+        recetasPopulares = view.findViewById(R.id.recyclerViewPopulares);
+        recetasPopulares.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        listRecetasPopulares = new ArrayList<>();
+        adaptadoPopulares = new PopularAdapters(getActivity(),listRecetasPopulares);
+        recetasPopulares.setAdapter(adaptadoPopulares);
+
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("valoraciones")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            Map<String,Float> valoradas = new HashMap<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                float valor = 0;
+
+                                Map<String,String> map = (HashMap<String, String>) document.get("votaciones");
+                                for (Map.Entry<String, String> entry : map.entrySet()) {
+                                    //System.out.println("clave=" + entry.getKey() + ", valor=" + entry.getValue());
+                                    valor = valor + Float.parseFloat(entry.getValue());
+                                }
+
+                                valoradas.put(document.getId(),valor);
+
+                                Toast.makeText(getContext(),"valor " + valor,Toast.LENGTH_SHORT).show();
+
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                Receta receta  = document.toObject(Receta.class);
+                                listRecetasPopulares.add(receta);
+                                adaptadoPopulares.notifyDataSetChanged();
+
+                            }
+                        } else {
+
+                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
