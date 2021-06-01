@@ -6,12 +6,12 @@ public class RecetaValorizada implements Comparable<RecetaValorizada> {
 
     String id;
     Float valor;
-    Integer numVisitas;
+    Integer numVotaciones;
 
-    public RecetaValorizada(String id, Float valor, Integer numVisitas) {
+    public RecetaValorizada(String id, Float valor, Integer numVotaciones) {
         this.id = id;
         this.valor = valor;
-        this.numVisitas = numVisitas;
+        this.numVotaciones = numVotaciones;
     }
 
     public RecetaValorizada(String id, Float valor) {
@@ -35,12 +35,12 @@ public class RecetaValorizada implements Comparable<RecetaValorizada> {
         this.valor = valor;
     }
 
-    public Integer getNumVisitas() {
-        return numVisitas;
+    public Integer getNumVotaciones() {
+        return numVotaciones;
     }
 
-    public void setNumVisitas(Integer numVisitas) {
-        this.numVisitas = numVisitas;
+    public void setNumVotaciones(Integer numVisitas) {
+        this.numVotaciones = numVotaciones;
     }
 
     @Override

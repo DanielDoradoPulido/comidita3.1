@@ -23,6 +23,7 @@ import com.example.comidita3.R;
 import com.example.comidita3.adaptadores.PopularAdapters;
 import com.example.comidita3.clasesPOJO.Receta;
 import com.example.comidita3.clasesPOJO.RecetaValorizada;
+import com.example.comidita3.clasesPOJO.comparatorPopulares;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,6 +65,7 @@ public class fragmentHome extends Fragment {
     RecyclerView recetasRecomendadas;
     PopularAdapters adaptadoPopulares;
     ArrayList<RecetaValorizada> valorizadas;
+    comparatorPopulares c;
 
 
     //firebase
@@ -171,7 +173,7 @@ public class fragmentHome extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -185,6 +187,8 @@ public class fragmentHome extends Fragment {
                                 float valor = 0;
 
                                 Map<String,String> map = (HashMap<String, String>) document.get("votaciones");
+                                Integer numVotaciones = map.size();
+
                                 for (Map.Entry<String, String> entry : map.entrySet()) {
                                     //System.out.println("clave=" + entry.getKey() + ", valor=" + entry.getValue());
                                     valor = valor + Float.parseFloat(entry.getValue());
@@ -192,7 +196,7 @@ public class fragmentHome extends Fragment {
 
                                 float fin = valor/map.size();
 
-                                RecetaValorizada recetaValorizada = new RecetaValorizada(document.getId(),fin);
+                                RecetaValorizada recetaValorizada = new RecetaValorizada(document.getId(),fin,numVotaciones);
                                 valorizadas.add(recetaValorizada);
 
 
@@ -202,7 +206,7 @@ public class fragmentHome extends Fragment {
 
                             }
 
-                                ordenarPopulares();
+                            ordenarPopulares();
 
                         } else {
 
@@ -234,12 +238,12 @@ public class fragmentHome extends Fragment {
 
     public void ordenarPopulares() {
 
-        Collections.sort(valorizadas);
+        Collections.sort(valorizadas,c);
 
         if(valorizadas.size()>10){
 
             for(int i = 0;i<10;i++) {
-                Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getValor().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getNumVotaciones(), Toast.LENGTH_SHORT).show();
 
                 int finalI = i;
                 db.collection("recetas")
@@ -276,7 +280,7 @@ public class fragmentHome extends Fragment {
         else{
 
             for(int i = 0;i<valorizadas.size();i++) {
-                Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getValor().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getNumVotaciones(), Toast.LENGTH_SHORT).show();
 
                 int finalI = i;
                 db.collection("recetas")

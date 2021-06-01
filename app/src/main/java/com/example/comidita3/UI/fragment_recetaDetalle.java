@@ -181,6 +181,8 @@ public class fragment_recetaDetalle extends Fragment {
 
 
 
+
+
         mAuth = FirebaseAuth.getInstance();
 
         ingredients = view.findViewById(R.id.textViewIngredientesDetalleReceta);
@@ -307,7 +309,7 @@ public class fragment_recetaDetalle extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -348,7 +350,7 @@ public class fragment_recetaDetalle extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -379,7 +381,7 @@ public class fragment_recetaDetalle extends Fragment {
 
                                     }
 
-                                    db.collection("valoraciones").document(document.getId()).update("votaciones",users);
+                                    db.collection("recetas").document(document.getId()).update("votaciones",users);
 
                                     //Toast.makeText(getContext(),"votaste",Toast.LENGTH_SHORT).show();
 
@@ -397,6 +399,68 @@ public class fragment_recetaDetalle extends Fragment {
                         }
                     }
                 });
+
+
+
+    }
+
+    public void calculoValor(){
+
+        String valor = "0";
+
+        //buscamos su map de valoraciones
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                if(document.getId().equals(id)) {
+
+                                    //Guardamos el valor de su map
+
+                                    Map<String,String>  users = (HashMap)document.get("votaciones");
+
+                                    //iteramos el map para ir sumando sus puntos
+
+                                    float puntos  = 0;
+
+                                    for (String value : users.values()) {
+                                        //System.out.println("Value = " + value);
+
+                                        Float valorPos = Float.parseFloat(value);
+                                        puntos = puntos + valorPos;
+                                    }
+
+                                    float division = puntos / users.size();
+
+                                    String finali = String.valueOf(division);
+
+                                    valoracionTotal.setText(finali);
+
+
+                                    // Toast.makeText(getContext(),"Puntos: " + puntos +" numero " + users.size() +" puntuacion " + finali,Toast.LENGTH_SHORT).show();
+
+
+
+                                }
+
+
+                            }
+                        } else {
+
+                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
 
 
 
@@ -507,66 +571,5 @@ public class fragment_recetaDetalle extends Fragment {
 
 
     }
-    public void calculoValor(){
 
-        String valor = "0";
-
-        //buscamos su map de valoraciones
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("valoraciones")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-
-                                if(document.getId().equals(id)) {
-
-                                    //Guardamos el valor de su map
-
-                                    Map<String,String>  users = (HashMap)document.get("votaciones");
-
-                                    //iteramos el map para ir sumando sus puntos
-
-                                    float puntos  = 0;
-
-                                    for (String value : users.values()) {
-                                        //System.out.println("Value = " + value);
-
-                                        Float valorPos = Float.parseFloat(value);
-                                        puntos = puntos + valorPos;
-                                    }
-
-                                    float division = puntos / users.size();
-
-                                    String finali = String.valueOf(division);
-
-                                    valoracionTotal.setText(finali);
-
-
-
-                                    // Toast.makeText(getContext(),"Puntos: " + puntos +" numero " + users.size() +" puntuacion " + finali,Toast.LENGTH_SHORT).show();
-
-
-
-                                }
-
-
-                            }
-                        } else {
-
-                            Toast.makeText(getContext(),"error obteniendo los datos...",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
-
-
-
-
-    }
 }

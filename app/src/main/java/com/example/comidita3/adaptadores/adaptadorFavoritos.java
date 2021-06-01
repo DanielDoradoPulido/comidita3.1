@@ -95,7 +95,7 @@ public class adaptadorFavoritos extends ArrayAdapter<Receta> {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -470,7 +470,7 @@ public class fragment_recetaDetalleCreador extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -511,7 +511,7 @@ public class fragment_recetaDetalleCreador extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -542,7 +542,7 @@ public class fragment_recetaDetalleCreador extends Fragment {
 
                                     }
 
-                                    db.collection("valoraciones").document(document.getId()).update("votaciones",users);
+                                    db.collection("recetas").document(document.getId()).update("votaciones",users);
 
                                     //Toast.makeText(getContext(),"votaste",Toast.LENGTH_SHORT).show();
 
@@ -573,7 +573,7 @@ public class fragment_recetaDetalleCreador extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("valoraciones")
+        db.collection("recetas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

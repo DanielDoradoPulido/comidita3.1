@@ -313,16 +313,26 @@ public class rellenarReceta extends Fragment {
 
                                 //añadimos a la coleccion de recetas la receta
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("recetas").document(receta.getId()).set(receta);
 
 
                                 //añadimos a la coleccion de valoraciones un documento que corresponda al documento de la receta
-                                Map<String,Integer> valoraciones = new HashMap<>();
+                                Map<String,Object> valoraciones = new HashMap<>();
+                                valoraciones.put(UID,"3.0");
 
-                                Map<String,Object> valoracionReg = new HashMap<>();
-                                valoracionReg.put("votaciones",valoraciones);
+                                Map<String,Object> recetaN = new HashMap<>();
+                                recetaN.put("descripcion",receta.getDescripcion());
+                                recetaN.put("dificultad",receta.getDificultad());
+                                recetaN.put("id",receta.getId());
+                                recetaN.put("imagePath",receta.getImagePath());
+                                recetaN.put("ingredientes",receta.getIngredientes());
+                                recetaN.put("nombre",receta.getNombre());
+                                recetaN.put("urlYoutube",receta.getUrlYoutube());
+                                recetaN.put("userPath",UID);
+                                recetaN.put("valoracion","0");
+                                recetaN.put("visitas","0");
+                                recetaN.put("votaciones",valoraciones);
 
-                                db.collection("valoraciones").document(receta.getId()).set(valoracionReg);
+                                db.collection("recetas").document(receta.getId()).set(recetaN);
 
                                 //enviar notificacion a suscriptores
                                 if(dificultad.equals("Rápida de hacer")){
