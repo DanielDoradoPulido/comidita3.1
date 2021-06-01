@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,6 +59,7 @@ public class fragmentHome extends Fragment {
 
 
     Interfaz contexto;
+    NavController navController;
 
     //Lista recetas populares
 
@@ -121,6 +124,8 @@ public class fragmentHome extends Fragment {
 
 
 
+
+
     }
 
     @Override
@@ -140,11 +145,13 @@ public class fragmentHome extends Fragment {
         contexto.loadDataFavoritos();
         valorizadas = new ArrayList<>();
 
+        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
 
         recetasPopulares = view.findViewById(R.id.recyclerViewPopulares);
         recetasPopulares.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
         listRecetasPopulares = new ArrayList<>();
-        adaptadoPopulares = new PopularAdapters(getActivity(),listRecetasPopulares);
+        adaptadoPopulares = new PopularAdapters(getActivity(),listRecetasPopulares,navController);
         recetasPopulares.setAdapter(adaptadoPopulares);
 
         obtenerPopulares();

@@ -119,7 +119,6 @@ public class fragment_recetaDetalle extends Fragment {
         super.onCreate(savedInstanceState);
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -160,6 +159,7 @@ public class fragment_recetaDetalle extends Fragment {
         name.setText(nombre);
 
         comprobarVotado();
+        sumarVisita();
 
         ratingBar = view.findViewById(R.id.ratingBarDetalleRecetaSinPerfil);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -567,6 +567,22 @@ public class fragment_recetaDetalle extends Fragment {
 
         //metodo load
 
+
+
+
+    }
+
+    public void sumarVisita(){
+
+        String s = visitas;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        int sumado = Integer.parseInt(visitas) + 1;
+
+        //actualizamos la bbdd
+
+        db.collection("recetas").document(id).update("visitas",String.valueOf(sumado));
 
 
 

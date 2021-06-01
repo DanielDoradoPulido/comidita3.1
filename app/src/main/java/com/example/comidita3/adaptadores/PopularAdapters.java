@@ -1,14 +1,18 @@
 package com.example.comidita3.adaptadores;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -25,15 +29,18 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
     private Context context;
     private List<Receta> listRecetas;
     private int valor=1;
+    NavController navController;
 
-    public PopularAdapters(Context context, List<Receta> listRecetas) {
+    public PopularAdapters(Context context, List<Receta> listRecetas,NavController navController) {
         this.context = context;
         this.listRecetas = listRecetas;
+        this.navController = navController;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.popular_item,parent,false));
     }
 
@@ -73,6 +80,28 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
         holder.dificultad.setText(listRecetas.get(position).getDificultad());
 
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString("id",listRecetas.get(position).getId());
+                bundle.putString("nombre",listRecetas.get(position).getNombre());
+                bundle.putString("ingredientes", listRecetas.get(position).getIngredientes());
+                bundle.putString("dificultad",listRecetas.get(position).getDificultad());
+                bundle.putString("descripcion", listRecetas.get(position).getDescripcion());
+                bundle.putString("urlYoutube", listRecetas.get(position).getUrlYoutube());
+                bundle.putString("userPath", listRecetas.get(position).getUserPath());
+                bundle.putString("imagePath", listRecetas.get(position).getImagePath());
+                bundle.putString("valoracion", listRecetas.get(position).getValoracion());
+                bundle.putString("visitas", listRecetas.get(position).getVisitas());
+
+                navController.navigate(R.id.fragment_recetaDetalle,bundle);
+
+            }
+        });
+
     }
 
     @Override
@@ -83,11 +112,10 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         LottieAnimationView animationView;
-        TextView nombre,dificultad,rate;
+        TextView nombre,dificultad;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
 
             animationView = itemView.findViewById(R.id.animationPopulares);
 
@@ -98,5 +126,7 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
 
 
         }
+
+
     }
 }
