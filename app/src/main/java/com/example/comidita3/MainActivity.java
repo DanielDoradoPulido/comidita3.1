@@ -10,7 +10,6 @@ import androidx.navigation.ui.NavigationUI;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,18 +19,16 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.example.comidita3.LOGIN.loginActivity;
 import com.example.comidita3.adaptadores.PopularAdapters;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.adaptadores.adaptadorFavoritos;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
-import com.example.comidita3.clasesPOJO.Receta;
+import com.example.comidita3.Objetos.Receta;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,13 +46,10 @@ import com.google.firebase.storage.StorageReference;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements Interfaz {
 

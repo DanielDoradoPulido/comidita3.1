@@ -7,6 +7,11 @@
         android:title="Home" />
 
     <item
+        android:id="@+id/fragmentBuscar"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Buscar" />
+
+    <item
         android:id="@+id/fragmentFavoritos"
         android:icon="@drawable/ic_favorite"
         android:title="Favoritas" />
@@ -15,5 +20,7 @@
         android:id="@+id/fragmentCuenta"
         android:icon="@drawable/ic_person"
         android:title="Cuenta" />
+
+
 
 </menu>

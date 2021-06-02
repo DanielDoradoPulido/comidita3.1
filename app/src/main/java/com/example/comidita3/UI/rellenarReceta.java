@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
-import com.example.comidita3.clasesPOJO.Receta;
+import com.example.comidita3.Objetos.Receta;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

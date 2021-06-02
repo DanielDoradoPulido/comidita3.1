@@ -17,14 +17,15 @@ import com.example.comidita3.Objetos.Receta;
 
 import java.util.List;
 
-public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHolder> {
+public class vistasAdapters extends RecyclerView.Adapter<vistasAdapters.ViewHolder> {
+
 
     private Context context;
     private List<Receta> listRecetas;
     private int valor=1;
     NavController navController;
 
-    public PopularAdapters(Context context, List<Receta> listRecetas,NavController navController) {
+    public vistasAdapters(Context context, List<Receta> listRecetas,NavController navController) {
         this.context = context;
         this.listRecetas = listRecetas;
         this.navController = navController;
@@ -32,41 +33,41 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public vistasAdapters.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.popular_item,parent,false));
+        return new vistasAdapters.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.visto_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull vistasAdapters.ViewHolder holder, int position) {
 
         if(valor == 1){
-            holder.animationView.setAnimation(R.raw.item);
+            holder.animationView.setAnimation(R.raw.recipe2);
             valor++;
         }
         else if(valor==2){
-            holder.animationView.setAnimation(R.raw.cooking3);
+            holder.animationView.setAnimation(R.raw.vegetales);
             valor++;
         }
         else if(valor==3){
-            holder.animationView.setAnimation(R.raw.recipe);
-            valor++;
-        }
-        else if(valor==4){
             holder.animationView.setAnimation(R.raw.cuchillotenedor);
             valor++;
         }
-        else if(valor==5){
+        else if(valor==4){
             holder.animationView.setAnimation(R.raw.zumoensalada);
+            valor++;
+        }
+        else if(valor==5){
+            holder.animationView.setAnimation(R.raw.recipe);
             valor++;
         }
 
         else if(valor==5){
-            holder.animationView.setAnimation(R.raw.vegetales);
+            holder.animationView.setAnimation(R.raw.cooking3);
             valor++;
         }
         else{
-            holder.animationView.setAnimation(R.raw.recipe2);
+            holder.animationView.setAnimation(R.raw.item);
             valor=1;
         }
         holder.nombre.setText(listRecetas.get(position).getNombre());
@@ -110,11 +111,11 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            animationView = itemView.findViewById(R.id.animationTodas);
+            animationView = itemView.findViewById(R.id.animationVistas);
 
-            nombre = itemView.findViewById(R.id.textViewNombreItem);
+            nombre = itemView.findViewById(R.id.textViewNombreItemVistas);
 
-            dificultad = itemView.findViewById(R.id.textViewDificultadItem);
+            dificultad = itemView.findViewById(R.id.textViewDificultadItemVistas);
 
 
 
@@ -123,3 +124,4 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
 
     }
 }
+

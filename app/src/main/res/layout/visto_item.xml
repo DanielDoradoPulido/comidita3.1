@@ -14,9 +14,9 @@
         android:padding="5dp">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationTodas"
-            android:layout_width="162dp"
-            android:layout_height="103dp"
+            android:id="@+id/animationVistas"
+            android:layout_width="164dp"
+            android:layout_height="65dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.11"
@@ -29,7 +29,7 @@
             app:lottie_rawRes="@raw/cooking" />
 
         <TextView
-            android:id="@+id/textViewNombreItem"
+            android:id="@+id/textViewNombreItemVistas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
@@ -43,12 +43,12 @@
         </TextView>
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/textView110"
             android:layout_width="159dp"
             android:layout_height="5dp" />
 
         <TextView
-            android:id="@+id/textViewDificultadItem"
+            android:id="@+id/textViewDificultadItemVistas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"

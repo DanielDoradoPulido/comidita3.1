@@ -43,7 +43,7 @@
         app:srcCompat="@drawable/letras2" />
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animationPopulares"
+        android:id="@+id/animationTodas"
         android:layout_width="367dp"
         android:layout_height="427dp"
         app:layout_constraintBottom_toBottomOf="parent"

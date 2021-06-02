@@ -55,7 +55,7 @@ public class IntroductoryActivity extends AppCompatActivity {
 
         letras = findViewById(R.id.imageViewSplashLetras);
 
-        lottieAnimationView = findViewById(R.id.animationPopulares);
+        lottieAnimationView = findViewById(R.id.animationTodas);
 
 
 

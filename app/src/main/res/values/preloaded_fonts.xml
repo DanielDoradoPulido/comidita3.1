@@ -2,5 +2,8 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/abel</item>
+        <item>@font/annie_use_your_telescope</item>
+        <item>@font/lakki_reddy</item>
+        <item>@font/lemonada_semibold</item>
     </array>
 </resources>

@@ -1,19 +1,16 @@
 package com.example.comidita3.UI;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.comidita3.Interfaz;
+import com.example.comidita3.Objetos.RecetaVisitada;
 import com.example.comidita3.R;
 import com.example.comidita3.adaptadores.PopularAdapters;
-import com.example.comidita3.clasesPOJO.Receta;
-import com.example.comidita3.clasesPOJO.RecetaValorizada;
-import com.example.comidita3.clasesPOJO.comparatorPopulares;
+import com.example.comidita3.Objetos.Receta;
+import com.example.comidita3.Objetos.RecetaValorizada;
+import com.example.comidita3.adaptadores.vistasAdapters;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,14 +34,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
-import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.toMap;
 
 /**
@@ -61,19 +54,34 @@ public class fragmentHome extends Fragment {
     Interfaz contexto;
     NavController navController;
 
-    //Lista recetas populares
+    //Recycler view mas Populares
 
     List<Receta> listRecetasPopulares;
     RecyclerView recetasPopulares;
-    RecyclerView recetasRecomendadas;
     PopularAdapters adaptadoPopulares;
     ArrayList<RecetaValorizada> valorizadas;
-    comparatorPopulares c;
+
+    //recycler View mas visitadas
+
+    List<Receta> listRecetasVisitadas;
+    RecyclerView recetasVisitadas;
+    vistasAdapters adaptadorVisitada;
+    ArrayList<RecetaVisitada> visitadas;
+
+    //recycler View recomendadas
+
+    List<Receta> listRecetasRecomendadas;
+    RecyclerView recetasRecomendadas;
+    vistasAdapters adaptadorRecomendadas;
+    ArrayList<RecetaVisitada> recomendadas;
+
+
 
 
     //firebase
 
     FirebaseFirestore db;
+
 
 
     // TODO: Rename and change types of parameters
@@ -120,12 +128,6 @@ public class fragmentHome extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
-
-
-
-
-
     }
 
     @Override
@@ -144,9 +146,12 @@ public class fragmentHome extends Fragment {
 
         contexto.loadDataFavoritos();
         valorizadas = new ArrayList<>();
+        visitadas = new ArrayList<>();
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
+        obtenerPopulares();
+        obtenerVisitadas();
 
         recetasPopulares = view.findViewById(R.id.recyclerViewPopulares);
         recetasPopulares.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
@@ -154,7 +159,17 @@ public class fragmentHome extends Fragment {
         adaptadoPopulares = new PopularAdapters(getActivity(),listRecetasPopulares,navController);
         recetasPopulares.setAdapter(adaptadoPopulares);
 
-        obtenerPopulares();
+        recetasVisitadas = view.findViewById(R.id.recyclerViewVisitadas);
+        recetasVisitadas.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        listRecetasVisitadas = new ArrayList<>();
+        adaptadorVisitada = new vistasAdapters(getActivity(),listRecetasVisitadas,navController);
+        recetasVisitadas.setAdapter(adaptadorVisitada);
+
+        recetasRecomendadas = view.findViewById(R.id.recyclerViewRecomendadas);
+        recetasRecomendadas.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        recetasRecomendadas.setAdapter(adaptadorVisitada);
+
+
 
 
 
@@ -245,12 +260,56 @@ public class fragmentHome extends Fragment {
 
     public void ordenarPopulares() {
 
-        Collections.sort(valorizadas,c);
+        Collections.sort(valorizadas, new Comparator<RecetaValorizada>() {
+            @Override
+            public int compare(RecetaValorizada o1, RecetaValorizada o2) {
+                if(o1.getValor()>o2.getValor()){
+
+                    if(o1.getNumVotaciones() + 10 < o2.getNumVotaciones())
+                        return  -1;
+                    else if(o1.getNumVotaciones() > o2.getNumVotaciones())
+                        return -1;
+                    else if(o1.getNumVotaciones() == o2.getNumVotaciones())
+                        return -1;
+
+                    else{
+                        return 1;
+                    }
+
+                }
+                else if(o1.getValor()<o2.getValor()){
+
+                    if(o1.getNumVotaciones() > 10 + o2.getNumVotaciones())
+                        return  1;
+                    else if(o1.getNumVotaciones() < o2.getNumVotaciones())
+                        return 1;
+                    else if(o1.getNumVotaciones() == o2.getNumVotaciones())
+                        return 1;
+
+                    else{
+                        return -1;
+                    }
+
+                }
+                else if(o1.getValor() == o2.getValor()){
+                    if(o1.getNumVotaciones() > o2.getNumVotaciones())
+                        return -1;
+                    else if(o1.getNumVotaciones() < o2.getNumVotaciones())
+                        return 1;
+                    else
+                        return 0;
+
+                }
+
+
+                return 0;
+            }
+        });
 
         if(valorizadas.size()>10){
 
             for(int i = 0;i<10;i++) {
-                Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getNumVotaciones(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getNumVotaciones(), Toast.LENGTH_SHORT).show();
 
                 int finalI = i;
                 db.collection("recetas")
@@ -287,7 +346,7 @@ public class fragmentHome extends Fragment {
         else{
 
             for(int i = 0;i<valorizadas.size();i++) {
-                Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getNumVotaciones(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "nombre " +valorizadas.get(i).getId() + " valor " + valorizadas.get(i).getNumVotaciones(), Toast.LENGTH_SHORT).show();
 
                 int finalI = i;
                 db.collection("recetas")
@@ -321,6 +380,128 @@ public class fragmentHome extends Fragment {
 
         }
 
+
+    }
+
+    public void obtenerVisitadas(){
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String visitas = document.getString("visitas");
+                                int numVisitas = Integer.parseInt(visitas);
+
+                                RecetaVisitada recetaVisitada = new RecetaVisitada(document.getId(),numVisitas);
+                                visitadas.add(recetaVisitada);
+
+
+
+
+
+
+                            }
+
+                            ordenarVisitadas();
+
+                        } else {
+
+                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+
+
+    }
+
+    public void ordenarVisitadas(){
+
+        Collections.sort(visitadas);
+
+        if(visitadas.size()>10){
+
+            for(int i = 0;i<10;i++) {
+                Toast.makeText(getContext(), " visitas " + visitadas.get(i).getVisitas(), Toast.LENGTH_SHORT).show();
+
+                int finalI = i;
+                db.collection("recetas")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        if(document.getId().equals(visitadas.get(finalI).getId())) {
+
+                                            Receta receta = document.toObject(Receta.class);
+                                            listRecetasVisitadas.add(receta);
+                                            adaptadorVisitada.notifyDataSetChanged();
+
+                                        }
+
+                                    }
+                                } else {
+
+                                    Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+
+
+
+            }
+
+        }
+
+        else{
+
+            for(int i = 0;i<visitadas.size();i++) {
+                Toast.makeText(getContext(), " visitas " + visitadas.get(i).getVisitas(), Toast.LENGTH_SHORT).show();
+
+                int finalI = i;
+                db.collection("recetas")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        if(document.getId().equals(visitadas.get(finalI).getId())) {
+
+                                            Receta receta = document.toObject(Receta.class);
+                                            listRecetasVisitadas.add(receta);
+                                            adaptadorVisitada.notifyDataSetChanged();
+
+                                        }
+
+                                    }
+                                } else {
+
+                                    Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+
+
+
+            }
+
+        }
 
     }
 

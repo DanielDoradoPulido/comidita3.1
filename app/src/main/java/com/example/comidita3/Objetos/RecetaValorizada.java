@@ -1,8 +1,6 @@
-package com.example.comidita3.clasesPOJO;
+package com.example.comidita3.Objetos;
 
-import java.util.Comparator;
-
-public class RecetaValorizada implements Comparable<RecetaValorizada> {
+public class RecetaValorizada {
 
     String id;
     Float valor;
@@ -43,16 +41,5 @@ public class RecetaValorizada implements Comparable<RecetaValorizada> {
         this.numVotaciones = numVotaciones;
     }
 
-    @Override
-    public int compareTo(RecetaValorizada o) {
-        if(o.getValor() > valor){
-            return 1;
-        }
-        else if(o.getValor()>= valor){
-            return 0;
-        }
-        else{
-            return -1;
-        }
-    }
+
 }

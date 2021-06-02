@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,7 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.comidita3.Interfaz;
 import com.example.comidita3.R;
-import com.example.comidita3.clasesPOJO.Receta;
+import com.example.comidita3.Objetos.Receta;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,8 +37,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;

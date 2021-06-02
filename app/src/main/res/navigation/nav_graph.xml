@@ -55,4 +55,9 @@
         android:name="com.example.comidita3.UI.modificarReceta"
         android:label="fragment_modificar_receta"
         tools:layout="@layout/fragment_modificar_receta" />
+    <fragment
+        android:id="@+id/fragmentBuscar"
+        android:name="com.example.comidita3.UI.fragmentBuscar"
+        android:label="fragment_buscar"
+        tools:layout="@layout/fragment_buscar" />
 </navigation>

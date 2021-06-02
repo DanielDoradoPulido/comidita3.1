@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <com.airbnb.lottie.LottieAnimationView
@@ -28,41 +28,29 @@
 
             app:lottie_rawRes="@raw/cooking" />
 
-        <TextView
-            android:id="@+id/textViewNombreItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="@font/abel"
-            android:text="Nombre de la receta"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold">
+        <LinearLayout
+            android:layout_width="237dp"
+            android:layout_height="107dp"
+            android:orientation="vertical">
 
-        </TextView>
+            <TextView
+                android:id="@+id/textViewNombreBuscar"
+                android:layout_width="225dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="10dp"
+                android:text="Nombre de la receta"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="159dp"
-            android:layout_height="5dp" />
-
-        <TextView
-            android:id="@+id/textViewDificultadItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:text="Dificultad"
-            android:textAlignment="center"
-            android:textColor="#838080"
-            android:textStyle="italic">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="151dp"
-            android:layout_height="7dp" />
+            <TextView
+                android:id="@+id/textViewDificultadBuscar"
+                android:layout_width="223dp"
+                android:layout_height="29dp"
+                android:layout_marginLeft="10dp"
+                android:text="Dificultad"
+                android:textStyle="italic" />
+        </LinearLayout>
 
 
     </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.comidita3.clasesPOJO;
+package com.example.comidita3.Objetos;
 
 public class Receta {
 
