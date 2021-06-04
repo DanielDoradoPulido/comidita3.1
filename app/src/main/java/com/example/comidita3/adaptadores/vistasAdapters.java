@@ -62,8 +62,12 @@ public class vistasAdapters extends RecyclerView.Adapter<vistasAdapters.ViewHold
             valor++;
         }
 
-        else if(valor==5){
+        else if(valor==6){
             holder.animationView.setAnimation(R.raw.cooking3);
+            valor++;
+        }
+        else if(valor==7){
+            holder.animationView.setAnimation(R.raw.cooking);
             valor++;
         }
         else{

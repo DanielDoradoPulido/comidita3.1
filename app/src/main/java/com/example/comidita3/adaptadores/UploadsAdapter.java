@@ -1,7 +1,6 @@
 package com.example.comidita3.adaptadores;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +17,10 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.comidita3.Objetos.Receta;
 import com.example.comidita3.R;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class todasAdapters extends RecyclerView.Adapter<todasAdapters.ViewHolder> implements Filterable {
+public class UploadsAdapter extends RecyclerView.Adapter<UploadsAdapter.ViewHolder> implements Filterable {
 
     private Context context;
     private List<Receta> exampleList;
@@ -31,24 +28,21 @@ public class todasAdapters extends RecyclerView.Adapter<todasAdapters.ViewHolder
     private int valor=1;
     NavController navController;
 
-
-    public todasAdapters(Context context, List<Receta> exampleList,NavController navController) {
+    public UploadsAdapter(Context context, List<Receta> exampleList, NavController navController) {
         this.context = context;
         this.exampleList = exampleList;
         this.exampleListFull = exampleList;
         this.navController = navController;
-
     }
 
     @NonNull
     @Override
-    public todasAdapters.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        return new todasAdapters.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.todas_item,parent,false));
+    public UploadsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new UploadsAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uploads_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull todasAdapters.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UploadsAdapter.ViewHolder holder, int position) {
 
         if(valor == 1){
             holder.animationView.setAnimation(R.raw.item);
@@ -108,7 +102,6 @@ public class todasAdapters extends RecyclerView.Adapter<todasAdapters.ViewHolder
 
             }
         });
-
     }
 
     @Override
@@ -158,24 +151,21 @@ public class todasAdapters extends RecyclerView.Adapter<todasAdapters.ViewHolder
         return results;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
+    public class ViewHolder extends RecyclerView.ViewHolder {
         LottieAnimationView animationView;
         TextView nombre,dificultad;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            animationView = itemView.findViewById(R.id.animationTodas);
+            animationView = itemView.findViewById(R.id.animationSubidas);
 
-            nombre = itemView.findViewById(R.id.textViewNombreBuscar);
+            nombre = itemView.findViewById(R.id.textViewNombreSubidas);
 
-            dificultad = itemView.findViewById(R.id.textViewDificultadBuscar);
+            dificultad = itemView.findViewById(R.id.textViewDificultadSubidas);
 
 
 
         }
-
-
     }
 }

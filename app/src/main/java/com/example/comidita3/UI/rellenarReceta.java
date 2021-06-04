@@ -317,7 +317,7 @@ public class rellenarReceta extends Fragment {
 
                                 //añadimos a la coleccion de valoraciones un documento que corresponda al documento de la receta
                                 Map<String,Object> valoraciones = new HashMap<>();
-                                valoraciones.put(UID,"3.0");
+                                valoraciones.put(UID,"0.0");
 
                                 Map<String,Object> recetaN = new HashMap<>();
                                 recetaN.put("descripcion",receta.getDescripcion());

@@ -432,7 +432,7 @@ public class fragmentHome extends Fragment {
         if(visitadas.size()>10){
 
             for(int i = 0;i<10;i++) {
-                Toast.makeText(getContext(), " visitas " + visitadas.get(i).getVisitas(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), " visitas " + visitadas.get(i).getVisitas(), Toast.LENGTH_SHORT).show();
 
                 int finalI = i;
                 db.collection("recetas")
@@ -469,7 +469,7 @@ public class fragmentHome extends Fragment {
         else{
 
             for(int i = 0;i<visitadas.size();i++) {
-                Toast.makeText(getContext(), " visitas " + visitadas.get(i).getVisitas(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), " visitas " + visitadas.get(i).getVisitas(), Toast.LENGTH_SHORT).show();
 
                 int finalI = i;
                 db.collection("recetas")

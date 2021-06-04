@@ -61,8 +61,12 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
             valor++;
         }
 
-        else if(valor==5){
+        else if(valor==6){
             holder.animationView.setAnimation(R.raw.vegetales);
+            valor++;
+        }
+        else if(valor==7){
+            holder.animationView.setAnimation(R.raw.cooking);
             valor++;
         }
         else{

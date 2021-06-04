@@ -1,5 +1,6 @@
 package com.example.comidita3.UI;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.comidita3.Objetos.Receta;
 import com.example.comidita3.Objetos.RecetaValorizada;
 import com.example.comidita3.Objetos.RecetaVisitada;
@@ -57,6 +59,8 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
     List<Receta> listRecetasTodas;
     todasAdapters adaptadorTodas;
     ArrayList<String> todas;
+
+    LottieAnimationView animationNotFound;
 
 
     // TODO: Rename and change types of parameters
@@ -109,6 +113,9 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
         });
         searchView.setOnQueryTextListener(this);
 
+        animationNotFound = view.findViewById(R.id.animationNotFound);
+        animationNotFound.setVisibility(View.GONE);
+
 
         obtenerTodas();
 
@@ -119,8 +126,13 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
         recyclerViewTodas.setAdapter(adaptadorTodas);
 
 
+
+
         super.onViewCreated(view, savedInstanceState);
     }
+
+
+
 
     private void obtenerTodas() {
 
@@ -204,6 +216,8 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public boolean onQueryTextChange(String newText) {
         adaptadorTodas.getFilter().filter(newText);
+
+
         return true;
     }
 }

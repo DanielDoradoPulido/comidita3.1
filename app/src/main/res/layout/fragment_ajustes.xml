@@ -25,6 +25,7 @@
         android:id="@+id/textViewNombreAjustes"
         android:layout_width="283dp"
         android:layout_height="42dp"
+        android:text="dnoapsdasdasada"
         android:textAlignment="center"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
@@ -40,6 +41,7 @@
         android:layout_width="332dp"
         android:layout_height="33dp"
         android:layout_marginTop="4dp"
+        android:text="dnjslkadahsjdasd@gmail.com"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#515151"
@@ -51,130 +53,245 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewNombreAjustes"
         app:layout_constraintVertical_bias="0.0" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutCambiarContraseña"
-        android:layout_width="190dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="56dp"
-        android:orientation="horizontal"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCambiarContraseña"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#d5deeb"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCorreoAjustes"
-        app:layout_constraintVertical_bias="0.019">
+        app:layout_constraintVertical_bias="0.191">
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_https_24" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="184dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="   Cambiar contraseña"
-            android:textAlignment="textStart"
-            android:textColor="#FBFAFA"
-            android:textSize="16sp" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="83dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+
+                app:lottie_rawRes="@raw/password" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cambiar contraseña"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
 
-        android:id="@+id/linearLayoutSubidas"
-        android:layout_width="203dp"
-        android:layout_height="25dp"
-        android:orientation="horizontal"
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewRecetasSubidas"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#d5deeb"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.836"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCambiarContraseña"
-        app:layout_constraintVertical_bias="0.127">
+        app:layout_constraintTop_toBottomOf="@+id/textViewCorreoAjustes"
+        app:layout_constraintVertical_bias="0.195">
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_cloud_upload_24" />
+            android:orientation="vertical">
 
-        <TextView
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="83dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
 
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="      Recetas Subidas"
-            android:textAlignment="textStart"
-            android:textColor="#FBFAFA"
-            android:textSize="16sp" />
+                app:lottie_rawRes="@raw/uploaded" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recetas Subidas"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
 
-        android:id="@+id/linearLayoutNotificaciones"
-        android:layout_width="195dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="28dp"
-        android:orientation="horizontal"
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViwCerrarSesion"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#d5deeb"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.832"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSubidas"
-        app:layout_constraintVertical_bias="0.053">
+        app:layout_constraintTop_toBottomOf="@+id/cardViewRecetasSubidas"
+        app:layout_constraintVertical_bias="0.052">
 
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_person_pin_24" />
+            android:orientation="vertical">
 
-        <TextView
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="83dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
 
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="   Notificaciones"
-            android:textAlignment="textStart"
-            android:textColor="#FBFAFA"
-            android:textSize="16sp" />
+                app:lottie_rawRes="@raw/door" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cerrar Sesión"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
 
-        android:id="@+id/linearLayoutCerrarSesion"
-        android:layout_width="142dp"
-        android:layout_height="28dp"
-        android:orientation="horizontal"
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewNotificaciones"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#d5deeb"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.193"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutNotificaciones"
-        app:layout_constraintVertical_bias="0.788">
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCambiarContraseña"
+        app:layout_constraintVertical_bias="0.057">
 
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_exit_to_app_24" />
+            android:orientation="vertical">
 
-        <TextView
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="83dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.083"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
 
-            android:layout_width="255dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="   Cerrar Sesión"
-            android:textAlignment="textStart"
-            android:textColor="#FBFAFA"
-            android:textSize="16sp" />
+                app:lottie_rawRes="@raw/notification" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notificaciones"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
