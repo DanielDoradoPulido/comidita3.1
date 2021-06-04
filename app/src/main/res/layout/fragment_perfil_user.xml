@@ -34,32 +34,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.074"></de.hdodenhof.circleimageview.CircleImageView>
 
-    <ListView
-        android:id="@+id/listViewPerfilUser"
-        android:layout_width="match_parent"
-        android:layout_height="386dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
         android:id="@+id/textView4"
         android:layout_width="296dp"
-        android:layout_height="61dp"
-        android:fontFamily="@font/abel"
+        android:layout_height="57dp"
+        android:fontFamily="@font/lakki_reddy"
         android:text="LISTA DE RECETAS"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#AEADAD"
-        android:textSize="36sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintVertical_bias="0.358" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPerfilUser"
+        android:layout_width="432dp"
+        android:layout_height="388dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

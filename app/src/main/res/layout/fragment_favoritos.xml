@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintVertical_bias="0.068" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="220dp"
@@ -41,14 +41,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFavoritos"
-        android:layout_width="432dp"
-        android:layout_height="349dp"
+        android:layout_width="match_parent"
+        android:layout_height="383dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchViewFavoritos"
-        app:layout_constraintVertical_bias="0.273" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <SearchView
         android:id="@+id/searchViewFavoritos"

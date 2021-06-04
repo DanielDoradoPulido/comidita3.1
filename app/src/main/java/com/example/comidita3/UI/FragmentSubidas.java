@@ -72,7 +72,7 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseAuth mAuth;
-    TextView nombre;
+    TextView nombre,correo;
     ImageView perfil;
     String pathInicio;
 
@@ -157,6 +157,7 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
 
         perfil = v.findViewById(R.id.circleImageViewPerfilUser);
         nombre = v.findViewById(R.id.textViewNombrePerfilUser);
+        correo = v.findViewById(R.id.textViewCorreoElectronicoSubidas);
 
         subir = v.findViewById(R.id.floatingActionButtonAñadirSubidas);
         subir.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +234,7 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
                                 if(document.getId().equals(mAuth.getUid())) {
 
                                     nombre.setText(document.getString("nombre"));
+                                    correo.setText(document.getString("correo"));
 
 
                                     if(!(pathInicio = document.getString("perfilPath")).equals("")){

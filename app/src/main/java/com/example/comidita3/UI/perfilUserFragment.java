@@ -9,28 +9,38 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.comidita3.Interfaz;
+import com.example.comidita3.Objetos.Receta;
 import com.example.comidita3.R;
+import com.example.comidita3.adaptadores.UploadsAdapter;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
+import com.example.comidita3.adaptadores.perfilUserAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,6 +68,17 @@ public class perfilUserFragment extends Fragment {
     private StorageReference storageReference;
     String pathInicio;
     Interfaz contexto;
+
+    SearchView searchView;
+
+    FirebaseFirestore db;
+
+    //recyclerview
+
+    RecyclerView subidasR;
+    List<Receta> listRecetasSubidas;
+    perfilUserAdapter adaptadorSubidas;
+
 
 
 
@@ -109,27 +130,42 @@ public class perfilUserFragment extends Fragment {
         name = v.findViewById(R.id.textViewNombrePerfilUser);
 
 
-        listView = v.findViewById(R.id.listViewPerfilUser);
-        adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidasOther();
-        listView.setAdapter(ad);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
 
-                bundle.putString("id",ad.getItem(position).getId());
-                bundle.putString("nombre", ad.getItem(position).getNombre());
-                bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
-                bundle.putString("descripcion", ad.getItem(position).getDescripcion());
-                bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
-                bundle.putString("userPath", ad.getItem(position).getUserPath());
-                bundle.putString("imagePath", ad.getItem(position).getImagePath());
-                bundle.putString("valoracion", ad.getItem(position).getValoracion());
-                bundle.putString("visitas", ad.getItem(position).getVisitas());
 
-                navController.navigate(R.id.fragment_receta_detalle_sinPerfil,bundle);
-            }
-        });
+        //listView = v.findViewById(R.id.listViewPerfilUser);
+        //adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidasOther();
+        //listView.setAdapter(ad);
+        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          //  @Override
+            //public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              //  Bundle bundle = new Bundle();
+
+                //bundle.putString("id",ad.getItem(position).getId());
+                //bundle.putString("nombre", ad.getItem(position).getNombre());
+                //bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
+                //bundle.putString("descripcion", ad.getItem(position).getDescripcion());
+                //bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
+                //bundle.putString("userPath", ad.getItem(position).getUserPath());
+                //bundle.putString("imagePath", ad.getItem(position).getImagePath());
+                //bundle.putString("valoracion", ad.getItem(position).getValoracion());
+                //bundle.putString("visitas", ad.getItem(position).getVisitas());
+
+            //    navController.navigate(R.id.fragment_receta_detalle_sinPerfil,bundle);
+            //}
+        //});
+
+        obtenerSubidas();
+
+        subidasR = v.findViewById(R.id.recyclerViewPerfilUser);
+        subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+        listRecetasSubidas = new ArrayList<>();
+        adaptadorSubidas = new perfilUserAdapter(getActivity(),listRecetasSubidas,navController);
+        subidasR.setAdapter(adaptadorSubidas);
+
+
+
+
+
 
         return v;
     }
@@ -203,4 +239,61 @@ public class perfilUserFragment extends Fragment {
                     }
                 });
     }
+
+    public void obtenerSubidas(){
+
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String userPath = document.getString("userPath");
+
+                                if(userPath.equals(userPath)){
+
+                                    Receta receta = document.toObject(Receta.class);
+                                    listRecetasSubidas.add(receta);
+                                    adaptadorSubidas.notifyDataSetChanged();
+
+                                }
+
+                            }
+
+                        } else {
+
+                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 }
