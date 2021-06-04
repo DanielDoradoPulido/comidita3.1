@@ -101,6 +101,8 @@ public class FragmentAjustes extends Fragment {
 
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -495,7 +497,15 @@ public class FragmentAjustes extends Fragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
 
-                                                Glide.with(getContext()).load(uri).into(perfil);
+                                                try{
+
+                                                    Glide.with(getContext()).load(uri).into(perfil);
+
+                                                }catch (Exception e){
+
+                                                }
+
+
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override

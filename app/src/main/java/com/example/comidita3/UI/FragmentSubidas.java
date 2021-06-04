@@ -85,7 +85,6 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
     RecyclerView subidasR;
     List<Receta> listRecetasSubidas;
     UploadsAdapter adaptadorSubidas;
-    ArrayList<RecetaVisitada> subidas;
 
 
     public FragmentSubidas() {
