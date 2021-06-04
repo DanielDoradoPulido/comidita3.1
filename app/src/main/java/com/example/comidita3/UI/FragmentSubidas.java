@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,13 +19,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.comidita3.Interfaz;
+import com.example.comidita3.Objetos.Receta;
+import com.example.comidita3.Objetos.RecetaValorizada;
+import com.example.comidita3.Objetos.RecetaVisitada;
 import com.example.comidita3.R;
+import com.example.comidita3.adaptadores.PopularAdapters;
+import com.example.comidita3.adaptadores.UploadsAdapter;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
+import com.example.comidita3.adaptadores.vistasAdapters;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,16 +41,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentSubidas#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentSubidas extends Fragment {
+public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextListener{
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -60,6 +75,17 @@ public class FragmentSubidas extends Fragment {
     TextView nombre;
     ImageView perfil;
     String pathInicio;
+
+    FirebaseFirestore db;
+
+    SearchView searchView;
+
+    //recyclerview
+
+    RecyclerView subidasR;
+    List<Receta> listRecetasSubidas;
+    UploadsAdapter adaptadorSubidas;
+    ArrayList<RecetaVisitada> subidas;
 
 
     public FragmentSubidas() {
@@ -143,31 +169,49 @@ public class FragmentSubidas extends Fragment {
             }
         });
 
-        listViewItems = (ListView) v.findViewById(R.id.listViewPerfilUser);
-        adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidas();
-
-        listViewItems.setAdapter(ad);
-        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        searchView = v.findViewById(R.id.searchViewSubidas);
+        searchView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Bundle bundle = new Bundle();
-
-                bundle.putString("id",ad.getItem(position).getId());
-                bundle.putString("nombre", ad.getItem(position).getNombre());
-                bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
-                bundle.putString("dificultad", ad.getItem(position).getDificultad());
-                bundle.putString("descripcion", ad.getItem(position).getDescripcion());
-                bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
-                bundle.putString("userPath", ad.getItem(position).getUserPath());
-                bundle.putString("imagePath", ad.getItem(position).getImagePath());
-                bundle.putString("valoracion", ad.getItem(position).getValoracion());
-                bundle.putString("visitas", ad.getItem(position).getVisitas());
-
-                navController.navigate(R.id.fragment_recetaDetalleCreador,bundle);
-
+            public void onClick(View v) {
+                searchView.onActionViewExpanded();
             }
         });
+        searchView.setOnQueryTextListener(this);
+
+        //listViewItems = (ListView) v.findViewById(R.id.listViewPerfilUser);
+        //adaptadorRecetasSubidas ad = contexto.getAdaptadorRecetasSubidas();
+
+        //listViewItems.setAdapter(ad);
+       // listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           // @Override
+           // public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+               // Bundle bundle = new Bundle();
+
+              //  bundle.putString("id",ad.getItem(position).getId());
+              //  bundle.putString("nombre", ad.getItem(position).getNombre());
+              //  bundle.putString("ingredientes", ad.getItem(position).getIngredientes());
+               // bundle.putString("dificultad", ad.getItem(position).getDificultad());
+               // bundle.putString("descripcion", ad.getItem(position).getDescripcion());
+              //  bundle.putString("urlYoutube", ad.getItem(position).getUrlYoutube());
+              //  bundle.putString("userPath", ad.getItem(position).getUserPath());
+              //  bundle.putString("imagePath", ad.getItem(position).getImagePath());
+              //  bundle.putString("valoracion", ad.getItem(position).getValoracion());
+              //  bundle.putString("visitas", ad.getItem(position).getVisitas());
+
+              //  navController.navigate(R.id.fragment_recetaDetalleCreador,bundle);
+
+           // }
+       // });
+
+        obtenerSubidas();
+
+        subidasR = v.findViewById(R.id.recyclerViewSubidas);
+        subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+        listRecetasSubidas = new ArrayList<>();
+        adaptadorSubidas = new UploadsAdapter(getActivity(),listRecetasSubidas,navController);
+        subidasR.setAdapter(adaptadorSubidas);
+
 
 
 
@@ -224,5 +268,72 @@ public class FragmentSubidas extends Fragment {
                 });
     }
 
+    public void obtenerSubidas(){
 
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("recetas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String userPath = document.getString("userPath");
+
+                                if(userPath.equals(mAuth.getUid())){
+
+                                    Receta receta = document.toObject(Receta.class);
+                                    listRecetasSubidas.add(receta);
+                                    adaptadorSubidas.notifyDataSetChanged();
+
+                                }
+
+                            }
+
+                        } else {
+
+                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adaptadorSubidas.getFilter().filter(newText);
+
+
+        return true;
+    }
 }

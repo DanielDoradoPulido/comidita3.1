@@ -98,7 +98,7 @@ public class UploadsAdapter extends RecyclerView.Adapter<UploadsAdapter.ViewHold
                 bundle.putString("valoracion", exampleList.get(position).getValoracion());
                 bundle.putString("visitas", exampleList.get(position).getVisitas());
 
-                navController.navigate(R.id.fragment_recetaDetalle,bundle);
+                navController.navigate(R.id.fragment_receta_detalle_sinPerfil,bundle);
 
             }
         });

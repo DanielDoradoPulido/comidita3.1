@@ -113,8 +113,6 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
         });
         searchView.setOnQueryTextListener(this);
 
-        animationNotFound = view.findViewById(R.id.animationNotFound);
-        animationNotFound.setVisibility(View.GONE);
 
 
         obtenerTodas();

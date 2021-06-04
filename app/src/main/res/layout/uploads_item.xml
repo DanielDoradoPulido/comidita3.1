@@ -14,7 +14,7 @@
         android:padding="5dp">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationFavs"
+            android:id="@+id/animationSubidas"
             android:layout_width="162dp"
             android:layout_height="103dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewNombreFavs"
+                android:id="@+id/textViewNombreSubidas"
                 android:layout_width="225dp"
                 android:layout_height="42dp"
                 android:layout_marginLeft="10dp"
@@ -44,7 +44,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textViewDificultadFavs"
+                android:id="@+id/textViewDificultadSubidas"
                 android:layout_width="223dp"
                 android:layout_height="29dp"
                 android:layout_marginLeft="10dp"
