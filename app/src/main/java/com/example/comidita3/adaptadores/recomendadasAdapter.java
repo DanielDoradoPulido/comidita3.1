@@ -41,36 +41,36 @@ public class recomendadasAdapter extends RecyclerView.Adapter<recomendadasAdapte
     public void onBindViewHolder(@NonNull recomendadasAdapter.ViewHolder holder, int position) {
 
         if(valor == 1){
-            holder.animationView.setAnimation(R.raw.item);
-            valor++;
-        }
-        else if(valor==2){
-            holder.animationView.setAnimation(R.raw.cooking3);
-            valor++;
-        }
-        else if(valor==3){
-            holder.animationView.setAnimation(R.raw.recipe);
-            valor++;
-        }
-        else if(valor==4){
             holder.animationView.setAnimation(R.raw.cuchillotenedor);
             valor++;
         }
+        else if(valor==2){
+            holder.animationView.setAnimation(R.raw.cooking);
+            valor++;
+        }
+        else if(valor==3){
+            holder.animationView.setAnimation(R.raw.recipe2);
+            valor++;
+        }
+        else if(valor==4){
+            holder.animationView.setAnimation(R.raw.item);
+            valor++;
+        }
         else if(valor==5){
-            holder.animationView.setAnimation(R.raw.zumoensalada);
+            holder.animationView.setAnimation(R.raw.vegetales);
             valor++;
         }
 
         else if(valor==6){
-            holder.animationView.setAnimation(R.raw.vegetales);
+            holder.animationView.setAnimation(R.raw.zumoensalada);
             valor++;
         }
         else if(valor==7){
-            holder.animationView.setAnimation(R.raw.cooking);
+            holder.animationView.setAnimation(R.raw.cooking3);
             valor++;
         }
         else{
-            holder.animationView.setAnimation(R.raw.recipe2);
+            holder.animationView.setAnimation(R.raw.recipe);
             valor=1;
         }
         holder.nombre.setText(listRecetas.get(position).getNombre());

@@ -2,10 +2,13 @@ package com.example.comidita3;
 
 import android.app.PendingIntent;
 
+import com.example.comidita3.Objetos.Receta;
 import com.example.comidita3.adaptadores.PopularAdapters;
 import com.example.comidita3.adaptadores.adaptadorAjustes;
 import com.example.comidita3.adaptadores.adaptadorFavoritos;
 import com.example.comidita3.adaptadores.adaptadorRecetasSubidas;
+
+import java.util.ArrayList;
 
 public interface Interfaz {
 
@@ -33,6 +36,8 @@ public interface Interfaz {
 
     //fragment Home
     public PopularAdapters getPopulares();
+
+
 
 
     public void irLogin();

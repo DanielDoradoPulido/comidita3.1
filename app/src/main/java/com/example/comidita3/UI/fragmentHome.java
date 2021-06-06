@@ -154,32 +154,40 @@ public class fragmentHome extends Fragment {
         valorizadas = new ArrayList<>();
         visitadas = new ArrayList<>();
 
+        obtenerRecomendadas();
+
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
-        obtenerPopulares();
-        obtenerVisitadas();
-        //obtenerRecomendadas();
+
+
+
 
         recetasPopulares = view.findViewById(R.id.recyclerViewPopulares);
         recetasPopulares.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
         listRecetasPopulares = new ArrayList<>();
+        obtenerPopulares();
         adaptadoPopulares = new PopularAdapters(getActivity(),listRecetasPopulares,navController);
         recetasPopulares.setAdapter(adaptadoPopulares);
 
         recetasVisitadas = view.findViewById(R.id.recyclerViewVisitadas);
         recetasVisitadas.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
         listRecetasVisitadas = new ArrayList<>();
+        obtenerVisitadas();
         adaptadorVisitada = new vistasAdapters(getActivity(),listRecetasVisitadas,navController);
         recetasVisitadas.setAdapter(adaptadorVisitada);
 
-        //recetasRecomendadas = view.findViewById(R.id.recyclerViewRecomendadas);
-        //recetasRecomendadas.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
-        //adaptadorRecomendadas = new recomendadasAdapter(getActivity(),listRecetasRecomendadas,navController);
-        //recetasRecomendadas.setAdapter(adaptadorRecomendadas);
-
         recetasRecomendadas = view.findViewById(R.id.recyclerViewRecomendadas);
         recetasRecomendadas.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
-        recetasRecomendadas.setAdapter(adaptadorVisitada);
+        listRecetasRecomendadas = new ArrayList<>();
+
+
+
+        adaptadorRecomendadas = new recomendadasAdapter(getActivity(),listRecetasRecomendadas,navController);
+        recetasRecomendadas.setAdapter(adaptadorRecomendadas);
+
+        //recetasRecomendadas = view.findViewById(R.id.recyclerViewRecomendadas);
+        //recetasRecomendadas.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        //recetasRecomendadas.setAdapter(adaptadorVisitada);
 
 
 
@@ -521,12 +529,18 @@ public class fragmentHome extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
+        Toast.makeText(getContext(),"entre 1",Toast.LENGTH_SHORT).show();
+
+
+
         db.collection("usuarios")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
+                            Toast.makeText(getContext(),"entre 2",Toast.LENGTH_SHORT).show();
 
 
 
@@ -537,29 +551,278 @@ public class fragmentHome extends Fragment {
                                     ArrayList<String> sus = (ArrayList) document.get("suscripciones");
 
                                     if(sus.get(0).equals("NINGUNA")){
-                                        añadirRecomendadas("NINGUNA");
+
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+                                                                listRecetasRecomendadas.add(r);
+                                                                adaptadorRecomendadas.notifyDataSetChanged();
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
+
                                     }
                                     else if(sus.get(0).equals("RECETAS_RAPIDAS")){
-                                        añadirRecomendadas("RECETAS_RAPIDAS");
+
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+
+                                                                if(r.getDificultad().equals("Rápida de hacer")){
+
+                                                                    listRecetasRecomendadas.add(r);
+                                                                    adaptadorRecomendadas.notifyDataSetChanged();
+
+                                                                }
+
+
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
                                     }
 
 
                                     else if(sus.get(0).equals("RECETAS_MEDIAS")){
-                                        añadirRecomendadas("RECETAS_MEDIAS");
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+
+                                                                if(r.getDificultad().equals("Tiempo intermedio")){
+
+                                                                    listRecetasRecomendadas.add(r);
+                                                                    adaptadorRecomendadas.notifyDataSetChanged();
+
+                                                                }
+
+
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
+                                    }
+
+                                    else if(sus.get(0).equals("RECETAS_LENTAS")){
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+
+                                                                if(r.getDificultad().equals("Larga de hacer")){
+
+                                                                    listRecetasRecomendadas.add(r);
+                                                                    adaptadorRecomendadas.notifyDataSetChanged();
+
+                                                                }
+
+
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
                                     }
 
 
                                     else if(sus.get(0).equals("RECETAS_RAPIDAS_MEDIAS")){
-                                        añadirRecomendadas("RECETAS_RAPIDAS_MEDIAS");
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+
+                                                                if(r.getDificultad().equals("Rápida de hacer") || r.getDificultad().equals("Tiempo intermedio")){
+
+                                                                    listRecetasRecomendadas.add(r);
+                                                                    adaptadorRecomendadas.notifyDataSetChanged();
+
+                                                                }
+
+
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
                                     }
                                     else if(sus.get(0).equals("RECETAS_RAPIDAS_LARGAS")){
-                                        añadirRecomendadas("RECETAS_RAPIDAS_LARGAS");
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+
+                                                                if(r.getDificultad().equals("Rápida de hacer") || r.getDificultad().equals("Larga de hacer")){
+
+                                                                    listRecetasRecomendadas.add(r);
+                                                                    adaptadorRecomendadas.notifyDataSetChanged();
+
+                                                                }
+
+
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
                                     }
                                     else if(sus.get(0).equals("RECETAS_LARGAS_MEDIAS")){
-                                        añadirRecomendadas("RECETAS_LARGAS_MEDIAS");
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+
+                                                                if(r.getDificultad().equals("Tiempo Intermedio") || r.getDificultad().equals("Larga de hacer")){
+
+                                                                    listRecetasRecomendadas.add(r);
+                                                                    adaptadorRecomendadas.notifyDataSetChanged();
+
+                                                                }
+
+
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
                                     }
-                                    else if(sus.get(0).equals("TODAS")){
-                                        añadirRecomendadas("TODAS");
+                                    else{
+                                        db.collection("recetas")
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                                Receta r = document.toObject(Receta.class);
+                                                                listRecetasRecomendadas.add(r);
+                                                                adaptadorRecomendadas.notifyDataSetChanged();
+
+
+                                                            }
+
+
+                                                        } else {
+
+                                                            Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                    }
+                                                });
                                     }
                                 }
 
@@ -587,319 +850,7 @@ public class fragmentHome extends Fragment {
 
     }
 
-    public void añadirRecomendadas(String suscripcion){
 
-        if(suscripcion.equals("NINGUNA")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-                                    listRecetasRecomendadas.add(r);
-                                    adaptadorRecomendadas.notifyDataSetChanged();
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-
-        else if(suscripcion.equals("RECETAS_RAPIDAS")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-
-                                    if(r.getDificultad().equals("Rápida de hacer")){
-
-                                        listRecetasRecomendadas.add(r);
-                                        adaptadorRecomendadas.notifyDataSetChanged();
-
-                                    }
-
-
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-
-        else if(suscripcion.equals("RECETAS_MEDIAS")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-
-                                    if(r.getDificultad().equals("Tiempo intermedio")){
-
-                                        listRecetasRecomendadas.add(r);
-                                        adaptadorRecomendadas.notifyDataSetChanged();
-
-                                    }
-
-
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-        else if(suscripcion.equals("RECETAS_LENTAS")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-
-                                    if(r.getDificultad().equals("Larga de hacer")){
-
-                                        listRecetasRecomendadas.add(r);
-                                        adaptadorRecomendadas.notifyDataSetChanged();
-
-                                    }
-
-
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-
-        else if(suscripcion.equals("RECETAS_RAPIDAS_MEDIAS")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-
-                                    if(r.getDificultad().equals("Rápida de hacer") || r.getDificultad().equals("Tiempo intermedio")){
-
-                                        listRecetasRecomendadas.add(r);
-                                        adaptadorRecomendadas.notifyDataSetChanged();
-
-                                    }
-
-
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-
-        else if(suscripcion.equals("RECETAS_RAPIDAS_LARGAS")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-
-                                    if(r.getDificultad().equals("Rápida de hacer") || r.getDificultad().equals("Larga de hacer")){
-
-                                        listRecetasRecomendadas.add(r);
-                                        adaptadorRecomendadas.notifyDataSetChanged();
-
-                                    }
-
-
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-
-        else if(suscripcion.equals("RECETAS_LARGAS_MEDIAS")){
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-
-                                    if(r.getDificultad().equals("Tiempo Intermedio") || r.getDificultad().equals("Larga de hacer")){
-
-                                        listRecetasRecomendadas.add(r);
-                                        adaptadorRecomendadas.notifyDataSetChanged();
-
-                                    }
-
-
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-        }
-
-        else{
-
-
-            db.collection("recetas")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-
-
-
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    Receta r = document.toObject(Receta.class);
-                                    listRecetasRecomendadas.add(r);
-                                    adaptadorRecomendadas.notifyDataSetChanged();
-
-
-                                }
-
-
-                            } else {
-
-                                Toast.makeText(getActivity(),"Error",Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-    }
 
 
 
