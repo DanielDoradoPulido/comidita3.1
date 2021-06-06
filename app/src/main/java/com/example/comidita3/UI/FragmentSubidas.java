@@ -130,6 +130,14 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        obtenerSubidas();
+
+        subidasR = view.findViewById(R.id.recyclerViewSubidas);
+        subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+        listRecetasSubidas = new ArrayList<>();
+        adaptadorSubidas = new UploadsAdapter(getActivity(),listRecetasSubidas,navController);
+        subidasR.setAdapter(adaptadorSubidas);
+
         loadPerfilImage();
 
         view.setFocusableInTouchMode(true);
@@ -204,13 +212,7 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
            // }
        // });
 
-        obtenerSubidas();
 
-        subidasR = v.findViewById(R.id.recyclerViewSubidas);
-        subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
-        listRecetasSubidas = new ArrayList<>();
-        adaptadorSubidas = new UploadsAdapter(getActivity(),listRecetasSubidas,navController);
-        subidasR.setAdapter(adaptadorSubidas);
 
 
 
@@ -243,7 +245,11 @@ public class FragmentSubidas extends Fragment implements SearchView.OnQueryTextL
                                             @Override
                                             public void onSuccess(Uri uri) {
 
-                                                Glide.with(getContext()).load(uri).into(perfil);
+                                                try{
+                                                    Glide.with(getContext()).load(uri).into(perfil);
+                                                }catch (Exception e){
+
+                                                }
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override

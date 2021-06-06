@@ -117,6 +117,14 @@ public class FragmentFavoritos extends Fragment implements SearchView.OnQueryTex
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        obtenerFavoritas();
+
+        favoritosR = view.findViewById(R.id.recyclerViewFavoritos);
+        favoritosR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+        listRecetasFavoritos = new ArrayList<>();
+        adaptadorFavoritos = new favAdapter(getActivity(),listRecetasFavoritos,navController);
+        favoritosR.setAdapter(adaptadorFavoritos);
+
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -175,13 +183,7 @@ public class FragmentFavoritos extends Fragment implements SearchView.OnQueryTex
         });
         searchView.setOnQueryTextListener(this);
 
-        obtenerFavoritas();
 
-        favoritosR = v.findViewById(R.id.recyclerViewFavoritos);
-        favoritosR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
-        listRecetasFavoritos = new ArrayList<>();
-        adaptadorFavoritos = new favAdapter(getActivity(),listRecetasFavoritos,navController);
-        favoritosR.setAdapter(adaptadorFavoritos);
 
 
         return v;

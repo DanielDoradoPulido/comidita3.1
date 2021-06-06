@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,7 +142,7 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
 
 
 
-        contexto.loadDataSubidasOther(userpath);
+        //contexto.loadDataSubidasOther(userpath);
 
 
     }
@@ -187,9 +188,11 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
 
         ingredients = view.findViewById(R.id.textViewIngredientesDetalleReceta);
         ingredients.setText(ingredientes);
+        ingredients.setMovementMethod(new ScrollingMovementMethod());
 
-        descript = view.findViewById(R.id.textViewPasosDetalleReceta);
+        descript = view.findViewById(R.id.textViewPasosDetalleCreador);
         descript.setText(descripcion);
+        descript.setMovementMethod(new ScrollingMovementMethod());
 
         urlY = view.findViewById(R.id.viewURLyoutube);
         urlY.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +233,11 @@ public class fragment_receta_detalle_sinPerfil extends Fragment {
             @Override
             public void onSuccess(Uri uri) {
 
-                Glide.with(getContext()).load(uri).into(imagen);
+                try{
+                    Glide.with(getContext()).load(uri).into(imagen);
+                }catch (Exception e){
+
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

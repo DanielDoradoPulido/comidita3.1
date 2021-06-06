@@ -16,6 +16,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Patterns;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -985,34 +987,66 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
 
         String aux = "";
 
-        for (int i = 0 ; i < 4 ; i++){
+        if(url.length() > 4){
 
-            char c = url.charAt(i);
+            for (int i = 0 ; i < 4 ; i++){
 
-            aux = aux + c;
+                char c = url.charAt(i);
 
+                aux = aux + c;
+
+
+            }
+
+            if(aux.equals("www.")){
+
+                if( Patterns.WEB_URL.matcher("https://" + url).matches()){
+                    Uri uri = Uri.parse("https://" + url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(this,"Lo sentimos pero la URL del video no esta disponible...",Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+            else if(aux.equals("http")){
+
+                if( Patterns.WEB_URL.matcher(url).matches()){
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(this,"Lo sentimos pero la URL del video no esta disponible...",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+            else{
+
+                if( Patterns.WEB_URL.matcher("https://www." + url).matches()){
+                    Uri uri = Uri.parse("https://www." + url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(this,"Lo sentimos pero la URL del video no esta disponible...",Toast.LENGTH_SHORT).show();
+                }
+
+            }
 
         }
-
-        if(aux.equals("www.")){
-
-            Uri uri = Uri.parse("https://" + url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-
-        }
-        else if(aux.equals("http")){
-            Uri uri = Uri.parse(url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        }
-
 
         else{
-            Uri uri = Uri.parse("https://www." + url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            Toast.makeText(this,"Lo sentimos la url no esta disponible",Toast.LENGTH_SHORT).show();
         }
+
+
+
+
 
 
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="#d5deeb"
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationRecomendadas"
+            android:layout_width="164dp"
+            android:layout_height="65dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.11"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.083"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+
+            app:lottie_rawRes="@raw/cooking" />
+
+        <TextView
+            android:id="@+id/textViewNombreItemRecomendadas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:fontFamily="@font/abel"
+            android:text="Nombre de la receta"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/textView110"
+            android:layout_width="159dp"
+            android:layout_height="5dp" />
+
+        <TextView
+            android:id="@+id/textViewDificultadItemRecomendadas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:text="Dificultad"
+            android:textAlignment="center"
+            android:textColor="#838080"
+            android:textStyle="italic">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="151dp"
+            android:layout_height="7dp" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

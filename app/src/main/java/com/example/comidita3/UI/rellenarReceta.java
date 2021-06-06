@@ -289,118 +289,123 @@ public class rellenarReceta extends Fragment {
                         name = nombre.getText().toString();
                         ingredients = ingredientes.getText().toString();
                         description = descripcion.getText().toString();
-                        if(URL.getText().toString().isEmpty())
-                            link = "";
-                        else
-                            link = URL.getText().toString();
+                        link = URL.getText().toString();
+
 
                         //comprobamos que no estan vacios
 
-                        if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty()){
+                        if(!name.isEmpty()  && !ingredients.isEmpty() && !description.isEmpty() && !link.isEmpty()){
 
-                            if(fotoSubida){
+                            if(name.length() < 20){
 
-
-
-                                //generamos un id random
-                                String rId = UUID.randomUUID().toString();
-
-                                //construimos el objeto de tipo Receta
-                                Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
-                                receta.setDificultad(dificultad);
-
-                                //llamamos a la bbdd
-
-                                //añadimos a la coleccion de recetas la receta
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                if(fotoSubida){
 
 
-                                //añadimos a la coleccion de valoraciones un documento que corresponda al documento de la receta
-                                Map<String,Object> valoraciones = new HashMap<>();
-                                valoraciones.put(UID,"0.0");
 
-                                Map<String,Object> recetaN = new HashMap<>();
-                                recetaN.put("descripcion",receta.getDescripcion());
-                                recetaN.put("dificultad",receta.getDificultad());
-                                recetaN.put("id",receta.getId());
-                                recetaN.put("imagePath",receta.getImagePath());
-                                recetaN.put("ingredientes",receta.getIngredientes());
-                                recetaN.put("nombre",receta.getNombre());
-                                recetaN.put("urlYoutube",receta.getUrlYoutube());
-                                recetaN.put("userPath",UID);
-                                recetaN.put("valoracion","0");
-                                recetaN.put("visitas","0");
-                                recetaN.put("votaciones",valoraciones);
+                                    //generamos un id random
+                                    String rId = UUID.randomUUID().toString();
 
-                                db.collection("recetas").document(receta.getId()).set(recetaN);
+                                    //construimos el objeto de tipo Receta
+                                    Receta receta = new Receta(rId,name,ingredients,description,link,imagePath,UID);
+                                    receta.setDificultad(dificultad);
 
-                                //enviar notificacion a suscriptores
-                                if(dificultad.equals("Rápida de hacer")){
+                                    //llamamos a la bbdd
 
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
-                                    contexto.enviarNotificacion("TODAS",rId);
+                                    //añadimos a la coleccion de recetas la receta
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
 
-                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
-                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+                                    //añadimos a la coleccion de valoraciones un documento que corresponda al documento de la receta
+                                    Map<String,Object> valoraciones = new HashMap<>();
+                                    valoraciones.put(UID,"0.0");
 
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                        contexto.versionMayor(title,body,rId);
-                                    else
-                                        contexto.versionMenor(title,body,rId);
+                                    Map<String,Object> recetaN = new HashMap<>();
+                                    recetaN.put("descripcion",receta.getDescripcion());
+                                    recetaN.put("dificultad",receta.getDificultad());
+                                    recetaN.put("id",receta.getId());
+                                    recetaN.put("imagePath",receta.getImagePath());
+                                    recetaN.put("ingredientes",receta.getIngredientes());
+                                    recetaN.put("nombre",receta.getNombre());
+                                    recetaN.put("urlYoutube",receta.getUrlYoutube());
+                                    recetaN.put("userPath",UID);
+                                    recetaN.put("valoracion","0");
+                                    recetaN.put("visitas","0");
+                                    recetaN.put("votaciones",valoraciones);
+
+                                    db.collection("recetas").document(receta.getId()).set(recetaN);
+
+                                    //enviar notificacion a suscriptores
+                                    if(dificultad.equals("Rápida de hacer")){
+
+                                        contexto.enviarNotificacion("RECETAS_RAPIDAS",rId);
+                                        contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
+                                        contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
+                                        contexto.enviarNotificacion("TODAS",rId);
+
+                                        //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
+
+                                        String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+                                        String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+                                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                            contexto.versionMayor(title,body,rId);
+                                        else
+                                            contexto.versionMenor(title,body,rId);
+
+                                    }
+                                    else if(dificultad.equals("Tiempo intermedio")){
+                                        contexto.enviarNotificacion("RECETAS_MEDIAS",rId);
+                                        contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
+                                        contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
+                                        contexto.enviarNotificacion("TODAS",rId);
+
+                                        //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
+
+                                        String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+                                        String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+                                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                            contexto.versionMayor(title,body,rId);
+                                        else
+                                            contexto.versionMenor(title,body,rId);
+
+
+
+                                    }
+                                    else if(dificultad.equals("Larga de hacer")){
+                                        contexto.enviarNotificacion("RECETAS_LENTAS",rId);
+                                        contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
+                                        contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
+                                        contexto.enviarNotificacion("TODAS",rId);
+
+                                        //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
+
+                                        String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
+                                        String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
+
+                                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                            contexto.versionMayor(title,body,rId);
+                                        else
+                                            contexto.versionMenor(title,body,rId);
+
+
+                                    }
+
+
+                                    Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
+                                    navController.navigate(R.id.fragmentHome);
+
+
+
 
                                 }
-                                else if(dificultad.equals("Tiempo intermedio")){
-                                    contexto.enviarNotificacion("RECETAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("TODAS",rId);
-
-                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
-
-                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
-                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
-
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                        contexto.versionMayor(title,body,rId);
-                                    else
-                                        contexto.versionMenor(title,body,rId);
-
-
-
+                                else{
+                                    Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();
                                 }
-                                else if(dificultad.equals("Larga de hacer")){
-                                    contexto.enviarNotificacion("RECETAS_LENTAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_LARGAS_MEDIAS",rId);
-                                    contexto.enviarNotificacion("RECETAS_RAPIDAS_LARGAS",rId);
-                                    contexto.enviarNotificacion("TODAS",rId);
-
-                                    //creacion notificion para que el usuario creador pueda saber si ha sido subida su receta
-
-                                    String title = "¡Se ha subido tu receta! \uD83D\uDE0E";
-                                    String body = "Echa un vistazo a como ha quedado \uD83C\uDF72" ;
-
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                        contexto.versionMayor(title,body,rId);
-                                    else
-                                        contexto.versionMenor(title,body,rId);
-
-
-                                }
-
-
-                                Toast.makeText(getContext(),"Receta subida con exito. ¡Gracias!",Toast.LENGTH_SHORT).show();
-                                navController.navigate(R.id.fragmentHome);
-
-
-
 
                             }
                             else{
-                                Toast.makeText(getContext(),"falta subir la foto",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"El nombre de la receta no puede superar los 20 caracteres...",Toast.LENGTH_SHORT).show();
                             }
 
 

@@ -1,5 +1,6 @@
 package com.example.comidita3.UI;
 
+import android.bluetooth.BluetoothClass;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import com.example.comidita3.adaptadores.PopularAdapters;
 import com.example.comidita3.adaptadores.todasAdapters;
 import com.example.comidita3.adaptadores.vistasAdapters;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -59,8 +61,6 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
     List<Receta> listRecetasTodas;
     todasAdapters adaptadorTodas;
     ArrayList<String> todas;
-
-    LottieAnimationView animationNotFound;
 
 
     // TODO: Rename and change types of parameters
@@ -102,6 +102,7 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
         todas = new ArrayList<>();
 
         searchView = view.findViewById(R.id.searchViewBuscar);
@@ -112,8 +113,6 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
             }
         });
         searchView.setOnQueryTextListener(this);
-
-
 
         obtenerTodas();
 
@@ -166,7 +165,12 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
 
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
@@ -197,11 +201,18 @@ public class fragmentBuscar extends Fragment implements SearchView.OnQueryTextLi
                                 }
                             } else {
 
-                                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
 
                             }
                         }
-                    });
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
+                }
+            });
         }
     }
 

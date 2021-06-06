@@ -109,6 +109,8 @@ public class registerActivity extends AppCompatActivity {
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 ArrayList<String> favs = new ArrayList<>();
+                                ArrayList<String> subs = new ArrayList<>();
+                                subs.add("NINGUNA");
 
                                 Map<String,Object> userReg = new HashMap<>();
                                 userReg.put("UID",UID);
@@ -116,6 +118,7 @@ public class registerActivity extends AppCompatActivity {
                                 userReg.put("correo",email);
                                 userReg.put("perfilPath","");
                                 userReg.put("favoritas",favs);
+                                userReg.put("suscripciones",subs);
 
 
                                 db.collection("usuarios").document(UID).set(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {

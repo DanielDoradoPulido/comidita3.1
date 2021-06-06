@@ -154,13 +154,7 @@ public class perfilUserFragment extends Fragment {
             //}
         //});
 
-        obtenerSubidas();
 
-        subidasR = v.findViewById(R.id.recyclerViewPerfilUser);
-        subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
-        listRecetasSubidas = new ArrayList<>();
-        adaptadorSubidas = new perfilUserAdapter(getActivity(),listRecetasSubidas,navController);
-        subidasR.setAdapter(adaptadorSubidas);
 
 
 
@@ -176,6 +170,14 @@ public class perfilUserFragment extends Fragment {
 
 
         loadPerfilImage();
+
+        obtenerSubidas();
+
+        subidasR = view.findViewById(R.id.recyclerViewPerfilUser);
+        subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+        listRecetasSubidas = new ArrayList<>();
+        adaptadorSubidas = new perfilUserAdapter(getActivity(),listRecetasSubidas,navController);
+        subidasR.setAdapter(adaptadorSubidas);
 
 
 
@@ -214,7 +216,13 @@ public class perfilUserFragment extends Fragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
 
-                                                Glide.with(getContext()).load(uri).into(perfil);
+                                                try{
+                                                    Glide.with(getContext()).load(uri).into(perfil);
+                                                }catch (Exception e){
+
+                                                }
+
+
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
