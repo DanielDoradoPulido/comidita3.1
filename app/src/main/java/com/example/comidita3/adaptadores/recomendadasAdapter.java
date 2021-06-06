@@ -49,11 +49,11 @@ public class recomendadasAdapter extends RecyclerView.Adapter<recomendadasAdapte
             valor++;
         }
         else if(valor==3){
-            holder.animationView.setAnimation(R.raw.recipe2);
+            holder.animationView.setAnimation(R.raw.item);
             valor++;
         }
         else if(valor==4){
-            holder.animationView.setAnimation(R.raw.item);
+            holder.animationView.setAnimation(R.raw.recipe2);
             valor++;
         }
         else if(valor==5){
