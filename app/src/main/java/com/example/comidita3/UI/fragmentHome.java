@@ -529,7 +529,7 @@ public class fragmentHome extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        Toast.makeText(getContext(),"entre 1",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(),"entre 1",Toast.LENGTH_SHORT).show();
 
 
 
@@ -540,7 +540,7 @@ public class fragmentHome extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
-                            Toast.makeText(getContext(),"entre 2",Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getContext(),"entre 2",Toast.LENGTH_SHORT).show();
 
 
 
@@ -775,7 +775,7 @@ public class fragmentHome extends Fragment {
 
                                                                 Receta r = document.toObject(Receta.class);
 
-                                                                if(r.getDificultad().equals("Tiempo Intermedio") || r.getDificultad().equals("Larga de hacer")){
+                                                                if(r.getDificultad().equals("Tiempo intermedio") || r.getDificultad().equals("Larga de hacer")){
 
                                                                     listRecetasRecomendadas.add(r);
                                                                     adaptadorRecomendadas.notifyDataSetChanged();

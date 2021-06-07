@@ -76,7 +76,7 @@ public class perfilUserFragment extends Fragment {
     //recyclerview
 
     RecyclerView subidasR;
-    List<Receta> listRecetasSubidas;
+    List<Receta> listRecetasSubidasOther;
     perfilUserAdapter adaptadorSubidas;
 
 
@@ -175,8 +175,8 @@ public class perfilUserFragment extends Fragment {
 
         subidasR = view.findViewById(R.id.recyclerViewPerfilUser);
         subidasR.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
-        listRecetasSubidas = new ArrayList<>();
-        adaptadorSubidas = new perfilUserAdapter(getActivity(),listRecetasSubidas,navController);
+        listRecetasSubidasOther = new ArrayList<>();
+        adaptadorSubidas = new perfilUserAdapter(getActivity(),listRecetasSubidasOther,navController);
         subidasR.setAdapter(adaptadorSubidas);
 
 
@@ -263,13 +263,16 @@ public class perfilUserFragment extends Fragment {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                String userPath = document.getString("userPath");
+                                String UID = document.getString("userPath");
 
-                                if(userPath.equals(userPath)){
+                                if(UID.equals(userPath)){
 
                                     Receta receta = document.toObject(Receta.class);
-                                    listRecetasSubidas.add(receta);
+                                    listRecetasSubidasOther.add(receta);
                                     adaptadorSubidas.notifyDataSetChanged();
+
+                                }
+                                else{
 
                                 }
 

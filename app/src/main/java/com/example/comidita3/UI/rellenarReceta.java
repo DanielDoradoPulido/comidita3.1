@@ -296,7 +296,7 @@ public class rellenarReceta extends Fragment {
 
                         if(!name.isEmpty()  && !ingredients.isEmpty() && !description.isEmpty() && !link.isEmpty()){
 
-                            if(name.length() < 20){
+                            if(name.length() < 50){
 
                                 if(fotoSubida){
 
@@ -405,7 +405,7 @@ public class rellenarReceta extends Fragment {
 
                             }
                             else{
-                                Toast.makeText(getContext(),"El nombre de la receta no puede superar los 20 caracteres...",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"El nombre de la receta no puede superar los 50 caracteres...",Toast.LENGTH_SHORT).show();
                             }
 
 

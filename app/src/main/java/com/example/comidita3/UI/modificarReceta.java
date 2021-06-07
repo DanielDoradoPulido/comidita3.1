@@ -184,7 +184,11 @@ public class modificarReceta extends Fragment {
             @Override
             public void onSuccess(Uri uri) {
 
-                Glide.with(getContext()).load(uri).into(imagen);
+                try {
+                    Glide.with(getContext()).load(uri).into(imagen);
+                }catch (Exception e){
+
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -356,14 +360,11 @@ public class modificarReceta extends Fragment {
                         name = nombre.getText().toString();
                         ingredients = ingredientes.getText().toString();
                         description = descripcion.getText().toString();
-                        if(URL.getText().toString().isEmpty())
-                            link = "";
-                        else
-                            link = URL.getText().toString();
+                        link = URL.getText().toString();
 
                         //comprobamos que no estan vacios
 
-                        if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty()){
+                        if(!name.isEmpty() && !ingredients.isEmpty() && !description.isEmpty() && !link.isEmpty()){
 
                                 //construimos el objeto de tipo Receta
                                 Receta receta = new Receta(idReceta,name,ingredients,description,link,imagePath,UID);
@@ -372,51 +373,59 @@ public class modificarReceta extends Fragment {
 
                                 //comprobamos que ha subido una nueva imagen
 
-                                if(imagePath.equals(""))
-                                    imagePath = imagepathReceta;
+                                if(name.length() < 50){
 
-                                //si la ha subido borramos la vieja
+                                    if(imagePath.equals(""))
+                                        imagePath = imagepathReceta;
 
-                                if(fotoSubida){
+                                    //si la ha subido borramos la vieja
 
-                                    //buscamos la imagen vieja
-                                    StorageReference storageRef = storage.getReference();
+                                    if(fotoSubida){
 
-                                    // Create a reference to the file to delete
-                                    StorageReference desertRef = storageRef.child(imagepathReceta);
+                                        //buscamos la imagen vieja
+                                        StorageReference storageRef = storage.getReference();
 
-                                    // Delete the file
-                                    desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            hecho = true;
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception exception) {
-                                            hecho = false;
-                                        }
-                                    });
+                                        // Create a reference to the file to delete
+                                        StorageReference desertRef = storageRef.child(imagepathReceta);
 
-                                    if(hecho)
-                                        Toast.makeText(getContext(),"hecho",Toast.LENGTH_SHORT).show();
+                                        // Delete the file
+                                        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                hecho = true;
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                hecho = false;
+                                            }
+                                        });
+
+                                        //if(hecho)
+                                        //Toast.makeText(getContext(),"hecho",Toast.LENGTH_SHORT).show();
+
+                                    }
+
+
+                                    //llamamos a la bbdd
+                                    //actualizamos a la coleccion de recetas la receta
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                    db.collection("recetas").document(receta.getId()).update("nombre",name);
+                                    db.collection("recetas").document(receta.getId()).update("ingredientes",ingredients);
+                                    db.collection("recetas").document(receta.getId()).update("descripcion",description);
+                                    db.collection("recetas").document(receta.getId()).update("urlYoutube",link);
+                                    db.collection("recetas").document(receta.getId()).update("imagePath",imagePath);
+                                    db.collection("recetas").document(receta.getId()).update("dificultad",dificultad);
+
+                                    Toast.makeText(getContext(),"Receta actualizada con éxito. ¡Gracias!",Toast.LENGTH_SHORT).show();
+                                    navController.navigate(R.id.fragmentHome);
+
 
                                 }
-
-
-                                //llamamos a la bbdd
-                                //actualizamos a la coleccion de recetas la receta
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                                db.collection("recetas").document(receta.getId()).update("nombre",name);
-                                db.collection("recetas").document(receta.getId()).update("ingredientes",ingredients);
-                                db.collection("recetas").document(receta.getId()).update("descripcion",description);
-                                db.collection("recetas").document(receta.getId()).update("urlYoutube",link);
-                                db.collection("recetas").document(receta.getId()).update("imagePath",imagePath);
-                                db.collection("recetas").document(receta.getId()).update("dificultad",dificultad);
-
-                                Toast.makeText(getContext(),"Receta actualizada con éxito. ¡Gracias!",Toast.LENGTH_SHORT).show();
-                                navController.navigate(R.id.fragmentHome);
+                                else{
+                                    Toast.makeText(getContext(),"El nombre de la receta no debe superar los 50 caracteres...",Toast.LENGTH_SHORT).show();
+                                }
 
 
 

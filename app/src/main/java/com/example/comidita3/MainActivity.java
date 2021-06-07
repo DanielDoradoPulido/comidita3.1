@@ -754,6 +754,8 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
 
                                 if(document.getId().equals(mAuth.getUid())) {
 
+                                    //Toast.makeText(getApplicationContext(),"entro",Toast.LENGTH_SHORT).show();
+
                                     ArrayList<String> suscripcionLista = (ArrayList<String>) document.get("suscripciones");
                                     ArrayList<String> suscripcionVacia = new ArrayList<>();
                                     suscripcionVacia.add("NINGUNA");
@@ -1251,27 +1253,9 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
 
             navController.navigate(R.id.fragmentHome);
         }
-        else if(!x){
-            Toast.makeText(this,"Error en x",Toast.LENGTH_SHORT).show();
 
-
-            navController.navigate(R.id.fragmentHome);
-        }
-        else if(!y){
-            Toast.makeText(this,"Error en y",Toast.LENGTH_SHORT).show();
-
-
-            navController.navigate(R.id.fragmentHome);
-        }
-        else if(!z){
-            Toast.makeText(this,"Error en z",Toast.LENGTH_SHORT).show();
-
-
-            navController.navigate(R.id.fragmentHome);
-        }
         else{
-
-
+            Toast.makeText(this,"Se ha borrado satisfactoriamente la receta",Toast.LENGTH_SHORT).show();
             navController.navigate(R.id.fragmentHome);
         }
 
@@ -1305,8 +1289,8 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
             }
         });
 
-        if(hecho)
-            Toast.makeText(this,"hecho",Toast.LENGTH_SHORT).show();
+        //if(hecho)
+            //Toast.makeText(this,"hecho",Toast.LENGTH_SHORT).show();
 
 
 

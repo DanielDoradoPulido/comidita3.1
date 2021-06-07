@@ -212,7 +212,7 @@ public class loginActivity extends AppCompatActivity {
 
 
                     else
-                        showAlert("Error","Este correo no tiene cuenta registrada, registrese por favor");
+                        showAlert("Error","Asegurese de escribirlo correctamente , o de si tiene cuenta registrada");
 
                 }
             });
