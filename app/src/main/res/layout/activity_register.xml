@@ -74,7 +74,7 @@
         android:id="@+id/buttonRegistrarse"
         android:layout_width="303dp"
         android:layout_height="40dp"
-        android:text="Registarse"
+        android:text="REGISTRARSE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.565"

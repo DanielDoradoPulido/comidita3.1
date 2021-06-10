@@ -41,14 +41,14 @@
         android:id="@+id/textView17"
         android:layout_width="122dp"
         android:layout_height="15dp"
-        android:text="Hola de nuevo!"
+        android:text="¿Qué hay?"
         android:textColor="#EAE7E7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.049" />
 
     <TextView
         android:id="@+id/textView18"

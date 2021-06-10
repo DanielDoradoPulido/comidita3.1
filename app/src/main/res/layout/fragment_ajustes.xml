@@ -11,8 +11,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewPerfilAjustes"
-        android:layout_width="167dp"
-        android:layout_height="147dp"
+        android:layout_width="174dp"
+        android:layout_height="158dp"
         android:src="@drawable/verde"
         android:transitionName="botonTransition"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -290,6 +290,18 @@
 
 
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="36dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_baseline_change_circle_26"
+        app:layout_constraintBottom_toTopOf="@+id/textViewNombreAjustes"
+        app:layout_constraintEnd_toEndOf="@+id/circleImageViewPerfilAjustes"
+        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintStart_toStartOf="@+id/circleImageViewPerfilAjustes"
+        app:layout_constraintTop_toTopOf="@+id/circleImageViewPerfilAjustes"
+        app:layout_constraintVertical_bias="0.866" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

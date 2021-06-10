@@ -160,7 +160,7 @@ public class modificarReceta extends Fragment {
         intermedia = v.findViewById(R.id.radioButtonButtonIntermedioModificar);
         lenta = v.findViewById(R.id.radioButtonLargoModificar);
 
-        Toast.makeText(getContext(),dificultadReceta,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(),dificultadReceta,Toast.LENGTH_SHORT).show();
 
         if(dificultadReceta.equals("Rápida de hacer"))
             rapida.setChecked(true);

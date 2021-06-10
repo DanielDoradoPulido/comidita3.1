@@ -101,7 +101,7 @@ public class IntroductoryActivity extends AppCompatActivity {
 
                 }
             }
-        },6300);
+        },6000);
 
         fondo.animate().translationY(-2300).setDuration(1000).setStartDelay(5000);
         logo.animate().translationY(2000).setDuration(1000).setStartDelay(5000);
