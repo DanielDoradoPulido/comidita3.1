@@ -91,62 +91,68 @@ public class registerActivity extends AppCompatActivity {
         if(!email.isEmpty() && !password.isEmpty() && !confir.isEmpty() && !user.isEmpty()){
 
             if(!(password.length()<6) && !(confir.length()<6)){
-                if(password.contentEquals(confir)){
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                if(user.length()<15){
+                    if(password.contentEquals(confir)){
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if(task.isSuccessful()) {
+                                if(task.isSuccessful()) {
 
-                                //authentication
-                                FirebaseUser user2 = mAuth.getCurrentUser();
-                                user2.sendEmailVerification();
+                                    //authentication
+                                    FirebaseUser user2 = mAuth.getCurrentUser();
+                                    user2.sendEmailVerification();
 
-                                //firestore
+                                    //firestore
 
-                                UID = mAuth.getCurrentUser().getUid();
-
-
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                ArrayList<String> favs = new ArrayList<>();
-                                ArrayList<String> subs = new ArrayList<>();
-                                subs.add("NINGUNA");
-
-                                Map<String,Object> userReg = new HashMap<>();
-                                userReg.put("UID",UID);
-                                userReg.put("nombre",user);
-                                userReg.put("correo",email);
-                                userReg.put("perfilPath","");
-                                userReg.put("favoritas",favs);
-                                userReg.put("suscripciones",subs);
+                                    UID = mAuth.getCurrentUser().getUid();
 
 
-                                db.collection("usuarios").document(UID).set(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    ArrayList<String> favs = new ArrayList<>();
+                                    ArrayList<String> subs = new ArrayList<>();
+                                    subs.add("NINGUNA");
 
-                                        showAlert("¡Enhorabuena!","¡Se ha registrado correctamente, confirme su correo y disfrute! ");
-
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        showAlert("Error","algo salio mal...pruebe otra vez");
-                                    }
-                                });
+                                    Map<String,Object> userReg = new HashMap<>();
+                                    userReg.put("UID",UID);
+                                    userReg.put("nombre",user);
+                                    userReg.put("correo",email);
+                                    userReg.put("perfilPath","");
+                                    userReg.put("favoritas",favs);
+                                    userReg.put("suscripciones",subs);
 
 
+                                    db.collection("usuarios").document(UID).set(userReg).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            showAlert("¡Enhorabuena!","¡Se ha registrado correctamente, confirme su correo y disfrute! ");
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            showAlert("Error","algo salio mal...pruebe otra vez");
+                                        }
+                                    });
+
+
+
+                                }
+
+                                else
+                                    showAlert("Error","Esta cuenta ya existe/valida el correo");
 
                             }
+                        });
+                    }
+                    else{
+                        Toast.makeText(this,"las contraseñas no coinciden",Toast.LENGTH_SHORT).show();
+                    }
 
-                            else
-                                showAlert("Error","Esta cuenta ya existe/valida el correo");
 
-                        }
-                    });
-                }
-                else{
-                    Toast.makeText(this,"las contraseñas no coinciden",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this,"El nombre de usuario debe de tener menos de 15 caracteres...",Toast.LENGTH_SHORT).show();
                 }
 
 

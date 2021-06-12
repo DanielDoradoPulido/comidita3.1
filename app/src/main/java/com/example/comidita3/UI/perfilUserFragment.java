@@ -206,11 +206,11 @@ public class perfilUserFragment extends Fragment {
 
                                 if(document.getId().equals(userPath)) {
 
-
+                                    name.setText(document.getString("nombre"));
 
                                     if(!(pathInicio = document.getString("perfilPath")).equals("")){
 
-                                        name.setText(document.getString("nombre"));
+
 
                                         storageReference.child(pathInicio).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
