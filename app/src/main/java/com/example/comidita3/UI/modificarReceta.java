@@ -419,7 +419,7 @@ public class modificarReceta extends Fragment {
                                     db.collection("recetas").document(receta.getId()).update("dificultad",dificultad);
 
                                     Toast.makeText(getContext(),"Receta actualizada con éxito. ¡Gracias!",Toast.LENGTH_SHORT).show();
-                                    navController.navigate(R.id.fragmentHome);
+                                    navController.navigate(R.id.fragmentSubidas);
 
 
                                 }

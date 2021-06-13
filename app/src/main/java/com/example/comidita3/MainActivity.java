@@ -732,7 +732,7 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
                     });
         }
         else if(opcion==7){
-
+            Toast.makeText(MainActivity.this, "¡De acuerdo! No recibirá ninguna notificación", Toast.LENGTH_SHORT).show();
         }
         else{
 
@@ -1251,12 +1251,12 @@ public class MainActivity extends AppCompatActivity implements Interfaz {
             Toast.makeText(this,"Se ha borrado satisfactoriamente la receta",Toast.LENGTH_SHORT).show();
 
 
-            navController.navigate(R.id.fragmentHome);
+            navController.navigate(R.id.fragmentSubidas);
         }
 
         else{
             Toast.makeText(this,"Se ha borrado satisfactoriamente la receta",Toast.LENGTH_SHORT).show();
-            navController.navigate(R.id.fragmentHome);
+            navController.navigate(R.id.fragmentSubidas);
         }
 
 
