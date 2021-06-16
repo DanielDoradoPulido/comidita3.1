@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.comidita3.Interfaz;
+import com.example.comidita3.LOGIN.loginActivity;
+import com.example.comidita3.MainActivity;
 import com.example.comidita3.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -68,6 +70,7 @@ public class FragmentAjustes extends Fragment {
     TextView nombre,correo;
     private FirebaseAuth mAuth;
     Boolean suscrito = false;
+    String correoRec;
 
     //storage
     public Uri imageUri;
@@ -260,19 +263,29 @@ public class FragmentAjustes extends Fragment {
 
                                 FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                                String emailAddress = contexto.email();
 
-                                auth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+                                auth.sendPasswordResetEmail(correoRec).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
                                         if(task.isSuccessful()){
 
-                                            Toast.makeText(getContext(),"Enviado",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(),"Solicitud cambio de contraseña enviado ,inicie sesion de nuevo",Toast.LENGTH_SHORT).show();
+
+                                            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPref.edit();
+                                            editor.putString(getString(R.string.preferencias_email), "");
+                                            editor.putString(getString(R.string.preferencias_password), "");
+                                            editor.putBoolean(getString(R.string.preferencias_islogin), false);
+                                            editor.commit();
+
+
 
                                         }
                                         else{
-                                            Toast.makeText(getContext(),"no Enviado",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(),"No hemos podido enviar la solicitud...intentelo mas tarde",Toast.LENGTH_SHORT).show();
                                         }
 
                                     }
@@ -490,6 +503,7 @@ public class FragmentAjustes extends Fragment {
 
                                     nombre.setText(document.getString("nombre"));
                                     correo.setText(document.getString("correo"));
+                                    correoRec = document.getString("correo");
 
                                     if(!(pathInicio = document.getString("perfilPath")).equals("")){
 

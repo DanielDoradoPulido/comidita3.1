@@ -30,8 +30,8 @@
 
         <TextView
             android:id="@+id/textViewNombreItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="158dp"
+            android:layout_height="43dp"
             android:layout_marginLeft="2dp"
             android:fontFamily="@font/abel"
             android:text="Nombre de la receta"
@@ -61,8 +61,8 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="151dp"
-            android:layout_height="7dp" />
+            android:layout_width="158dp"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

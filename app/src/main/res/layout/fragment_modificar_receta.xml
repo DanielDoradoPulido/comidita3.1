@@ -76,7 +76,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:hint="URL de youtube"
+            android:hint="URL del video"
             android:textColorHint="#FFFFFF">
 
             <com.google.android.material.textfield.TextInputEditText

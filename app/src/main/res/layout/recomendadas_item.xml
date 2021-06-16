@@ -30,8 +30,8 @@
 
         <TextView
             android:id="@+id/textViewNombreItemRecomendadas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="162dp"
+            android:layout_height="44dp"
             android:layout_marginLeft="2dp"
             android:fontFamily="@font/abel"
             android:text="Nombre de la receta"
@@ -41,11 +41,6 @@
             android:textStyle="bold">
 
         </TextView>
-
-        <TextView
-            android:id="@+id/textView110"
-            android:layout_width="159dp"
-            android:layout_height="5dp" />
 
         <TextView
             android:id="@+id/textViewDificultadItemRecomendadas"
@@ -61,8 +56,8 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="151dp"
-            android:layout_height="7dp" />
+            android:layout_width="160dp"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

@@ -35,8 +35,8 @@
 
             <TextView
                 android:id="@+id/textViewNombreFavs"
-                android:layout_width="225dp"
-                android:layout_height="42dp"
+                android:layout_width="226dp"
+                android:layout_height="57dp"
                 android:layout_marginLeft="10dp"
                 android:text="Nombre de la receta"
                 android:textColor="#000000"
