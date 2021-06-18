@@ -272,7 +272,7 @@ public class FragmentAjustes extends Fragment {
 
                                         if(task.isSuccessful()){
 
-                                            Toast.makeText(getContext(),"Solicitud cambio de contraseña enviado ,inicie sesion de nuevo",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(),"Solicitud cambio de contraseña enviada",Toast.LENGTH_SHORT).show();
 
                                             SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preferencias_PMDM_correo_file), Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPref.edit();
